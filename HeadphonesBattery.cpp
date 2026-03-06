@@ -369,8 +369,10 @@ static void HandleDeviceInterfaceArrival(PDEV_BROADCAST_DEVICEINTERFACE_W pDev) 
     OutputDebugStringW(L"HandleDeviceInterfaceArrival: received interface notification\n");
     // Debug: show the incoming device interface path (may help identify which interface fired)
     if (pDev->dbcc_name) {
-        OutputDebugStringW(L"HandleDeviceInterfaceArrival: interface path=\n");
-        OutputDebugStringW(pDev->dbcc_name);
+        std::wstring dbgPath = L"HandleDeviceInterfaceArrival: interface path=";
+        dbgPath += pDev->dbcc_name;
+        dbgPath += L"\n";
+        OutputDebugStringW(dbgPath.c_str());
     }
     ULONGLONG now = GetTickCount64();
 
@@ -591,8 +593,10 @@ static void HandleDeviceInterfaceArrival(PDEV_BROADCAST_DEVICEINTERFACE_W pDev) 
             std::wstring batteryInfo = current[id].second;
             OutputDebugStringW(L"HandleDeviceInterfaceArrival: new device detected, showing balloon\n");
             // Print the virtual device name for diagnostics
-            OutputDebugStringW(virtualName.c_str());
-            OutputDebugStringW(L"\n");
+            {
+                std::wstring vdbg = virtualName + std::wstring(L"\n");
+                OutputDebugStringW(vdbg.c_str());
+            }
             ShowBalloonNotification(L"Headphones Connected", batteryInfo);
             g_lastNotifyTime = now;
             g_lastNotifyMessage = batteryInfo;
@@ -615,8 +619,10 @@ static void HandleDeviceInterfaceArrival(PDEV_BROADCAST_DEVICEINTERFACE_W pDev) 
             std::wstring msg = L"Headphones disconnected";
             OutputDebugStringW(L"HandleDeviceInterfaceArrival: device removal detected\n");
             // Print the virtual device name for diagnostics
-            OutputDebugStringW(virtualName.c_str());
-            OutputDebugStringW(L"\n");
+            {
+                std::wstring vdbg = virtualName + std::wstring(L"\n");
+                OutputDebugStringW(vdbg.c_str());
+            }
             ShowBalloonNotification(L"Headphones Disconnected", msg);
             // Update tray tooltip to indicate disconnected state when no devices remain
             // We'll remove the entry first then check remaining map size below.
@@ -754,12 +760,30 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
         // Left-click on the tray icon: show current battery level (modal)
         if (lParam == WM_LBUTTONUP) {
             OutputDebugStringW(L"WindowProc: WM_TRAYICON - WM_LBUTTONUP (query battery)\n");
+            // Always attempt to show the last-known battery info. If the headset
+            // is connected, show live battery info. If it's disconnected but we
+            // have a last-seen battery level from the device properties, show
+            // it and clearly mark it as "last seen".
+            bool connected = IsAnyHeadsetConnected();
             std::wstring batteryInfo = GetHeadphonesBatteryLevel();
-            if (batteryInfo.find(L"WH-1000XM3") != std::wstring::npos) {
-                // Show modal message box with the battery info
-                MessageBoxW(hwnd, batteryInfo.c_str(), L"Headphones Battery", MB_OK | MB_ICONINFORMATION);
+
+            bool hasBattery = (batteryInfo.find(L"Battery Level:") != std::wstring::npos);
+
+            if (connected) {
+                if (hasBattery) {
+                    MessageBoxW(hwnd, batteryInfo.c_str(), L"Headphones Battery", MB_OK | MB_ICONINFORMATION);
+                } else {
+                    MessageBoxW(hwnd, L"WH-1000XM3 connected but battery level not available", L"Headphones Battery", MB_OK | MB_ICONWARNING);
+                }
             } else {
-                MessageBoxW(hwnd, L"WH-1000XM3 not connected or battery not available", L"Headphones Battery", MB_OK | MB_ICONWARNING);
+                if (hasBattery) {
+                    // Show the battery string but annotate that the device is disconnected
+                    std::wstring msg = batteryInfo;
+                    msg += L"\n\nNote: the headset is currently disconnected - this is the last-seen battery level.";
+                    MessageBoxW(hwnd, msg.c_str(), L"Headphones Battery (last seen)", MB_OK | MB_ICONINFORMATION);
+                } else {
+                    MessageBoxW(hwnd, L"WH-1000XM3 not connected or battery not available", L"Headphones Battery", MB_OK | MB_ICONWARNING);
+                }
             }
         }
         return TRUE;

@@ -1,0 +1,138 @@
+On device arrival (stage 1):
+
+14:23:37:781	WindowProc: WM_DEVICECHANGE - DBT_DEVICEARRIVAL
+14:23:37:781	HandleDeviceInterfaceArrival: received interface notification
+14:23:37:781	HandleDeviceInterfaceArrival: interface path=\\?\INTELAUDIO#CTLR_DEV_A0C8&LINKTYPE_03&DEVTYPE_00&VEN_8086&DEV_AE30&SUBSYS_72708086&REV_0001#5&1543d6b8&0&0000#{6994ad04-93ef-11d0-a3cc-00a0c9223196}\IntcBtWaveRender_000000000AE7FFF4_0
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:37:781	HandleDeviceInterfaceArrival: notification class GUID={6994AD04-93EF-11D0-A3CC-00A0C9223196}
+14:23:37:781	WindowProc: WM_DEVICECHANGE - DBT_DEVICEARRIVAL
+14:23:37:781	HandleDeviceInterfaceArrival: received interface notification
+14:23:37:781	HandleDeviceInterfaceArrival: interface path=\\?\INTELAUDIO#CTLR_DEV_A0C8&LINKTYPE_03&DEVTYPE_00&VEN_8086&DEV_AE30&SUBSYS_72708086&REV_0001#5&1543d6b8&0&0000#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\IntcBtWaveRender_000000000AE7FFF4_0
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:37:781	HandleDeviceInterfaceArrival: notification class GUID={65E8773E-8F56-11D0-A3B9-00A0C9223196}
+14:23:37:781	WindowProc: WM_DEVICECHANGE - DBT_DEVICEARRIVAL
+14:23:37:781	HandleDeviceInterfaceArrival: received interface notification
+14:23:37:781	HandleDeviceInterfaceArrival: interface path=\\?\INTELAUDIO#CTLR_DEV_A0C8&LINKTYPE_03&DEVTYPE_00&VEN_8086&DEV_AE30&SUBSYS_72708086&REV_0001#5&1543d6b8&0&0000#{eb115ffc-10c8-4964-831d-6dcb02e6f23f}\IntcBtWaveRender_000000000AE7FFF4_0
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:37:781	HandleDeviceInterfaceArrival: notification class GUID={EB115FFC-10C8-4964-831D-6DCB02E6F23F}
+14:23:37:781	WindowProc: WM_DEVICECHANGE - DBT_DEVICEARRIVAL
+14:23:37:781	HandleDeviceInterfaceArrival: received interface notification
+14:23:37:781	HandleDeviceInterfaceArrival: interface path=\\?\INTELAUDIO#CTLR_DEV_A0C8&LINKTYPE_03&DEVTYPE_00&VEN_8086&DEV_AE30&SUBSYS_72708086&REV_0001#5&1543d6b8&0&0000#{6994ad04-93ef-11d0-a3cc-00a0c9223196}\IntcBtWaveCapture_000000000AE7FFF4_1
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:37:781	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:38:023	HandleDeviceInterfaceArrival: notification class GUID={6994AD04-93EF-11D0-A3CC-00A0C9223196}
+14:23:38:023	WindowProc: WM_DEVICECHANGE - DBT_DEVICEARRIVAL
+14:23:38:023	HandleDeviceInterfaceArrival: received interface notification
+14:23:38:023	HandleDeviceInterfaceArrival: interface path=\\?\INTELAUDIO#CTLR_DEV_A0C8&LINKTYPE_03&DEVTYPE_00&VEN_8086&DEV_AE30&SUBSYS_72708086&REV_0001#5&1543d6b8&0&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\IntcBtWaveCapture_000000000AE7FFF4_1
+14:23:38:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:38:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:38:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:38:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:38:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:38:023	HandleDeviceInterfaceArrival: notification class GUID={65E8773D-8F56-11D0-A3B9-00A0C9223196}
+14:23:38:023	WindowProc: WM_DEVICECHANGE - DBT_DEVICEARRIVAL
+14:23:38:023	HandleDeviceInterfaceArrival: received interface notification
+14:23:38:023	HandleDeviceInterfaceArrival: interface path=\\?\INTELAUDIO#CTLR_DEV_A0C8&LINKTYPE_03&DEVTYPE_00&VEN_8086&DEV_AE30&SUBSYS_72708086&REV_0001#5&1543d6b8&0&0000#{eb115ffc-10c8-4964-831d-6dcb02e6f23f}\IntcBtWaveCapture_000000000AE7FFF4_1
+14:23:38:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:38:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:38:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:38:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:38:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:38:023	HandleDeviceInterfaceArrival: notification class GUID={EB115FFC-10C8-4964-831D-6DCB02E6F23F}
+14:23:38:273	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:38:273	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:38:273	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:38:273	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:38:273	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:38:273	The thread 100 has exited with code 0 (0x0).
+
+
+
+
+On device arriaval (stage 2):
+
+14:23:46:023	WindowProc: WM_DEVICECHANGE - DBT_DEVICEARRIVAL
+14:23:46:023	HandleDeviceInterfaceArrival: received interface notification
+14:23:46:023	HandleDeviceInterfaceArrival: interface path=\\?\SWD#MMDEVAPI#{0.0.0.00000000}.{1cc6d395-4786-465d-b2f7-351a1119efc2}#{934bd8a8-a593-445a-9e1d-a915ffaca629}
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	HandleDeviceInterfaceArrival: notification class GUID={934BD8A8-A593-445A-9E1D-A915FFACA629}
+14:23:46:023	WindowProc: WM_DEVICECHANGE - DBT_DEVICEARRIVAL
+14:23:46:023	HandleDeviceInterfaceArrival: received interface notification
+14:23:46:023	HandleDeviceInterfaceArrival: interface path=\\?\SWD#MMDEVAPI#{0.0.0.00000000}.{3be85070-9582-46f3-aedd-43d25affef71}#{e6327cad-dcec-4949-ae8a-991e976a79d2}
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	HandleDeviceInterfaceArrival: notification class GUID={E6327CAD-DCEC-4949-AE8A-991E976A79D2}
+14:23:46:023	WindowProc: WM_DEVICECHANGE - DBT_DEVICEARRIVAL
+14:23:46:023	HandleDeviceInterfaceArrival: received interface notification
+14:23:46:023	HandleDeviceInterfaceArrival: interface path=\\?\SWD#MMDEVAPI#{0.0.1.00000000}.{c51d1b46-2578-4ade-89b6-60770a363b25}#{2eef81be-33fa-4800-9670-1cd474972c3f}
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:023	HandleDeviceInterfaceArrival: notification class GUID={2EEF81BE-33FA-4800-9670-1CD474972C3F}
+14:23:46:522	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:522	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:522	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:522	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:522	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:522	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:522	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:522	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:23:46:522	The thread 19424 has exited with code 0 (0x0).
+
+
+
+
+On device removal:
+
+14:24:58:322	WindowProc: WM_DEVICECHANGE - DBT_DEVICEARRIVAL
+14:24:58:322	HandleDeviceInterfaceArrival: received interface notification
+14:24:58:322	HandleDeviceInterfaceArrival: interface path=\\?\BTHENUM#{0000110b-0000-1000-8000-00805f9b34fb}_VID&0002054c_PID&0cd3#7&25629724&0&CC988B56B45C_C00000000#{f3b1362f-c9f4-4dd1-9d55-e02038a129fb}\A2DP_SIDEBAND_INTERFACE
+14:24:58:322	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:24:58:322	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:24:58:322	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:24:58:322	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:24:58:572	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:24:58:572	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:24:58:572	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:24:58:572	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:24:58:572	HandleDeviceInterfaceArrival: notification class GUID={F3B1362F-C9F4-4DD1-9D55-E02038A129FB}
+14:24:58:824	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:24:58:824	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:24:58:824	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:24:58:824	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:24:59:072	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:24:59:072	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:24:59:072	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:24:59:072	InitializeConnectedDevices: skipping not-connected root HTREE\ROOT\0
+14:24:59:072	The thread 25572 has exited with code 0 (0x0).

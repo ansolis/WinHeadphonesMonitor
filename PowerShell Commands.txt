@@ -1,0 +1,1786 @@
+> Get-PnpDevice -Class Bluetooth | Where-Object {$_.Status -eq 'OK'} | Select-Object FriendlyName, InstanceId
+
+FriendlyName                             InstanceId
+------------                             ----------
+Surface Slim Pen 2                       BTHLE\DEV_E998CC6C8C8B\7&7D1685&0&E998CC6C8C8B
+Intel(R) Wireless Bluetooth(R)           USB\VID_8087&PID_0026\5&1487BDB9&0&10
+Michael's Pixel Buds Pro Avrcp Transport BTHENUM\{0000110E-0000-1000-8000-00805F9B34FB}_VID&000100E0_PID&3004\7&25629724&0&242934B913C3_C00000000
+WH-1000XM3                               BTHENUM\DEV_CC988B56B45C\7&25629724&0&BLUETOOTHDEVICE_CC988B56B45C
+Bluetooth LE Generic Attribute Service   BTHLEDEVICE\{7A441000-7FC2-45BD-83E6-D6D78C5669D1}_DEV_VID&02045E_PID&0C0F_REV&0596_E998CC6C8C8B\8&26FBBD…
+Device Information Service               BTHLEDEVICE\{0000180A-0000-1000-8000-00805F9B34FB}_DEV_VID&02045E_PID&0919_REV&0110_C3F0481AF42E\8&2FAF33…
+Bluetooth LE Generic Attribute Service   BTHLEDEVICE\{0000180F-0000-1000-8000-00805F9B34FB}_DEV_VID&02045E_PID&0919_REV&0110_C3F0481AF42E\8&2FAF33…
+Bluetooth LE Generic Attribute Service   BTHLEDEVICE\{E7661000-3F85-40F5-8745-284E9095A1E2}_DEV_VID&02045E_PID&0C0F_REV&0596_E998CC6C8C8B\8&26FBBD…
+Generic Access Profile                   BTHLEDEVICE\{00001800-0000-1000-8000-00805F9B34FB}_DEV_VID&02045E_PID&0919_REV&0110_C3F0481AF42E\8&2FAF33…
+Device Information Service               BTHLEDEVICE\{0000180A-0000-1000-8000-00805F9B34FB}_DEV_VID&02045E_PID&0C0F_REV&0596_E998CC6C8C8B\8&26FBBD…
+Bluetooth LE Generic Attribute Service   BTHLEDEVICE\{E7661200-3F85-40F5-8745-284E9095A1E2}_DEV_VID&02045E_PID&0C0F_REV&0596_E998CC6C8C8B\8&26FBBD…
+Microsoft Bluetooth LE Enumerator        BTH\MS_BTHLE\6&280D5BFF&0&3
+Bluetooth LE Generic Attribute Service   BTHLEDEVICE\{0000180F-0000-1000-8000-00805F9B34FB}_DEV_VID&02045E_PID&0C0F_REV&0596_E998CC6C8C8B\8&26FBBD…
+Generic Attribute Profile                BTHLEDEVICE\{00001801-0000-1000-8000-00805F9B34FB}_DEV_VID&02045E_PID&0919_REV&0110_C3F0481AF42E\8&2FAF33…
+Generic Access Profile                   BTHLEDEVICE\{00001800-0000-1000-8000-00805F9B34FB}_DEV_VID&02045E_PID&0C0F_REV&0596_E998CC6C8C8B\8&26FBBD…
+Surface Mouse                            BTHLE\DEV_C3F0481AF42E\7&7D1685&0&C3F0481AF42E
+Bluetooth LE Generic Attribute Service   BTHLEDEVICE\{E7661201-3F85-40F5-8745-284E9095A1E2}_DEV_VID&02045E_PID&0C0F_REV&0596_E998CC6C8C8B\8&26FBBD…
+WH-1000XM3 Avrcp Transport               BTHENUM\{0000110C-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C_C00000000
+Microsoft Bluetooth Enumerator           BTH\MS_BTHBRB\6&280D5BFF&0&1
+WH-1000XM3 Avrcp Transport               BTHENUM\{0000110E-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C_C00000000
+Generic Attribute Profile                BTHLEDEVICE\{00001801-0000-1000-8000-00805F9B34FB}_DEV_VID&02045E_PID&0C0F_REV&0596_E998CC6C8C8B\8&26FBBD…
+Bluetooth Device (RFCOMM Protocol TDI)   BTH\MS_RFCOMM\6&280D5BFF&0&0
+Michael's Pixel Buds Pro                 BTHENUM\DEV_242934B913C3\7&25629724&0&BLUETOOTHDEVICE_242934B913C3
+Bluetooth LE Generic Attribute Service   BTHLEDEVICE\{E7661100-3F85-40F5-8745-284E9095A1E2}_DEV_VID&02045E_PID&0C0F_REV&0596_E998CC6C8C8B\8&26FBBD…
+Michael's Pixel Buds Pro Avrcp Transport BTHENUM\{0000110C-0000-1000-8000-00805F9B34FB}_VID&000100E0_PID&3004\7&25629724&0&242934B913C3_C00000000
+
+
+
+
+
+
+PS C:\Users\ansol> # First, get the device instance ID
+PS C:\Users\ansol> $device = Get-PnpDevice | Where-Object {$_.FriendlyName -like "*WH-1000XM3*"}
+PS C:\Users\ansol> $instanceId = $device.InstanceId
+PS C:\Users\ansol> # Now get ALL properties for this device
+PS C:\Users\ansol> Get-PnpDeviceProperty -InstanceId $instanceId | Format-Table KeyName, Data -AutoSize
+
+KeyName                                             Data
+-------                                             ----
+DEVPKEY_Device_DeviceDesc                           Audio Endpoint
+DEVPKEY_Device_DeviceDesc                           Audio Endpoint
+DEVPKEY_Device_HardwareIds                          {MMDEVAPI\AudioEndpoints}
+DEVPKEY_Device_CompatibleIds                        {GenericAudioEndpoint, SWD\GenericRaw, SWD\Generic}
+DEVPKEY_Device_Class                                AudioEndpoint
+DEVPKEY_Device_ClassGuid                            {C166523C-FE0C-4A94-A586-F1A80CFBBF3E}
+DEVPKEY_Device_HardwareIds                          {MMDEVAPI\AudioEndpoints}
+DEVPKEY_Device_Driver                               {c166523c-fe0c-4a94-a586-f1a80cfbbf3e}\0005
+DEVPKEY_Device_CompatibleIds                        {GenericAudioEndpoint, SWD\GenericRaw, SWD\Generic}
+DEVPKEY_Device_ConfigFlags                          0
+DEVPKEY_Device_Class                                AudioEndpoint
+DEVPKEY_Device_Manufacturer                         Microsoft
+DEVPKEY_Device_ClassGuid                            {C166523C-FE0C-4A94-A586-F1A80CFBBF3E}
+DEVPKEY_Device_Driver                               {c166523c-fe0c-4a94-a586-f1a80cfbbf3e}\0005
+DEVPKEY_Device_FriendlyName                         Headset (WH-1000XM3 Hands-Free)
+DEVPKEY_Device_ConfigFlags                          0
+DEVPKEY_Device_DeviceDesc                           Audio Endpoint
+DEVPKEY_Device_PDOName                              \Device\000002f6
+DEVPKEY_Device_Manufacturer                         Microsoft
+DEVPKEY_Device_FriendlyName                         Headset (WH-1000XM3 Hands-Free)
+DEVPKEY_Device_PDOName                              \Device\000002f6
+DEVPKEY_Device_Capabilities                         208
+DEVPKEY_Device_BusTypeGuid                          {06D10322-7DE0-4CEF-8E25-197D0E7442E2}
+DEVPKEY_Device_HardwareIds                          {MMDEVAPI\AudioEndpoints}
+DEVPKEY_Device_LegacyBusType                        15
+DEVPKEY_Device_CompatibleIds                        {GenericAudioEndpoint, SWD\GenericRaw, SWD\Generic}
+DEVPKEY_Device_BusNumber                            0
+DEVPKEY_Device_Capabilities                         208
+DEVPKEY_Device_Class                                AudioEndpoint
+DEVPKEY_Device_EnumeratorName                       SWD
+DEVPKEY_Device_BusTypeGuid                          {06D10322-7DE0-4CEF-8E25-197D0E7442E2}
+DEVPKEY_Device_PowerData                            {56, 0, 0, 0…}
+DEVPKEY_Device_ClassGuid                            {C166523C-FE0C-4A94-A586-F1A80CFBBF3E}
+DEVPKEY_Device_LegacyBusType                        15
+DEVPKEY_Device_RemovalPolicy                        2
+DEVPKEY_Device_Driver                               {c166523c-fe0c-4a94-a586-f1a80cfbbf3e}\0005
+DEVPKEY_Device_RemovalPolicyDefault                 2
+DEVPKEY_Device_BusNumber                            0
+DEVPKEY_Device_InstallState                         0
+DEVPKEY_Device_ConfigFlags                          0
+DEVPKEY_Device_BaseContainerId                      {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_Device_EnumeratorName                       SWD
+DEVPKEY_NAME                                        Headset (WH-1000XM3 Hands-Free)
+DEVPKEY_Device_Manufacturer                         Microsoft
+DEVPKEY_Device_InstanceId                           SWD\MMDEVAPI\{0.0.0.00000000}.{1CC6D395-4786-465D-B2F7-351A1119EFC2}
+DEVPKEY_Device_PowerData                            {56, 0, 0, 0…}
+DEVPKEY_Device_FriendlyName                         Headset (WH-1000XM3 Hands-Free)
+DEVPKEY_Device_DevNodeStatus                        25174026
+DEVPKEY_Device_ProblemCode                          0
+DEVPKEY_Device_RemovalPolicy                        2
+DEVPKEY_Device_PDOName                              \Device\000002f6
+DEVPKEY_Device_Parent                               BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS_VID&0002054c_PID&0cd3\7&25629724&0&CC…
+DEVPKEY_Device_Capabilities                         208
+DEVPKEY_Device_RemovalPolicyDefault                 2
+DEVPKEY_Device_Siblings                             {SWD\MMDEVAPI\{0.0.1.00000000}.{c51d1b46-2578-4ade-89b6-60770a363b25}}
+DEVPKEY_Device_SafeRemovalRequired                  False
+DEVPKEY_Device_BusTypeGuid                          {06D10322-7DE0-4CEF-8E25-197D0E7442E2}
+DEVPKEY_Device_InstallState                         0
+DEVPKEY_Device_ContainerId                          {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_Device_LegacyBusType                        15
+DEVPKEY_Device_IsPresent                            True
+DEVPKEY_Device_BaseContainerId                      {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_Device_HasProblem                           False
+DEVPKEY_NAME                                        Headset (WH-1000XM3 Hands-Free)
+DEVPKEY_Device_BusNumber                            0
+{83DA6326-97A6-4088-9453-A1923F573B29} 15           True
+DEVPKEY_Device_InstanceId                           SWD\MMDEVAPI\{0.0.0.00000000}.{1CC6D395-4786-465D-B2F7-351A1119EFC2}
+DEVPKEY_Device_EnumeratorName                       SWD
+DEVPKEY_Device_IsRebootRequired                     False
+DEVPKEY_Device_ReportedDeviceIdsHash                1816082587
+DEVPKEY_Device_PowerData                            {56, 0, 0, 0…}
+DEVPKEY_Device_DevNodeStatus                        25174026
+DEVPKEY_Device_InLocalMachineContainer              False
+DEVPKEY_Device_RemovalPolicy                        2
+DEVPKEY_Device_ProblemCode                          0
+DEVPKEY_Device_Stack                                {\Driver\SoftwareDevice}
+DEVPKEY_Device_RemovalPolicyDefault                 2
+DEVPKEY_Device_Parent                               BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS_VID&0002054c_PID&0cd3\7&25629724&0&CC…
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 26           False
+DEVPKEY_Device_InstallState                         0
+DEVPKEY_Device_Siblings                             {SWD\MMDEVAPI\{0.0.1.00000000}.{c51d1b46-2578-4ade-89b6-60770a363b25}}
+{1F39EC81-2EDF-49FE-BBBF-862F89E3F5B2} 2            2
+DEVPKEY_Device_BaseContainerId                      {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_Device_SafeRemovalRequired                  False
+{3464F7A4-2444-40B1-980A-E0903CB6D912} 10           3
+DEVPKEY_NAME                                        Headset (WH-1000XM3 Hands-Free)
+DEVPKEY_Device_BusReportedDeviceDesc                Headset (WH-1000XM3 Hands-Free)
+DEVPKEY_Device_ContainerId                          {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_Device_InstanceId                           SWD\MMDEVAPI\{0.0.0.00000000}.{1CC6D395-4786-465D-B2F7-351A1119EFC2}
+DEVPKEY_Device_ConfigurationId                      audioendpoint.inf:MMDEVAPI\AudioEndpoints,NO_DRV
+DEVPKEY_Device_IsPresent                            True
+DEVPKEY_Device_DevNodeStatus                        25174026
+DEVPKEY_Device_CreatorProcessId                     3876
+DEVPKEY_Device_HasProblem                           False
+DEVPKEY_DeviceContainer_Category                    {Audio}
+DEVPKEY_Device_ProblemCode                          0
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 6            0
+{83DA6326-97A6-4088-9453-A1923F573B29} 15           True
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 7            17293822569102766336
+DEVPKEY_Device_Parent                               BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS_VID&0002054c_PID&0cd3\7&25629724&0&CC…
+DEVPKEY_Device_FriendlyNameAttributes               2
+{83DA6326-97A6-4088-9453-A1923F573B29} 3            audioendpoint.inf:db04a16cc5e2d48f:NO_DRV:10.0.26100.1:MMDEVAPI\AudioEndpoints
+DEVPKEY_Device_IsRebootRequired                     False
+DEVPKEY_Device_SessionId                            1
+DEVPKEY_Device_Siblings                             {SWD\MMDEVAPI\{0.0.1.00000000}.{c51d1b46-2578-4ade-89b6-60770a363b25}}
+DEVPKEY_Device_ReportedDeviceIdsHash                1816082587
+DEVPKEY_Device_SafeRemovalRequired                  False
+DEVPKEY_Device_InLocalMachineContainer              False
+{83DA6326-97A6-4088-9453-A1923F573B29} 10           BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS_VID&0002054c_PID&0cd3\7&25629724&0&CC…
+DEVPKEY_Device_ContainerId                          {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_Device_Stack                                {\Driver\SoftwareDevice}
+DEVPKEY_Device_InstallDate                          12/29/2024 11:04:31 PM
+DEVPKEY_Device_IsPresent                            True
+DEVPKEY_Device_FirstInstallDate                     12/29/2024 11:04:31 PM
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 26           False
+DEVPKEY_Device_HasProblem                           False
+DEVPKEY_Device_LastArrivalDate                      3/1/2026 3:07:21 PM
+{83DA6326-97A6-4088-9453-A1923F573B29} 15           True
+{1F39EC81-2EDF-49FE-BBBF-862F89E3F5B2} 2            2
+DEVPKEY_Device_DriverDate                           3/30/2024 5:00:00 PM
+DEVPKEY_Device_IsRebootRequired                     False
+{3464F7A4-2444-40B1-980A-E0903CB6D912} 10           3
+DEVPKEY_Device_DriverVersion                        10.0.26100.1
+DEVPKEY_Device_ReportedDeviceIdsHash                1816082587
+DEVPKEY_Device_BusReportedDeviceDesc                Headset (WH-1000XM3 Hands-Free)
+DEVPKEY_Device_DriverDesc                           Audio Endpoint
+DEVPKEY_Device_InLocalMachineContainer              False
+DEVPKEY_Device_ConfigurationId                      audioendpoint.inf:MMDEVAPI\AudioEndpoints,NO_DRV
+DEVPKEY_Device_DriverInfPath                        audioendpoint.inf
+DEVPKEY_Device_Stack                                {\Driver\SoftwareDevice}
+DEVPKEY_Device_DriverInfSection                     NO_DRV
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 26           False
+DEVPKEY_Device_MatchingDeviceId                     MMDEVAPI\AudioEndpoints
+DEVPKEY_Device_CreatorProcessId                     3876
+DEVPKEY_Device_DriverProvider                       Microsoft
+{1F39EC81-2EDF-49FE-BBBF-862F89E3F5B2} 2            2
+DEVPKEY_Device_DriverRank                           16711680
+DEVPKEY_DeviceContainer_Category                    {Audio}
+{3464F7A4-2444-40B1-980A-E0903CB6D912} 10           3
+DEVPKEY_Device_NoConnectSound                       True
+DEVPKEY_Device_BusReportedDeviceDesc                Headset (WH-1000XM3 Hands-Free)
+DEVPKEY_DrvPkg_Icon                                 {%windir%\system32\mmres.dll,-3015}
+DEVPKEY_Device_ConfigurationId                      audioendpoint.inf:MMDEVAPI\AudioEndpoints,NO_DRV
+DEVPKEY_Device_CreatorProcessId                     3876
+DEVPKEY_DeviceContainer_Category                    {Audio}
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 6            0
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 7            17293822569102766336
+DEVPKEY_Device_FriendlyNameAttributes               2
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 6            0
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 7            17293822569102766336
+DEVPKEY_Device_FriendlyNameAttributes               2
+{83DA6326-97A6-4088-9453-A1923F573B29} 3            audioendpoint.inf:db04a16cc5e2d48f:NO_DRV:10.0.26100.1:MMDEVAPI\AudioEndpoints
+DEVPKEY_Device_SessionId                            1
+{83DA6326-97A6-4088-9453-A1923F573B29} 10           BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS_VID&0002054c_PID&0cd3\7&25629724&0&CC…
+DEVPKEY_Device_InstallDate                          12/29/2024 11:04:31 PM
+DEVPKEY_Device_FirstInstallDate                     12/29/2024 11:04:31 PM
+DEVPKEY_Device_LastArrivalDate                      3/1/2026 3:07:21 PM
+DEVPKEY_Device_DriverDate                           3/30/2024 5:00:00 PM
+DEVPKEY_Device_DriverVersion                        10.0.26100.1
+DEVPKEY_Device_DriverDesc                           Audio Endpoint
+DEVPKEY_Device_DriverInfPath                        audioendpoint.inf
+DEVPKEY_Device_DriverInfSection                     NO_DRV
+DEVPKEY_Device_MatchingDeviceId                     MMDEVAPI\AudioEndpoints
+DEVPKEY_Device_DriverProvider                       Microsoft
+DEVPKEY_Device_DriverRank                           16711680
+DEVPKEY_Device_NoConnectSound                       True
+DEVPKEY_DrvPkg_Icon                                 {%windir%\system32\mmres.dll,-3015}
+{83DA6326-97A6-4088-9453-A1923F573B29} 3            audioendpoint.inf:db04a16cc5e2d48f:NO_DRV:10.0.26100.1:MMDEVAPI\AudioEndpoints
+DEVPKEY_Device_SessionId                            1
+{83DA6326-97A6-4088-9453-A1923F573B29} 10           BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS_VID&0002054c_PID&0cd3\7&25629724&0&CC…
+DEVPKEY_Device_InstallDate                          12/29/2024 11:04:31 PM
+DEVPKEY_Device_FirstInstallDate                     12/29/2024 11:04:31 PM
+DEVPKEY_Device_LastArrivalDate                      3/1/2026 3:07:21 PM
+DEVPKEY_Device_DriverDate                           3/30/2024 5:00:00 PM
+DEVPKEY_Device_DriverVersion                        10.0.26100.1
+DEVPKEY_Device_DriverDesc                           Audio Endpoint
+DEVPKEY_Device_DriverInfPath                        audioendpoint.inf
+DEVPKEY_Device_DriverInfSection                     NO_DRV
+DEVPKEY_Device_MatchingDeviceId                     MMDEVAPI\AudioEndpoints
+DEVPKEY_Device_DriverProvider                       Microsoft
+DEVPKEY_Device_DriverRank                           16711680
+DEVPKEY_Device_NoConnectSound                       True
+DEVPKEY_DrvPkg_Icon                                 {%windir%\system32\mmres.dll,-3015}
+DEVPKEY_Device_DeviceDesc                           Microsoft Bluetooth Hands-Free Profile AudioGateway role
+DEVPKEY_Device_HardwareIds                          {BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS_VID&0002054c_PID&0cd3, BTHENUM\{0000…
+DEVPKEY_Device_CompatibleIds                        {BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS, BTHENUM\{0000111e-0000-1000-8000-00…
+DEVPKEY_Device_Service                              BthHFEnum
+DEVPKEY_Device_Class                                System
+DEVPKEY_Device_ClassGuid                            {4D36E97D-E325-11CE-BFC1-08002BE10318}
+DEVPKEY_Device_Driver                               {4d36e97d-e325-11ce-bfc1-08002be10318}\0064
+DEVPKEY_Device_ConfigFlags                          0
+DEVPKEY_Device_Manufacturer                         Microsoft
+DEVPKEY_Device_FriendlyName                         WH-1000XM3 Hands-Free AG
+DEVPKEY_Device_PDOName                              \Device\000000a0
+DEVPKEY_Device_Capabilities                         196
+DEVPKEY_Device_EnumeratorName                       BTHENUM
+DEVPKEY_Device_Security                             Win32_SecurityDescriptor
+DEVPKEY_Device_Characteristics                      256
+DEVPKEY_Device_PowerData                            {56, 0, 0, 0…}
+DEVPKEY_Device_RemovalPolicy                        2
+DEVPKEY_Device_RemovalPolicyDefault                 2
+DEVPKEY_Device_InstallState                         0
+DEVPKEY_Device_BaseContainerId                      {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_NAME                                        WH-1000XM3 Hands-Free AG
+DEVPKEY_Device_InstanceId                           BTHENUM\{0000111E-0000-1000-8000-00805F9B34FB}_HCIBYPASS_VID&0002054C_PID&0CD3\7&25629724&0&CC…
+DEVPKEY_Device_DevNodeStatus                        25190410
+DEVPKEY_Device_ProblemCode                          0
+DEVPKEY_Device_BusRelations                         {SWD\MMDEVAPI\{0.0.0.00000000}.{1cc6d395-4786-465d-b2f7-351a1119efc2}, SWD\MMDEVAPI\{0.0.1.000…
+DEVPKEY_Device_Parent                               BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_Children                             {SWD\MMDEVAPI\{0.0.0.00000000}.{1cc6d395-4786-465d-b2f7-351a1119efc2}, SWD\MMDEVAPI\{0.0.1.000…
+DEVPKEY_Device_Siblings                             {BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}_VID&000100e0_PID&3004\7&25629724&0&242934B913C…
+DEVPKEY_Device_SafeRemovalRequired                  False
+DEVPKEY_Device_ContainerId                          {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_Device_IsPresent                            True
+DEVPKEY_Device_HasProblem                           False
+{83DA6326-97A6-4088-9453-A1923F573B29} 15           False
+DEVPKEY_Device_IsRebootRequired                     False
+DEVPKEY_Device_ReportedDeviceIdsHash                1182304521
+DEVPKEY_Device_InLocalMachineContainer              False
+DEVPKEY_Device_Stack                                {\Driver\BthHFEnum, \Driver\BthEnum}
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 26           False
+{104EA319-6EE2-4701-BD47-8DDBF425BBE5} 2            60
+DEVPKEY_Bluetooth_DeviceAddress                     CC988B56B45C
+DEVPKEY_Bluetooth_ServiceGUID                       {0000111E-0000-1000-8000-00805F9B34FB}
+DEVPKEY_Bluetooth_DeviceFlags                       67126175
+{2BD67D8B-8BEB-48D5-87E0-6CDA3428040A} 4            2360324
+DEVPKEY_Bluetooth_DeviceVIDSource                   2
+DEVPKEY_Bluetooth_DeviceVID                         1356
+DEVPKEY_Bluetooth_DevicePID                         3283
+DEVPKEY_Bluetooth_ClassOfDevice                     2360324
+{3464F7A4-2444-40B1-980A-E0903CB6D912} 10           3
+{3B2CE006-5E61-4FDE-BAB8-9B8AAC9B26DF} 8            Bluetooth#Bluetooth80:b6:55:84:a3:d1-cc:98:8b:56:b4:5c
+DEVPKEY_Device_BusReportedDeviceDesc                Hands-Free unit
+DEVPKEY_Device_ConfigurationId                      microsoft_bluetooth_hfp_ag.inf:BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS,BthHfE…
+DEVPKEY_DeviceContainer_UnpairUninstall             True
+DEVPKEY_DeviceContainer_AlwaysShowDeviceAsConnected True
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 6            0
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 7            0
+DEVPKEY_Device_PresenceNotForDevice                 True
+{83DA6326-97A6-4088-9453-A1923F573B29} 3            microsoft_bluetooth_hfp_ag.inf:00a2c5fccdbc4a66:BthHfEnum_Ag_Install:10.0.26100.1:BTHENUM\{000…
+{83DA6326-97A6-4088-9453-A1923F573B29} 10           BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_InstallDate                          12/29/2024 7:13:09 PM
+DEVPKEY_Device_FirstInstallDate                     12/29/2024 7:13:09 PM
+DEVPKEY_Device_LastArrivalDate                      2/15/2026 12:53:10 PM
+{840719BE-E830-4801-8EF1-1CF36548A064} 2            True
+DEVPKEY_Device_DriverDate                           3/30/2024 5:00:00 PM
+DEVPKEY_Device_DriverVersion                        10.0.26100.1
+DEVPKEY_Device_DriverDesc                           Microsoft Bluetooth Hands-Free Profile AudioGateway role
+DEVPKEY_Device_DriverInfPath                        microsoft_bluetooth_hfp_ag.inf
+DEVPKEY_Device_DriverInfSection                     BthHfEnum_Ag_Install
+DEVPKEY_Device_MatchingDeviceId                     BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS
+DEVPKEY_Device_DriverProvider                       Microsoft
+DEVPKEY_Device_DriverRank                           16719872
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 16           {microsoft_bluetooth_hfp.inf}
+DEVPKEY_Device_DeviceDesc                           Microsoft Bluetooth Avrcp Transport Driver
+DEVPKEY_Device_HardwareIds                          {BTHENUM\{0000110e-0000-1000-8000-00805f9b34fb}_VID&0002054c_PID&0cd3, BTHENUM\{0000110e-0000-…
+DEVPKEY_Device_CompatibleIds                        {BTHENUM\{0000110e-0000-1000-8000-00805f9b34fb}, BTHENUM\{0000110e-0000-1000-8000-00805f9b34fb…
+DEVPKEY_Device_Service                              Microsoft_Bluetooth_AvrcpTransport
+DEVPKEY_Device_Class                                Bluetooth
+DEVPKEY_Device_ClassGuid                            {E0CBF06C-CD8B-4647-BB8A-263B43F0F974}
+DEVPKEY_Device_Driver                               {e0cbf06c-cd8b-4647-bb8a-263b43f0f974}\0007
+DEVPKEY_Device_ConfigFlags                          0
+DEVPKEY_Device_Manufacturer                         Microsoft
+DEVPKEY_Device_FriendlyName                         WH-1000XM3 Avrcp Transport
+DEVPKEY_Device_PDOName                              \Device\0000009f
+DEVPKEY_Device_Capabilities                         196
+DEVPKEY_Device_EnumeratorName                       BTHENUM
+DEVPKEY_Device_PowerData                            {56, 0, 0, 0…}
+DEVPKEY_Device_RemovalPolicy                        2
+DEVPKEY_Device_RemovalPolicyDefault                 2
+DEVPKEY_Device_InstallState                         0
+DEVPKEY_Device_BaseContainerId                      {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_NAME                                        WH-1000XM3 Avrcp Transport
+DEVPKEY_Device_InstanceId                           BTHENUM\{0000110E-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C…
+DEVPKEY_Device_DevNodeStatus                        25190410
+DEVPKEY_Device_ProblemCode                          0
+DEVPKEY_Device_Parent                               BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_Siblings                             {BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}_VID&000100e0_PID&3004\7&25629724&0&242934B913C…
+DEVPKEY_Device_SafeRemovalRequired                  False
+DEVPKEY_Device_ContainerId                          {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_Device_IsPresent                            True
+DEVPKEY_Device_HasProblem                           False
+{83DA6326-97A6-4088-9453-A1923F573B29} 15           False
+DEVPKEY_Device_IsRebootRequired                     False
+DEVPKEY_Device_ReportedDeviceIdsHash                4122633440
+DEVPKEY_Device_InLocalMachineContainer              False
+DEVPKEY_Device_Stack                                {\Driver\Microsoft_Bluetooth_AvrcpTransport, \Driver\BthEnum}
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 26           False
+DEVPKEY_Bluetooth_DeviceAddress                     CC988B56B45C
+DEVPKEY_Bluetooth_ServiceGUID                       {0000110E-0000-1000-8000-00805F9B34FB}
+DEVPKEY_Bluetooth_DeviceFlags                       67126175
+{2BD67D8B-8BEB-48D5-87E0-6CDA3428040A} 4            2360324
+DEVPKEY_Bluetooth_DeviceVIDSource                   2
+DEVPKEY_Bluetooth_DeviceVID                         1356
+DEVPKEY_Bluetooth_DevicePID                         3283
+DEVPKEY_Bluetooth_ClassOfDevice                     2360324
+{3464F7A4-2444-40B1-980A-E0903CB6D912} 10           3
+{3B2CE006-5E61-4FDE-BAB8-9B8AAC9B26DF} 8            Bluetooth#Bluetooth80:b6:55:84:a3:d1-cc:98:8b:56:b4:5c
+DEVPKEY_Device_BusReportedDeviceDesc                Bluetooth Peripheral Device
+DEVPKEY_Device_ConfigurationId                      microsoft_bluetooth_avrcptransport.inf:BTHENUM\{0000110e-0000-1000-8000-00805f9b34fb},Microsof…
+DEVPKEY_DeviceContainer_UnpairUninstall             True
+DEVPKEY_DeviceContainer_AlwaysShowDeviceAsConnected True
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 6            0
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 7            0
+DEVPKEY_Device_PresenceNotForDevice                 True
+{83DA6326-97A6-4088-9453-A1923F573B29} 3            microsoft_bluetooth_avrcptransport.inf:00a2c5fc154675a7:Microsoft_Bluetooth_AvrcpTransport.NT:…
+{83DA6326-97A6-4088-9453-A1923F573B29} 10           BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_InstallDate                          12/29/2024 7:13:09 PM
+DEVPKEY_Device_FirstInstallDate                     12/29/2024 7:13:09 PM
+DEVPKEY_Device_LastArrivalDate                      2/15/2026 12:53:10 PM
+DEVPKEY_Device_DriverDate                           1/25/2026 4:00:00 PM
+DEVPKEY_Device_DriverVersion                        10.0.26100.7705
+DEVPKEY_Device_DriverDesc                           Microsoft Bluetooth Avrcp Transport Driver
+DEVPKEY_Device_DriverInfPath                        microsoft_bluetooth_avrcptransport.inf
+DEVPKEY_Device_DriverInfSection                     Microsoft_Bluetooth_AvrcpTransport.NT
+DEVPKEY_Device_MatchingDeviceId                     BTHENUM\{0000110e-0000-1000-8000-00805f9b34fb}
+DEVPKEY_Device_DriverProvider                       Microsoft
+DEVPKEY_Device_DriverRank                           16719872
+DEVPKEY_Device_DeviceDesc                           Microsoft Bluetooth Avrcp Transport Driver
+DEVPKEY_Device_HardwareIds                          {BTHENUM\{0000110c-0000-1000-8000-00805f9b34fb}_VID&0002054c_PID&0cd3, BTHENUM\{0000110c-0000-…
+DEVPKEY_Device_CompatibleIds                        {BTHENUM\{0000110c-0000-1000-8000-00805f9b34fb}, BTHENUM\{0000110c-0000-1000-8000-00805f9b34fb…
+DEVPKEY_Device_Service                              Microsoft_Bluetooth_AvrcpTransport
+DEVPKEY_Device_Class                                Bluetooth
+DEVPKEY_Device_ClassGuid                            {E0CBF06C-CD8B-4647-BB8A-263B43F0F974}
+DEVPKEY_Device_Driver                               {e0cbf06c-cd8b-4647-bb8a-263b43f0f974}\0005
+DEVPKEY_Device_ConfigFlags                          0
+DEVPKEY_Device_Manufacturer                         Microsoft
+DEVPKEY_Device_FriendlyName                         WH-1000XM3 Avrcp Transport
+DEVPKEY_Device_PDOName                              \Device\0000009e
+DEVPKEY_Device_Capabilities                         196
+DEVPKEY_Device_EnumeratorName                       BTHENUM
+DEVPKEY_Device_PowerData                            {56, 0, 0, 0…}
+DEVPKEY_Device_RemovalPolicy                        2
+DEVPKEY_Device_RemovalPolicyDefault                 2
+DEVPKEY_Device_InstallState                         0
+DEVPKEY_Device_BaseContainerId                      {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_NAME                                        WH-1000XM3 Avrcp Transport
+DEVPKEY_Device_InstanceId                           BTHENUM\{0000110C-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C…
+DEVPKEY_Device_DevNodeStatus                        1098932234
+DEVPKEY_Device_ProblemCode                          0
+DEVPKEY_Device_Parent                               BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_Siblings                             {BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}_VID&000100e0_PID&3004\7&25629724&0&242934B913C…
+DEVPKEY_Device_SafeRemovalRequired                  False
+DEVPKEY_Device_ContainerId                          {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_Device_IsPresent                            True
+DEVPKEY_Device_HasProblem                           False
+{83DA6326-97A6-4088-9453-A1923F573B29} 15           False
+DEVPKEY_Device_IsRebootRequired                     False
+DEVPKEY_Device_ReportedDeviceIdsHash                4204811496
+DEVPKEY_Device_InLocalMachineContainer              False
+DEVPKEY_Device_Stack                                {\Driver\Microsoft_Bluetooth_AvrcpTransport, \Driver\BthEnum}
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 26           False
+DEVPKEY_Bluetooth_DeviceAddress                     CC988B56B45C
+DEVPKEY_Bluetooth_ServiceGUID                       {0000110C-0000-1000-8000-00805F9B34FB}
+DEVPKEY_Bluetooth_DeviceFlags                       67126175
+{2BD67D8B-8BEB-48D5-87E0-6CDA3428040A} 4            2360324
+DEVPKEY_Bluetooth_DeviceVIDSource                   2
+DEVPKEY_Bluetooth_DeviceVID                         1356
+DEVPKEY_Bluetooth_DevicePID                         3283
+DEVPKEY_Bluetooth_ClassOfDevice                     2360324
+{3464F7A4-2444-40B1-980A-E0903CB6D912} 10           3
+{3B2CE006-5E61-4FDE-BAB8-9B8AAC9B26DF} 8            Bluetooth#Bluetooth80:b6:55:84:a3:d1-cc:98:8b:56:b4:5c
+DEVPKEY_Device_BusReportedDeviceDesc                Bluetooth Peripheral Device
+DEVPKEY_Device_ConfigurationId                      microsoft_bluetooth_avrcptransport.inf:BTHENUM\{0000110c-0000-1000-8000-00805f9b34fb},Microsof…
+DEVPKEY_DeviceContainer_UnpairUninstall             True
+DEVPKEY_DeviceContainer_AlwaysShowDeviceAsConnected True
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 6            0
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 7            0
+DEVPKEY_Device_PresenceNotForDevice                 True
+{83DA6326-97A6-4088-9453-A1923F573B29} 3            microsoft_bluetooth_avrcptransport.inf:00a2c5fc154675a7:Microsoft_Bluetooth_AvrcpTransport.NT:…
+{83DA6326-97A6-4088-9453-A1923F573B29} 10           BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_InstallDate                          12/29/2024 7:13:09 PM
+DEVPKEY_Device_FirstInstallDate                     12/29/2024 7:13:09 PM
+DEVPKEY_Device_LastArrivalDate                      2/15/2026 12:53:10 PM
+DEVPKEY_Device_DriverDate                           1/25/2026 4:00:00 PM
+DEVPKEY_Device_DriverVersion                        10.0.26100.7705
+DEVPKEY_Device_DriverDesc                           Microsoft Bluetooth Avrcp Transport Driver
+DEVPKEY_Device_DriverInfPath                        microsoft_bluetooth_avrcptransport.inf
+DEVPKEY_Device_DriverInfSection                     Microsoft_Bluetooth_AvrcpTransport.NT
+DEVPKEY_Device_MatchingDeviceId                     BTHENUM\{0000110c-0000-1000-8000-00805f9b34fb}
+DEVPKEY_Device_DriverProvider                       Microsoft
+DEVPKEY_Device_DriverRank                           16719872
+DEVPKEY_Device_DeviceDesc                           Microsoft Bluetooth A2dp Source
+DEVPKEY_Device_HardwareIds                          {BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}_VID&0002054c_PID&0cd3, BTHENUM\{0000110b-0000-…
+DEVPKEY_Device_CompatibleIds                        {BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}, BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb…
+DEVPKEY_Device_Service                              BthA2dp
+DEVPKEY_Device_Class                                MEDIA
+DEVPKEY_Device_ClassGuid                            {4D36E96C-E325-11CE-BFC1-08002BE10318}
+DEVPKEY_Device_Driver                               {4d36e96c-e325-11ce-bfc1-08002be10318}\0004
+DEVPKEY_Device_ConfigFlags                          0
+DEVPKEY_Device_Manufacturer                         Microsoft
+DEVPKEY_Device_FriendlyName                         WH-1000XM3
+DEVPKEY_Device_PDOName                              \Device\0000009d
+DEVPKEY_Device_Capabilities                         196
+DEVPKEY_Device_EnumeratorName                       BTHENUM
+DEVPKEY_Device_PowerData                            {56, 0, 0, 0…}
+DEVPKEY_Device_RemovalPolicy                        2
+DEVPKEY_Device_RemovalPolicyDefault                 2
+DEVPKEY_Device_InstallState                         0
+DEVPKEY_Device_BaseContainerId                      {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_NAME                                        WH-1000XM3
+DEVPKEY_Device_InstanceId                           BTHENUM\{0000110B-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C…
+DEVPKEY_Device_DevNodeStatus                        25190410
+DEVPKEY_Device_ProblemCode                          0
+DEVPKEY_Device_BusRelations                         {SWD\MMDEVAPI\{0.0.0.00000000}.{3be85070-9582-46f3-aedd-43d25affef71}}
+DEVPKEY_Device_Parent                               BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_Children                             {SWD\MMDEVAPI\{0.0.0.00000000}.{3be85070-9582-46f3-aedd-43d25affef71}}
+DEVPKEY_Device_Siblings                             {BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}_VID&000100e0_PID&3004\7&25629724&0&242934B913C…
+DEVPKEY_Device_SafeRemovalRequired                  False
+DEVPKEY_Device_ContainerId                          {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_Device_IsPresent                            True
+DEVPKEY_Device_HasProblem                           False
+{83DA6326-97A6-4088-9453-A1923F573B29} 15           False
+DEVPKEY_Device_IsRebootRequired                     False
+DEVPKEY_Device_ReportedDeviceIdsHash                2098416876
+DEVPKEY_Device_InLocalMachineContainer              False
+DEVPKEY_Device_Stack                                {\Driver\ksthunk, \Driver\BthA2dp, \Driver\BthEnum}
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 26           False
+DEVPKEY_Bluetooth_DeviceAddress                     CC988B56B45C
+DEVPKEY_Bluetooth_ServiceGUID                       {0000110B-0000-1000-8000-00805F9B34FB}
+DEVPKEY_Bluetooth_DeviceFlags                       67126175
+{2BD67D8B-8BEB-48D5-87E0-6CDA3428040A} 4            2360324
+DEVPKEY_Bluetooth_DeviceVIDSource                   2
+DEVPKEY_Bluetooth_DeviceVID                         1356
+DEVPKEY_Bluetooth_DevicePID                         3283
+DEVPKEY_Bluetooth_ClassOfDevice                     2360324
+{3464F7A4-2444-40B1-980A-E0903CB6D912} 10           3
+{3B2CE006-5E61-4FDE-BAB8-9B8AAC9B26DF} 8            Bluetooth#Bluetooth80:b6:55:84:a3:d1-cc:98:8b:56:b4:5c
+DEVPKEY_Device_BusReportedDeviceDesc                Bluetooth Peripheral Device
+DEVPKEY_Device_ConfigurationId                      microsoft_bluetooth_a2dp_src.inf:BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb},BthA2dpSrc
+DEVPKEY_DeviceContainer_UnpairUninstall             True
+DEVPKEY_DeviceContainer_AlwaysShowDeviceAsConnected True
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 6            0
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 7            0
+DEVPKEY_Device_PresenceNotForDevice                 True
+{83DA6326-97A6-4088-9453-A1923F573B29} 3            microsoft_bluetooth_a2dp_src.inf:00a2c5fc7d8ad5f7:BthA2dpSrc:10.0.26100.1:BTHENUM\{0000110b-00…
+{83DA6326-97A6-4088-9453-A1923F573B29} 10           BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_InstallDate                          12/29/2024 7:13:09 PM
+DEVPKEY_Device_FirstInstallDate                     12/29/2024 7:13:09 PM
+DEVPKEY_Device_LastArrivalDate                      2/15/2026 12:53:10 PM
+DEVPKEY_Device_DriverDate                           3/30/2024 5:00:00 PM
+DEVPKEY_Device_DriverVersion                        10.0.26100.1
+DEVPKEY_Device_DriverDesc                           Microsoft Bluetooth A2dp Source
+DEVPKEY_Device_DriverInfPath                        microsoft_bluetooth_a2dp_src.inf
+DEVPKEY_Device_DriverInfSection                     BthA2dpSrc
+DEVPKEY_Device_MatchingDeviceId                     BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}
+DEVPKEY_Device_DriverProvider                       Microsoft
+DEVPKEY_Device_DriverRank                           16719872
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 16           {microsoft_bluetooth_a2dp.inf, ks.inf, wdmaudio.inf, BtaMpm.inf}
+{B3F8FA53-0004-438E-9003-51A46E139BFC} 7            0
+{D1885396-39D8-4777-BCFF-5E3241483416} 0            2
+DEVPKEY_Device_DeviceDesc                           Bluetooth Device
+DEVPKEY_Device_HardwareIds                          {BTHENUM\Dev_CC988B56B45C}
+DEVPKEY_Device_CompatibleIds                        {BTHENUM\GENERIC_DEVICE}
+DEVPKEY_Device_Class                                Bluetooth
+DEVPKEY_Device_ClassGuid                            {E0CBF06C-CD8B-4647-BB8A-263B43F0F974}
+DEVPKEY_Device_Driver                               {e0cbf06c-cd8b-4647-bb8a-263b43f0f974}\0009
+DEVPKEY_Device_ConfigFlags                          0
+DEVPKEY_Device_Manufacturer                         Microsoft
+DEVPKEY_Device_FriendlyName                         WH-1000XM3
+DEVPKEY_Device_PDOName                              \Device\000000ad
+DEVPKEY_Device_Capabilities                         196
+DEVPKEY_Device_EnumeratorName                       BTHENUM
+DEVPKEY_Device_PowerData                            {56, 0, 0, 0…}
+DEVPKEY_Device_RemovalPolicy                        2
+DEVPKEY_Device_RemovalPolicyDefault                 2
+DEVPKEY_Device_InstallState                         0
+DEVPKEY_Device_BaseContainerId                      {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_NAME                                        WH-1000XM3
+DEVPKEY_Device_InstanceId                           BTHENUM\DEV_CC988B56B45C\7&25629724&0&BLUETOOTHDEVICE_CC988B56B45C
+DEVPKEY_Device_DevNodeStatus                        25190410
+DEVPKEY_Device_ProblemCode                          0
+DEVPKEY_Device_Parent                               BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_Siblings                             {BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}_VID&000100e0_PID&3004\7&25629724&0&242934B913C…
+DEVPKEY_Device_SafeRemovalRequired                  False
+DEVPKEY_Device_ContainerId                          {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_Device_IsPresent                            True
+DEVPKEY_Device_HasProblem                           False
+{83DA6326-97A6-4088-9453-A1923F573B29} 15           True
+DEVPKEY_Device_IsRebootRequired                     False
+DEVPKEY_Device_ReportedDeviceIdsHash                1738607388
+DEVPKEY_Device_InLocalMachineContainer              False
+DEVPKEY_Device_Stack                                {\Driver\BthEnum}
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 26           False
+DEVPKEY_Bluetooth_DeviceAddress                     CC988B56B45C
+DEVPKEY_Bluetooth_ServiceGUID                       {00000000-0000-0000-0000-000000000000}
+DEVPKEY_Bluetooth_DeviceFlags                       67126175
+{2BD67D8B-8BEB-48D5-87E0-6CDA3428040A} 4            2360324
+DEVPKEY_Bluetooth_DeviceVIDSource                   2
+DEVPKEY_Bluetooth_DeviceVID                         1356
+DEVPKEY_Bluetooth_DevicePID                         3283
+DEVPKEY_Bluetooth_ClassOfDevice                     2360324
+{3464F7A4-2444-40B1-980A-E0903CB6D912} 10           3
+{3B2CE006-5E61-4FDE-BAB8-9B8AAC9B26DF} 8            Bluetooth#Bluetooth80:b6:55:84:a3:d1-cc:98:8b:56:b4:5c
+DEVPKEY_Device_BusReportedDeviceDesc                Bluetooth Peripheral Device
+DEVPKEY_Device_ConfigurationId                      bth.inf:BTHENUM\GENERIC_DEVICE,BthGenericDevice.NT
+{670245F9-6E25-4179-85C1-981C33B9D3B7} 4            0
+{670245F9-6E25-4179-85C1-981C33B9D3B7} 5            False
+DEVPKEY_DeviceContainer_DiscoveryMethod             {Bluetooth}
+DEVPKEY_DeviceContainer_Category                    {Communication.Headset.Bluetooth}
+DEVPKEY_DeviceContainer_UnpairUninstall             True
+DEVPKEY_DeviceContainer_AlwaysShowDeviceAsConnected True
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 6            0
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 7            0
+{83DA6326-97A6-4088-9453-A1923F573B29} 3            bth.inf:00a2c5fcb624f55d:BthGenericDevice.NT:10.0.26100.7705:BTHENUM\GENERIC_DEVICE
+{83DA6326-97A6-4088-9453-A1923F573B29} 10           BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_InstallDate                          12/29/2024 7:13:09 PM
+DEVPKEY_Device_FirstInstallDate                     12/29/2024 7:13:09 PM
+DEVPKEY_Device_LastArrivalDate                      2/15/2026 12:53:10 PM
+{A35996AB-11CF-4935-8B61-A6761081ECDF} 12           cc:98:8b:56:b4:5c
+DEVPKEY_Device_DriverDate                           6/20/2006 5:00:00 PM
+DEVPKEY_Device_DriverVersion                        10.0.26100.7705
+DEVPKEY_Device_DriverDesc                           Bluetooth Device
+DEVPKEY_Device_DriverInfPath                        bth.inf
+DEVPKEY_Device_DriverInfSection                     BthGenericDevice.NT
+DEVPKEY_Device_MatchingDeviceId                     BTHENUM\GENERIC_DEVICE
+DEVPKEY_Device_DriverProvider                       Microsoft
+DEVPKEY_Device_DriverRank                           16719872
+
+
+
+
+
+
+
+> $device = Get-PnpDevice | Where-Object {$_.FriendlyName -like "*WH-1000XM3*"}
+> Get-PnpDeviceProperty -InstanceId $device.InstanceId | Where-Object {`
+>>     $_.KeyName -like "*battery*" -or `
+>>     $_.KeyName -like "*power*" -or `
+>>     $_.KeyName -like "*charge*" -or`
+>>     $_.Data -like "*60*"`
+>> }
+
+InstanceId KeyName                                   Type       Data
+---------- -------                                   ----       ----
+SWD\MMDEV… DEVPKEY_Device_PowerData                  Binary     {56, 0, 0, 0…}
+SWD\MMDEV… DEVPKEY_Device_ReportedDeviceIdsHash      UInt32     1816082587
+SWD\MMDEV… DEVPKEY_Device_PowerData                  Binary     {56, 0, 0, 0…}
+SWD\MMDEV… DEVPKEY_Device_Siblings                   StringList {SWD\MMDEVAPI\{0.0.1.00000000}.{c51d1b46-2578-4ade-89b6-60…
+SWD\MMDEV… DEVPKEY_Device_ReportedDeviceIdsHash      UInt32     1816082587
+BTHENUM\D… DEVPKEY_Device_PowerData                  Binary     {56, 0, 0, 0…}
+BTHENUM\D… DEVPKEY_Device_ReportedDeviceIdsHash      UInt32     1738607388
+BTHENUM\D… {2BD67D8B-8BEB-48D5-87E0-6CDA3428040A} 4  UInt32     2360324
+BTHENUM\D… DEVPKEY_Bluetooth_ClassOfDevice           UInt32     2360324
+BTHENUM\{… DEVPKEY_Device_PowerData                  Binary     {56, 0, 0, 0…}
+BTHENUM\{… {2BD67D8B-8BEB-48D5-87E0-6CDA3428040A} 4  UInt32     2360324
+BTHENUM\{… DEVPKEY_Bluetooth_ClassOfDevice           UInt32     2360324
+SWD\MMDEV… DEVPKEY_Device_PowerData                  Binary     {56, 0, 0, 0…}
+SWD\MMDEV… DEVPKEY_Device_InstanceId                 String     SWD\MMDEVAPI\{0.0.1.00000000}.{C51D1B46-2578-4ADE-89B6-607…
+SWD\MMDEV… DEVPKEY_Device_ReportedDeviceIdsHash      UInt32     1816082587
+BTHENUM\{… DEVPKEY_Device_PowerData                  Binary     {56, 0, 0, 0…}
+BTHENUM\{… {2BD67D8B-8BEB-48D5-87E0-6CDA3428040A} 4  UInt32     2360324
+BTHENUM\{… DEVPKEY_Bluetooth_ClassOfDevice           UInt32     2360324
+BTHENUM\{… DEVPKEY_Device_PowerData                  Binary     {56, 0, 0, 0…}
+BTHENUM\{… {2BD67D8B-8BEB-48D5-87E0-6CDA3428040A} 4  UInt32     2360324
+BTHENUM\{… DEVPKEY_Bluetooth_ClassOfDevice           UInt32     2360324
+BTHENUM\{… DEVPKEY_Device_PowerData                  Binary     {56, 0, 0, 0…}
+BTHENUM\{… DEVPKEY_Device_BusRelations               StringList {SWD\MMDEVAPI\{0.0.0.00000000}.{1cc6d395-4786-465d-b2f7-35…
+BTHENUM\{… DEVPKEY_Device_Children                   StringList {SWD\MMDEVAPI\{0.0.0.00000000}.{1cc6d395-4786-465d-b2f7-35…
+BTHENUM\{… {104EA319-6EE2-4701-BD47-8DDBF425BBE5} 2  Byte       60
+BTHENUM\{… {2BD67D8B-8BEB-48D5-87E0-6CDA3428040A} 4  UInt32     2360324
+BTHENUM\{… DEVPKEY_Bluetooth_ClassOfDevice           UInt32     2360324
+
+
+
+
+> $device = Get-PnpDevice | Where-Object {$_.FriendlyName -like "*WH-1000XM3*"}
+> $battery = Get-PnpDeviceProperty -InstanceId $device.InstanceId -KeyName '{104EA319-6EE2-4701-BD47-8DDBF425BBE5} 2'
+> Write-Host "Battery Level: $($battery.Data)%"
+Battery Level:  60      %
+
+
+
+
+
+> $device = Get-PnpDevice | Where-Object {$_.FriendlyName -like "*WH-1000XM3*"}
+> Get-PnpDeviceProperty -InstanceId $device.InstanceId | Where-Object {$_.KeyName -like "{104EA319-6EE2-4701-BD47-8DDBF425BBE5}*"} | Format-Table KeyName, Type, Data -AutoSize
+
+KeyName                                  Type Data
+-------                                  ---- ----
+{104EA319-6EE2-4701-BD47-8DDBF425BBE5} 2 Byte   60
+
+
+
+
+
+> $device = Get-PnpDevice | Where-Object {$_.FriendlyName -like "*WH-1000XM3*"}
+PS C:\Users\ansol> Get-PnpDeviceProperty -InstanceId $device.InstanceId | Where-Object {$_.Data -ne $null} | Format-Table KeyName, Type, Data -AutoSize
+
+KeyName                                                           Type Data
+-------                                                           ---- ----
+DEVPKEY_Device_DeviceDesc                                       String Audio Endpoint
+DEVPKEY_Device_HardwareIds                                  StringList {MMDEVAPI\AudioEndpoints}
+DEVPKEY_Device_CompatibleIds                                StringList {GenericAudioEndpoint, SWD\GenericRaw, SWD\Generic}
+DEVPKEY_Device_Class                                            String AudioEndpoint
+DEVPKEY_Device_ClassGuid                                          Guid {C166523C-FE0C-4A94-A586-F1A80CFBBF3E}
+DEVPKEY_Device_Driver                                           String {c166523c-fe0c-4a94-a586-f1a80cfbbf3e}\0005
+DEVPKEY_Device_ConfigFlags                                      UInt32 0
+DEVPKEY_Device_Manufacturer                                     String Microsoft
+DEVPKEY_Device_FriendlyName                                     String Headset (WH-1000XM3 Hands-Free)
+DEVPKEY_Device_PDOName                                          String \Device\000002f6
+DEVPKEY_Device_Capabilities                                     UInt32 208
+DEVPKEY_Device_BusTypeGuid                                        Guid {06D10322-7DE0-4CEF-8E25-197D0E7442E2}
+DEVPKEY_Device_LegacyBusType                                    UInt32 15
+DEVPKEY_Device_BusNumber                                        UInt32 0
+DEVPKEY_Device_EnumeratorName                                   String SWD
+DEVPKEY_Device_PowerData                                        Binary {56, 0, 0, 0…}
+DEVPKEY_Device_RemovalPolicy                                    UInt32 2
+DEVPKEY_Device_RemovalPolicyDefault                             UInt32 2
+DEVPKEY_Device_InstallState                                     UInt32 0
+DEVPKEY_Device_BaseContainerId                                    Guid {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_NAME                                                    String Headset (WH-1000XM3 Hands-Free)
+DEVPKEY_Device_InstanceId                                       String SWD\MMDEVAPI\{0.0.0.00000000}.{1CC6D395-4786-465D-B2F7-351A1119EFC2}
+DEVPKEY_Device_DevNodeStatus                                    UInt32 25174026
+DEVPKEY_Device_ProblemCode                                      UInt32 0
+DEVPKEY_Device_Parent                                           String BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS_VID&0002054c_PID&0…
+DEVPKEY_Device_Siblings                                     StringList {SWD\MMDEVAPI\{0.0.1.00000000}.{c51d1b46-2578-4ade-89b6-60770a363b25}}
+DEVPKEY_Device_SafeRemovalRequired                             Boolean False
+DEVPKEY_Device_ContainerId                                        Guid {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_Device_IsPresent                                       Boolean True
+DEVPKEY_Device_HasProblem                                      Boolean False
+{83DA6326-97A6-4088-9453-A1923F573B29} 15                      Boolean True
+DEVPKEY_Device_IsRebootRequired                                Boolean False
+DEVPKEY_Device_ReportedDeviceIdsHash                            UInt32 1816082587
+DEVPKEY_Device_InLocalMachineContainer                         Boolean False
+DEVPKEY_Device_Stack                                        StringList {\Driver\SoftwareDevice}
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 26                      Boolean False
+{1F39EC81-2EDF-49FE-BBBF-862F89E3F5B2} 2                        UInt32 2
+{3464F7A4-2444-40B1-980A-E0903CB6D912} 10                       UInt32 3
+DEVPKEY_Device_BusReportedDeviceDesc                            String Headset (WH-1000XM3 Hands-Free)
+DEVPKEY_Device_ConfigurationId                                  String audioendpoint.inf:MMDEVAPI\AudioEndpoints,NO_DRV
+DEVPKEY_Device_CreatorProcessId                                 UInt32 3876
+DEVPKEY_DeviceContainer_Category                            StringList {Audio}
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 6                        UInt32 0
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 7                        UInt64 17293822569102766336
+DEVPKEY_Device_FriendlyNameAttributes                           UInt32 2
+{83DA6326-97A6-4088-9453-A1923F573B29} 3                        String audioendpoint.inf:db04a16cc5e2d48f:NO_DRV:10.0.26100.1:MMDEVAPI\AudioEndpoi…
+DEVPKEY_Device_SessionId                                        UInt32 1
+{83DA6326-97A6-4088-9453-A1923F573B29} 10                       String BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS_VID&0002054c_PID&0…
+DEVPKEY_Device_InstallDate                                    FileTime 12/29/2024 11:04:31 PM
+DEVPKEY_Device_FirstInstallDate                               FileTime 12/29/2024 11:04:31 PM
+DEVPKEY_Device_LastArrivalDate                                FileTime 3/1/2026 3:07:21 PM
+DEVPKEY_Device_DriverDate                                     FileTime 3/30/2024 5:00:00 PM
+DEVPKEY_Device_DriverVersion                                    String 10.0.26100.1
+DEVPKEY_Device_DriverDesc                                       String Audio Endpoint
+DEVPKEY_Device_DriverInfPath                                    String audioendpoint.inf
+DEVPKEY_Device_DriverInfSection                                 String NO_DRV
+DEVPKEY_Device_MatchingDeviceId                                 String MMDEVAPI\AudioEndpoints
+DEVPKEY_Device_DriverProvider                                   String Microsoft
+DEVPKEY_Device_DeviceDesc                                       String Audio Endpoint
+DEVPKEY_Device_DriverRank                                       UInt32 16711680
+DEVPKEY_Device_HardwareIds                                  StringList {MMDEVAPI\AudioEndpoints}
+DEVPKEY_Device_NoConnectSound                                  Boolean True
+DEVPKEY_DrvPkg_Icon                                         StringList {%windir%\system32\mmres.dll,-3015}
+DEVPKEY_Device_CompatibleIds                                StringList {GenericAudioEndpoint, SWD\GenericRaw, SWD\Generic}
+DEVPKEY_Device_Class                                            String AudioEndpoint
+DEVPKEY_Device_ClassGuid                                          Guid {C166523C-FE0C-4A94-A586-F1A80CFBBF3E}
+DEVPKEY_Device_Driver                                           String {c166523c-fe0c-4a94-a586-f1a80cfbbf3e}\0006
+DEVPKEY_Device_ConfigFlags                                      UInt32 0
+DEVPKEY_Device_Manufacturer                                     String Microsoft
+DEVPKEY_Device_FriendlyName                                     String Headphones (WH-1000XM3)
+DEVPKEY_Device_PDOName                                          String \Device\000002f7
+DEVPKEY_Device_Capabilities                                     UInt32 208
+DEVPKEY_Device_BusTypeGuid                                        Guid {06D10322-7DE0-4CEF-8E25-197D0E7442E2}
+DEVPKEY_Device_LegacyBusType                                    UInt32 15
+DEVPKEY_Device_BusNumber                                        UInt32 0
+DEVPKEY_Device_EnumeratorName                                   String SWD
+DEVPKEY_Device_PowerData                                        Binary {56, 0, 0, 0…}
+DEVPKEY_Device_RemovalPolicy                                    UInt32 2
+DEVPKEY_Device_RemovalPolicyDefault                             UInt32 2
+DEVPKEY_Device_InstallState                                     UInt32 0
+DEVPKEY_Device_BaseContainerId                                    Guid {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_NAME                                                    String Headphones (WH-1000XM3)
+DEVPKEY_Device_InstanceId                                       String SWD\MMDEVAPI\{0.0.0.00000000}.{3BE85070-9582-46F3-AEDD-43D25AFFEF71}
+DEVPKEY_Device_DevNodeStatus                                    UInt32 25174026
+DEVPKEY_Device_ProblemCode                                      UInt32 0
+DEVPKEY_Device_Parent                                           String BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}_VID&0002054c_PID&0cd3\7&2562…
+DEVPKEY_Device_SafeRemovalRequired                             Boolean False
+DEVPKEY_Device_ContainerId                                        Guid {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_Device_IsPresent                                       Boolean True
+DEVPKEY_Device_HasProblem                                      Boolean False
+{83DA6326-97A6-4088-9453-A1923F573B29} 15                      Boolean True
+DEVPKEY_Device_IsRebootRequired                                Boolean False
+DEVPKEY_Device_ReportedDeviceIdsHash                            UInt32 1816082587
+DEVPKEY_Device_InLocalMachineContainer                         Boolean False
+DEVPKEY_Device_Stack                                        StringList {\Driver\SoftwareDevice}
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 26                      Boolean False
+{1F39EC81-2EDF-49FE-BBBF-862F89E3F5B2} 2                        UInt32 2
+{3464F7A4-2444-40B1-980A-E0903CB6D912} 10                       UInt32 3
+DEVPKEY_Device_BusReportedDeviceDesc                            String Headphones (WH-1000XM3)
+DEVPKEY_Device_ConfigurationId                                  String audioendpoint.inf:MMDEVAPI\AudioEndpoints,NO_DRV
+DEVPKEY_Device_CreatorProcessId                                 UInt32 3876
+DEVPKEY_DeviceContainer_Category                            StringList {Audio}
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 6                        UInt32 0
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 7                        UInt64 17293822569102766336
+DEVPKEY_Device_FriendlyNameAttributes                           UInt32 2
+{83DA6326-97A6-4088-9453-A1923F573B29} 3                        String audioendpoint.inf:db04a16cc5e2d48f:NO_DRV:10.0.26100.1:MMDEVAPI\AudioEndpoi…
+DEVPKEY_Device_SessionId                                        UInt32 1
+{83DA6326-97A6-4088-9453-A1923F573B29} 10                       String BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}_VID&0002054c_PID&0cd3\7&2562…
+DEVPKEY_Device_InstallDate                                    FileTime 12/29/2024 11:04:31 PM
+DEVPKEY_Device_FirstInstallDate                               FileTime 12/29/2024 11:04:31 PM
+DEVPKEY_Device_LastArrivalDate                                FileTime 3/1/2026 3:07:21 PM
+DEVPKEY_Device_DriverDate                                     FileTime 3/30/2024 5:00:00 PM
+DEVPKEY_Device_DriverVersion                                    String 10.0.26100.1
+DEVPKEY_Device_DriverDesc                                       String Audio Endpoint
+DEVPKEY_Device_DriverInfPath                                    String audioendpoint.inf
+DEVPKEY_Device_DriverInfSection                                 String NO_DRV
+DEVPKEY_Device_MatchingDeviceId                                 String MMDEVAPI\AudioEndpoints
+DEVPKEY_Device_DriverProvider                                   String Microsoft
+DEVPKEY_Device_DriverRank                                       UInt32 16711680
+DEVPKEY_Device_NoConnectSound                                  Boolean True
+DEVPKEY_DrvPkg_Icon                                         StringList {%windir%\system32\mmres.dll,-3051}
+DEVPKEY_Device_DeviceDesc                                       String Audio Endpoint
+DEVPKEY_Device_HardwareIds                                  StringList {MMDEVAPI\AudioEndpoints}
+DEVPKEY_Device_CompatibleIds                                StringList {GenericAudioEndpoint, SWD\GenericRaw, SWD\Generic}
+DEVPKEY_Device_Class                                            String AudioEndpoint
+DEVPKEY_Device_ClassGuid                                          Guid {C166523C-FE0C-4A94-A586-F1A80CFBBF3E}
+DEVPKEY_Device_Driver                                           String {c166523c-fe0c-4a94-a586-f1a80cfbbf3e}\0007
+DEVPKEY_Device_ConfigFlags                                      UInt32 0
+DEVPKEY_Device_Manufacturer                                     String Microsoft
+DEVPKEY_Device_FriendlyName                                     String Headset (WH-1000XM3)
+DEVPKEY_Device_PDOName                                          String \Device\000002f8
+DEVPKEY_Device_Capabilities                                     UInt32 208
+DEVPKEY_Device_BusTypeGuid                                        Guid {06D10322-7DE0-4CEF-8E25-197D0E7442E2}
+DEVPKEY_Device_LegacyBusType                                    UInt32 15
+DEVPKEY_Device_BusNumber                                        UInt32 0
+DEVPKEY_Device_EnumeratorName                                   String SWD
+DEVPKEY_Device_PowerData                                        Binary {56, 0, 0, 0…}
+DEVPKEY_Device_RemovalPolicy                                    UInt32 2
+DEVPKEY_Device_RemovalPolicyDefault                             UInt32 2
+DEVPKEY_Device_InstallState                                     UInt32 0
+DEVPKEY_Device_BaseContainerId                                    Guid {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_NAME                                                    String Headset (WH-1000XM3)
+DEVPKEY_Device_InstanceId                                       String SWD\MMDEVAPI\{0.0.1.00000000}.{C51D1B46-2578-4ADE-89B6-60770A363B25}
+DEVPKEY_Device_DevNodeStatus                                    UInt32 25174026
+DEVPKEY_Device_ProblemCode                                      UInt32 0
+DEVPKEY_Device_Parent                                           String BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS_VID&0002054c_PID&0…
+DEVPKEY_Device_Siblings                                     StringList {SWD\MMDEVAPI\{0.0.0.00000000}.{1cc6d395-4786-465d-b2f7-351a1119efc2}}
+DEVPKEY_Device_SafeRemovalRequired                             Boolean False
+DEVPKEY_Device_ContainerId                                        Guid {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_Device_IsPresent                                       Boolean True
+DEVPKEY_Device_HasProblem                                      Boolean False
+{83DA6326-97A6-4088-9453-A1923F573B29} 15                      Boolean True
+DEVPKEY_Device_IsRebootRequired                                Boolean False
+DEVPKEY_Device_ReportedDeviceIdsHash                            UInt32 1816082587
+DEVPKEY_Device_InLocalMachineContainer                         Boolean False
+DEVPKEY_Device_Stack                                        StringList {\Driver\SoftwareDevice}
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 26                      Boolean False
+{1F39EC81-2EDF-49FE-BBBF-862F89E3F5B2} 2                        UInt32 2
+{3464F7A4-2444-40B1-980A-E0903CB6D912} 10                       UInt32 3
+DEVPKEY_Device_BusReportedDeviceDesc                            String Headset (WH-1000XM3)
+DEVPKEY_Device_ConfigurationId                                  String audioendpoint.inf:MMDEVAPI\AudioEndpoints,NO_DRV
+DEVPKEY_Device_CreatorProcessId                                 UInt32 3876
+DEVPKEY_DeviceContainer_Category                            StringList {Audio}
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 6                        UInt32 0
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 7                        UInt64 17293822569102766336
+DEVPKEY_Device_FriendlyNameAttributes                           UInt32 2
+{83DA6326-97A6-4088-9453-A1923F573B29} 3                        String audioendpoint.inf:db04a16cc5e2d48f:NO_DRV:10.0.26100.1:MMDEVAPI\AudioEndpoi…
+DEVPKEY_Device_SessionId                                        UInt32 1
+{83DA6326-97A6-4088-9453-A1923F573B29} 10                       String BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS_VID&0002054c_PID&0…
+DEVPKEY_Device_InstallDate                                    FileTime 12/29/2024 11:04:31 PM
+DEVPKEY_Device_FirstInstallDate                               FileTime 12/29/2024 11:04:31 PM
+DEVPKEY_Device_LastArrivalDate                                FileTime 3/1/2026 3:07:22 PM
+DEVPKEY_Device_DriverDate                                     FileTime 3/30/2024 5:00:00 PM
+DEVPKEY_Device_DriverVersion                                    String 10.0.26100.1
+DEVPKEY_Device_DriverDesc                                       String Audio Endpoint
+DEVPKEY_Device_DriverInfPath                                    String audioendpoint.inf
+DEVPKEY_Device_DriverInfSection                                 String NO_DRV
+DEVPKEY_Device_MatchingDeviceId                                 String MMDEVAPI\AudioEndpoints
+DEVPKEY_Device_DriverProvider                                   String Microsoft
+DEVPKEY_Device_DriverRank                                       UInt32 16711680
+DEVPKEY_Device_NoConnectSound                                  Boolean True
+DEVPKEY_DrvPkg_Icon                                         StringList {%windir%\system32\mmres.dll,-3015}
+DEVPKEY_Device_DeviceDesc                                       String Bluetooth Device
+DEVPKEY_Device_HardwareIds                                  StringList {BTHENUM\Dev_CC988B56B45C}
+DEVPKEY_Device_CompatibleIds                                StringList {BTHENUM\GENERIC_DEVICE}
+DEVPKEY_Device_Class                                            String Bluetooth
+DEVPKEY_Device_ClassGuid                                          Guid {E0CBF06C-CD8B-4647-BB8A-263B43F0F974}
+DEVPKEY_Device_Driver                                           String {e0cbf06c-cd8b-4647-bb8a-263b43f0f974}\0009
+DEVPKEY_Device_ConfigFlags                                      UInt32 0
+DEVPKEY_Device_Manufacturer                                     String Microsoft
+DEVPKEY_Device_FriendlyName                                     String WH-1000XM3
+DEVPKEY_Device_PDOName                                          String \Device\000000ad
+DEVPKEY_Device_Capabilities                                     UInt32 196
+DEVPKEY_Device_EnumeratorName                                   String BTHENUM
+DEVPKEY_Device_PowerData                                        Binary {56, 0, 0, 0…}
+DEVPKEY_Device_RemovalPolicy                                    UInt32 2
+DEVPKEY_Device_RemovalPolicyDefault                             UInt32 2
+DEVPKEY_Device_InstallState                                     UInt32 0
+DEVPKEY_Device_BaseContainerId                                    Guid {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_NAME                                                    String WH-1000XM3
+DEVPKEY_Device_InstanceId                                       String BTHENUM\DEV_CC988B56B45C\7&25629724&0&BLUETOOTHDEVICE_CC988B56B45C
+DEVPKEY_Device_DevNodeStatus                                    UInt32 25190410
+DEVPKEY_Device_ProblemCode                                      UInt32 0
+DEVPKEY_Device_Parent                                           String BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_Siblings                                     StringList {BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}_VID&000100e0_PID&3004\7&256…
+DEVPKEY_Device_SafeRemovalRequired                             Boolean False
+DEVPKEY_Device_ContainerId                                        Guid {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_Device_IsPresent                                       Boolean True
+DEVPKEY_Device_HasProblem                                      Boolean False
+{83DA6326-97A6-4088-9453-A1923F573B29} 15                      Boolean True
+DEVPKEY_Device_IsRebootRequired                                Boolean False
+DEVPKEY_Device_ReportedDeviceIdsHash                            UInt32 1738607388
+DEVPKEY_Device_InLocalMachineContainer                         Boolean False
+DEVPKEY_Device_Stack                                        StringList {\Driver\BthEnum}
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 26                      Boolean False
+DEVPKEY_Bluetooth_DeviceAddress                                 String CC988B56B45C
+DEVPKEY_Bluetooth_ServiceGUID                                     Guid {00000000-0000-0000-0000-000000000000}
+DEVPKEY_Bluetooth_DeviceFlags                                   UInt32 67126175
+{2BD67D8B-8BEB-48D5-87E0-6CDA3428040A} 4                        UInt32 2360324
+DEVPKEY_Bluetooth_DeviceVIDSource                                 Byte 2
+DEVPKEY_Bluetooth_DeviceVID                                     UInt16 1356
+DEVPKEY_Bluetooth_DevicePID                                     UInt16 3283
+DEVPKEY_Bluetooth_ClassOfDevice                                 UInt32 2360324
+{3464F7A4-2444-40B1-980A-E0903CB6D912} 10                       UInt32 3
+{3B2CE006-5E61-4FDE-BAB8-9B8AAC9B26DF} 8                        String Bluetooth#Bluetooth80:b6:55:84:a3:d1-cc:98:8b:56:b4:5c
+DEVPKEY_Device_BusReportedDeviceDesc                            String Bluetooth Peripheral Device
+DEVPKEY_Device_ConfigurationId                                  String bth.inf:BTHENUM\GENERIC_DEVICE,BthGenericDevice.NT
+{670245F9-6E25-4179-85C1-981C33B9D3B7} 4                          Byte 0
+{670245F9-6E25-4179-85C1-981C33B9D3B7} 5                       Boolean False
+DEVPKEY_DeviceContainer_DiscoveryMethod                     StringList {Bluetooth}
+DEVPKEY_DeviceContainer_Category                            StringList {Communication.Headset.Bluetooth}
+DEVPKEY_DeviceContainer_UnpairUninstall                        Boolean True
+DEVPKEY_DeviceContainer_AlwaysShowDeviceAsConnected            Boolean True
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 6                        UInt32 0
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 7                        UInt64 0
+{83DA6326-97A6-4088-9453-A1923F573B29} 3                        String bth.inf:00a2c5fcb624f55d:BthGenericDevice.NT:10.0.26100.7705:BTHENUM\GENERI…
+{83DA6326-97A6-4088-9453-A1923F573B29} 10                       String BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_InstallDate                                    FileTime 12/29/2024 7:13:09 PM
+DEVPKEY_Device_FirstInstallDate                               FileTime 12/29/2024 7:13:09 PM
+DEVPKEY_Device_LastArrivalDate                                FileTime 2/15/2026 12:53:10 PM
+{A35996AB-11CF-4935-8B61-A6761081ECDF} 12                       String cc:98:8b:56:b4:5c
+DEVPKEY_Device_DriverDate                                     FileTime 6/20/2006 5:00:00 PM
+DEVPKEY_Device_DriverVersion                                    String 10.0.26100.7705
+DEVPKEY_Device_DriverDesc                                       String Bluetooth Device
+DEVPKEY_Device_DriverInfPath                                    String bth.inf
+DEVPKEY_Device_DriverInfSection                                 String BthGenericDevice.NT
+DEVPKEY_Device_MatchingDeviceId                                 String BTHENUM\GENERIC_DEVICE
+DEVPKEY_Device_DriverProvider                                   String Microsoft
+DEVPKEY_Device_DriverRank                                       UInt32 16719872
+DEVPKEY_Device_DeviceDesc                                       String Microsoft Bluetooth Avrcp Transport Driver
+DEVPKEY_Device_HardwareIds                                  StringList {BTHENUM\{0000110e-0000-1000-8000-00805f9b34fb}_VID&0002054c_PID&0cd3, BTHE…
+DEVPKEY_Device_CompatibleIds                                StringList {BTHENUM\{0000110e-0000-1000-8000-00805f9b34fb}, BTHENUM\{0000110e-0000-100…
+DEVPKEY_Device_Service                                          String Microsoft_Bluetooth_AvrcpTransport
+DEVPKEY_Device_Class                                            String Bluetooth
+DEVPKEY_Device_ClassGuid                                          Guid {E0CBF06C-CD8B-4647-BB8A-263B43F0F974}
+DEVPKEY_Device_Driver                                           String {e0cbf06c-cd8b-4647-bb8a-263b43f0f974}\0007
+DEVPKEY_Device_ConfigFlags                                      UInt32 0
+DEVPKEY_Device_Manufacturer                                     String Microsoft
+DEVPKEY_Device_FriendlyName                                     String WH-1000XM3 Avrcp Transport
+DEVPKEY_Device_PDOName                                          String \Device\0000009f
+DEVPKEY_Device_Capabilities                                     UInt32 196
+DEVPKEY_Device_EnumeratorName                                   String BTHENUM
+DEVPKEY_Device_PowerData                                        Binary {56, 0, 0, 0…}
+DEVPKEY_Device_RemovalPolicy                                    UInt32 2
+DEVPKEY_Device_RemovalPolicyDefault                             UInt32 2
+DEVPKEY_Device_InstallState                                     UInt32 0
+DEVPKEY_Device_BaseContainerId                                    Guid {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_NAME                                                    String WH-1000XM3 Avrcp Transport
+DEVPKEY_Device_InstanceId                                       String BTHENUM\{0000110E-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&2562…
+DEVPKEY_Device_DevNodeStatus                                    UInt32 25190410
+DEVPKEY_Device_ProblemCode                                      UInt32 0
+DEVPKEY_Device_Parent                                           String BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_Siblings                                     StringList {BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}_VID&000100e0_PID&3004\7&256…
+DEVPKEY_Device_SafeRemovalRequired                             Boolean False
+DEVPKEY_Device_ContainerId                                        Guid {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_Device_IsPresent                                       Boolean True
+DEVPKEY_Device_HasProblem                                      Boolean False
+{83DA6326-97A6-4088-9453-A1923F573B29} 15                      Boolean False
+DEVPKEY_Device_IsRebootRequired                                Boolean False
+DEVPKEY_Device_ReportedDeviceIdsHash                            UInt32 4122633440
+DEVPKEY_Device_InLocalMachineContainer                         Boolean False
+DEVPKEY_Device_Stack                                        StringList {\Driver\Microsoft_Bluetooth_AvrcpTransport, \Driver\BthEnum}
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 26                      Boolean False
+DEVPKEY_Bluetooth_DeviceAddress                                 String CC988B56B45C
+DEVPKEY_Bluetooth_ServiceGUID                                     Guid {0000110E-0000-1000-8000-00805F9B34FB}
+DEVPKEY_Bluetooth_DeviceFlags                                   UInt32 67126175
+{2BD67D8B-8BEB-48D5-87E0-6CDA3428040A} 4                        UInt32 2360324
+DEVPKEY_Bluetooth_DeviceVIDSource                                 Byte 2
+DEVPKEY_Bluetooth_DeviceVID                                     UInt16 1356
+DEVPKEY_Bluetooth_DevicePID                                     UInt16 3283
+DEVPKEY_Bluetooth_ClassOfDevice                                 UInt32 2360324
+{3464F7A4-2444-40B1-980A-E0903CB6D912} 10                       UInt32 3
+{3B2CE006-5E61-4FDE-BAB8-9B8AAC9B26DF} 8                        String Bluetooth#Bluetooth80:b6:55:84:a3:d1-cc:98:8b:56:b4:5c
+DEVPKEY_Device_BusReportedDeviceDesc                            String Bluetooth Peripheral Device
+DEVPKEY_Device_ConfigurationId                                  String microsoft_bluetooth_avrcptransport.inf:BTHENUM\{0000110e-0000-1000-8000-008…
+DEVPKEY_DeviceContainer_UnpairUninstall                        Boolean True
+DEVPKEY_DeviceContainer_AlwaysShowDeviceAsConnected            Boolean True
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 6                        UInt32 0
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 7                        UInt64 0
+DEVPKEY_Device_PresenceNotForDevice                            Boolean True
+{83DA6326-97A6-4088-9453-A1923F573B29} 3                        String microsoft_bluetooth_avrcptransport.inf:00a2c5fc154675a7:Microsoft_Bluetooth…
+{83DA6326-97A6-4088-9453-A1923F573B29} 10                       String BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_InstallDate                                    FileTime 12/29/2024 7:13:09 PM
+DEVPKEY_Device_FirstInstallDate                               FileTime 12/29/2024 7:13:09 PM
+DEVPKEY_Device_LastArrivalDate                                FileTime 2/15/2026 12:53:10 PM
+DEVPKEY_Device_DriverDate                                     FileTime 1/25/2026 4:00:00 PM
+DEVPKEY_Device_DriverVersion                                    String 10.0.26100.7705
+DEVPKEY_Device_DriverDesc                                       String Microsoft Bluetooth Avrcp Transport Driver
+DEVPKEY_Device_DriverInfPath                                    String microsoft_bluetooth_avrcptransport.inf
+DEVPKEY_Device_DriverInfSection                                 String Microsoft_Bluetooth_AvrcpTransport.NT
+DEVPKEY_Device_MatchingDeviceId                                 String BTHENUM\{0000110e-0000-1000-8000-00805f9b34fb}
+DEVPKEY_Device_DriverProvider                                   String Microsoft
+DEVPKEY_Device_DriverRank                                       UInt32 16719872
+DEVPKEY_Device_DeviceDesc                                       String Microsoft Bluetooth Avrcp Transport Driver
+DEVPKEY_Device_HardwareIds                                  StringList {BTHENUM\{0000110c-0000-1000-8000-00805f9b34fb}_VID&0002054c_PID&0cd3, BTHE…
+DEVPKEY_Device_CompatibleIds                                StringList {BTHENUM\{0000110c-0000-1000-8000-00805f9b34fb}, BTHENUM\{0000110c-0000-100…
+DEVPKEY_Device_Service                                          String Microsoft_Bluetooth_AvrcpTransport
+DEVPKEY_Device_Class                                            String Bluetooth
+DEVPKEY_Device_ClassGuid                                          Guid {E0CBF06C-CD8B-4647-BB8A-263B43F0F974}
+DEVPKEY_Device_Driver                                           String {e0cbf06c-cd8b-4647-bb8a-263b43f0f974}\0005
+DEVPKEY_Device_ConfigFlags                                      UInt32 0
+DEVPKEY_Device_Manufacturer                                     String Microsoft
+DEVPKEY_Device_FriendlyName                                     String WH-1000XM3 Avrcp Transport
+DEVPKEY_Device_PDOName                                          String \Device\0000009e
+DEVPKEY_Device_Capabilities                                     UInt32 196
+DEVPKEY_Device_EnumeratorName                                   String BTHENUM
+DEVPKEY_Device_PowerData                                        Binary {56, 0, 0, 0…}
+DEVPKEY_Device_RemovalPolicy                                    UInt32 2
+DEVPKEY_Device_RemovalPolicyDefault                             UInt32 2
+DEVPKEY_Device_InstallState                                     UInt32 0
+DEVPKEY_Device_BaseContainerId                                    Guid {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_NAME                                                    String WH-1000XM3 Avrcp Transport
+DEVPKEY_Device_InstanceId                                       String BTHENUM\{0000110C-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&2562…
+DEVPKEY_Device_DevNodeStatus                                    UInt32 1098932234
+DEVPKEY_Device_ProblemCode                                      UInt32 0
+DEVPKEY_Device_Parent                                           String BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_Siblings                                     StringList {BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}_VID&000100e0_PID&3004\7&256…
+DEVPKEY_Device_SafeRemovalRequired                             Boolean False
+DEVPKEY_Device_ContainerId                                        Guid {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_Device_IsPresent                                       Boolean True
+DEVPKEY_Device_HasProblem                                      Boolean False
+{83DA6326-97A6-4088-9453-A1923F573B29} 15                      Boolean False
+DEVPKEY_Device_IsRebootRequired                                Boolean False
+DEVPKEY_Device_ReportedDeviceIdsHash                            UInt32 4204811496
+DEVPKEY_Device_InLocalMachineContainer                         Boolean False
+DEVPKEY_Device_Stack                                        StringList {\Driver\Microsoft_Bluetooth_AvrcpTransport, \Driver\BthEnum}
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 26                      Boolean False
+DEVPKEY_Bluetooth_DeviceAddress                                 String CC988B56B45C
+DEVPKEY_Bluetooth_ServiceGUID                                     Guid {0000110C-0000-1000-8000-00805F9B34FB}
+DEVPKEY_Bluetooth_DeviceFlags                                   UInt32 67126175
+{2BD67D8B-8BEB-48D5-87E0-6CDA3428040A} 4                        UInt32 2360324
+DEVPKEY_Bluetooth_DeviceVIDSource                                 Byte 2
+DEVPKEY_Bluetooth_DeviceVID                                     UInt16 1356
+DEVPKEY_Bluetooth_DevicePID                                     UInt16 3283
+DEVPKEY_Bluetooth_ClassOfDevice                                 UInt32 2360324
+{3464F7A4-2444-40B1-980A-E0903CB6D912} 10                       UInt32 3
+{3B2CE006-5E61-4FDE-BAB8-9B8AAC9B26DF} 8                        String Bluetooth#Bluetooth80:b6:55:84:a3:d1-cc:98:8b:56:b4:5c
+DEVPKEY_Device_BusReportedDeviceDesc                            String Bluetooth Peripheral Device
+DEVPKEY_Device_ConfigurationId                                  String microsoft_bluetooth_avrcptransport.inf:BTHENUM\{0000110c-0000-1000-8000-008…
+DEVPKEY_DeviceContainer_UnpairUninstall                        Boolean True
+DEVPKEY_DeviceContainer_AlwaysShowDeviceAsConnected            Boolean True
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 6                        UInt32 0
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 7                        UInt64 0
+DEVPKEY_Device_PresenceNotForDevice                            Boolean True
+{83DA6326-97A6-4088-9453-A1923F573B29} 3                        String microsoft_bluetooth_avrcptransport.inf:00a2c5fc154675a7:Microsoft_Bluetooth…
+{83DA6326-97A6-4088-9453-A1923F573B29} 10                       String BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_InstallDate                                    FileTime 12/29/2024 7:13:09 PM
+DEVPKEY_Device_FirstInstallDate                               FileTime 12/29/2024 7:13:09 PM
+DEVPKEY_Device_LastArrivalDate                                FileTime 2/15/2026 12:53:10 PM
+DEVPKEY_Device_DriverDate                                     FileTime 1/25/2026 4:00:00 PM
+DEVPKEY_Device_DriverVersion                                    String 10.0.26100.7705
+DEVPKEY_Device_DriverDesc                                       String Microsoft Bluetooth Avrcp Transport Driver
+DEVPKEY_Device_DriverInfPath                                    String microsoft_bluetooth_avrcptransport.inf
+DEVPKEY_Device_DriverInfSection                                 String Microsoft_Bluetooth_AvrcpTransport.NT
+DEVPKEY_Device_MatchingDeviceId                                 String BTHENUM\{0000110c-0000-1000-8000-00805f9b34fb}
+DEVPKEY_Device_DriverProvider                                   String Microsoft
+DEVPKEY_Device_DriverRank                                       UInt32 16719872
+DEVPKEY_Device_DeviceDesc                                       String Microsoft Bluetooth A2dp Source
+DEVPKEY_Device_HardwareIds                                  StringList {BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}_VID&0002054c_PID&0cd3, BTHE…
+DEVPKEY_Device_CompatibleIds                                StringList {BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}, BTHENUM\{0000110b-0000-100…
+DEVPKEY_Device_Service                                          String BthA2dp
+DEVPKEY_Device_Class                                            String MEDIA
+DEVPKEY_Device_ClassGuid                                          Guid {4D36E96C-E325-11CE-BFC1-08002BE10318}
+DEVPKEY_Device_Driver                                           String {4d36e96c-e325-11ce-bfc1-08002be10318}\0004
+DEVPKEY_Device_ConfigFlags                                      UInt32 0
+DEVPKEY_Device_Manufacturer                                     String Microsoft
+DEVPKEY_Device_FriendlyName                                     String WH-1000XM3
+DEVPKEY_Device_PDOName                                          String \Device\0000009d
+DEVPKEY_Device_Capabilities                                     UInt32 196
+DEVPKEY_Device_EnumeratorName                                   String BTHENUM
+DEVPKEY_Device_PowerData                                        Binary {56, 0, 0, 0…}
+DEVPKEY_Device_RemovalPolicy                                    UInt32 2
+DEVPKEY_Device_RemovalPolicyDefault                             UInt32 2
+DEVPKEY_Device_InstallState                                     UInt32 0
+DEVPKEY_Device_BaseContainerId                                    Guid {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_NAME                                                    String WH-1000XM3
+DEVPKEY_Device_InstanceId                                       String BTHENUM\{0000110B-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&2562…
+DEVPKEY_Device_DevNodeStatus                                    UInt32 25190410
+DEVPKEY_Device_ProblemCode                                      UInt32 0
+DEVPKEY_Device_BusRelations                                 StringList {SWD\MMDEVAPI\{0.0.0.00000000}.{3be85070-9582-46f3-aedd-43d25affef71}}
+DEVPKEY_Device_Parent                                           String BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_Children                                     StringList {SWD\MMDEVAPI\{0.0.0.00000000}.{3be85070-9582-46f3-aedd-43d25affef71}}
+DEVPKEY_Device_Siblings                                     StringList {BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}_VID&000100e0_PID&3004\7&256…
+DEVPKEY_Device_SafeRemovalRequired                             Boolean False
+DEVPKEY_Device_ContainerId                                        Guid {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_Device_IsPresent                                       Boolean True
+DEVPKEY_Device_HasProblem                                      Boolean False
+{83DA6326-97A6-4088-9453-A1923F573B29} 15                      Boolean False
+DEVPKEY_Device_IsRebootRequired                                Boolean False
+DEVPKEY_Device_ReportedDeviceIdsHash                            UInt32 2098416876
+DEVPKEY_Device_InLocalMachineContainer                         Boolean False
+DEVPKEY_Device_Stack                                        StringList {\Driver\ksthunk, \Driver\BthA2dp, \Driver\BthEnum}
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 26                      Boolean False
+DEVPKEY_Bluetooth_DeviceAddress                                 String CC988B56B45C
+DEVPKEY_Bluetooth_ServiceGUID                                     Guid {0000110B-0000-1000-8000-00805F9B34FB}
+DEVPKEY_Bluetooth_DeviceFlags                                   UInt32 67126175
+{2BD67D8B-8BEB-48D5-87E0-6CDA3428040A} 4                        UInt32 2360324
+DEVPKEY_Bluetooth_DeviceVIDSource                                 Byte 2
+DEVPKEY_Bluetooth_DeviceVID                                     UInt16 1356
+DEVPKEY_Bluetooth_DevicePID                                     UInt16 3283
+DEVPKEY_Bluetooth_ClassOfDevice                                 UInt32 2360324
+{3464F7A4-2444-40B1-980A-E0903CB6D912} 10                       UInt32 3
+{3B2CE006-5E61-4FDE-BAB8-9B8AAC9B26DF} 8                        String Bluetooth#Bluetooth80:b6:55:84:a3:d1-cc:98:8b:56:b4:5c
+DEVPKEY_Device_BusReportedDeviceDesc                            String Bluetooth Peripheral Device
+DEVPKEY_Device_ConfigurationId                                  String microsoft_bluetooth_a2dp_src.inf:BTHENUM\{0000110b-0000-1000-8000-00805f9b3…
+DEVPKEY_DeviceContainer_UnpairUninstall                        Boolean True
+DEVPKEY_DeviceContainer_AlwaysShowDeviceAsConnected            Boolean True
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 6                        UInt32 0
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 7                        UInt64 0
+DEVPKEY_Device_PresenceNotForDevice                            Boolean True
+{83DA6326-97A6-4088-9453-A1923F573B29} 3                        String microsoft_bluetooth_a2dp_src.inf:00a2c5fc7d8ad5f7:BthA2dpSrc:10.0.26100.1:B…
+{83DA6326-97A6-4088-9453-A1923F573B29} 10                       String BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_InstallDate                                    FileTime 12/29/2024 7:13:09 PM
+DEVPKEY_Device_FirstInstallDate                               FileTime 12/29/2024 7:13:09 PM
+DEVPKEY_Device_LastArrivalDate                                FileTime 2/15/2026 12:53:10 PM
+DEVPKEY_Device_DriverDate                                     FileTime 3/30/2024 5:00:00 PM
+DEVPKEY_Device_DriverVersion                                    String 10.0.26100.1
+DEVPKEY_Device_DriverDesc                                       String Microsoft Bluetooth A2dp Source
+DEVPKEY_Device_DriverInfPath                                    String microsoft_bluetooth_a2dp_src.inf
+DEVPKEY_Device_DriverInfSection                                 String BthA2dpSrc
+DEVPKEY_Device_MatchingDeviceId                                 String BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}
+DEVPKEY_Device_DriverProvider                                   String Microsoft
+DEVPKEY_Device_DriverRank                                       UInt32 16719872
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 16                   StringList {microsoft_bluetooth_a2dp.inf, ks.inf, wdmaudio.inf, BtaMpm.inf}
+{B3F8FA53-0004-438E-9003-51A46E139BFC} 7                        UInt32 0
+{D1885396-39D8-4777-BCFF-5E3241483416} 0                        UInt32 2
+DEVPKEY_Device_DeviceDesc                                       String Microsoft Bluetooth Hands-Free Profile AudioGateway role
+DEVPKEY_Device_HardwareIds                                  StringList {BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS_VID&0002054c_PID&…
+DEVPKEY_Device_CompatibleIds                                StringList {BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS, BTHENUM\{0000111…
+DEVPKEY_Device_Service                                          String BthHFEnum
+DEVPKEY_Device_Class                                            String System
+DEVPKEY_Device_ClassGuid                                          Guid {4D36E97D-E325-11CE-BFC1-08002BE10318}
+DEVPKEY_Device_Driver                                           String {4d36e97d-e325-11ce-bfc1-08002be10318}\0064
+DEVPKEY_Device_ConfigFlags                                      UInt32 0
+DEVPKEY_Device_Manufacturer                                     String Microsoft
+DEVPKEY_Device_FriendlyName                                     String WH-1000XM3 Hands-Free AG
+DEVPKEY_Device_PDOName                                          String \Device\000000a0
+DEVPKEY_Device_Capabilities                                     UInt32 196
+DEVPKEY_Device_EnumeratorName                                   String BTHENUM
+DEVPKEY_Device_Security                             SecurityDescriptor Win32_SecurityDescriptor
+DEVPKEY_Device_Characteristics                                  UInt32 256
+DEVPKEY_Device_PowerData                                        Binary {56, 0, 0, 0…}
+DEVPKEY_Device_RemovalPolicy                                    UInt32 2
+DEVPKEY_Device_RemovalPolicyDefault                             UInt32 2
+DEVPKEY_Device_InstallState                                     UInt32 0
+DEVPKEY_Device_BaseContainerId                                    Guid {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_NAME                                                    String WH-1000XM3 Hands-Free AG
+DEVPKEY_Device_InstanceId                                       String BTHENUM\{0000111E-0000-1000-8000-00805F9B34FB}_HCIBYPASS_VID&0002054C_PID&0…
+DEVPKEY_Device_DevNodeStatus                                    UInt32 25190410
+DEVPKEY_Device_ProblemCode                                      UInt32 0
+DEVPKEY_Device_BusRelations                                 StringList {SWD\MMDEVAPI\{0.0.0.00000000}.{1cc6d395-4786-465d-b2f7-351a1119efc2}, SWD\…
+DEVPKEY_Device_Parent                                           String BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_Children                                     StringList {SWD\MMDEVAPI\{0.0.0.00000000}.{1cc6d395-4786-465d-b2f7-351a1119efc2}, SWD\…
+DEVPKEY_Device_Siblings                                     StringList {BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}_VID&000100e0_PID&3004\7&256…
+DEVPKEY_Device_SafeRemovalRequired                             Boolean False
+DEVPKEY_Device_ContainerId                                        Guid {4FD30659-E554-5213-9CD2-DFCB34C102E4}
+DEVPKEY_Device_IsPresent                                       Boolean True
+DEVPKEY_Device_HasProblem                                      Boolean False
+{83DA6326-97A6-4088-9453-A1923F573B29} 15                      Boolean False
+DEVPKEY_Device_IsRebootRequired                                Boolean False
+DEVPKEY_Device_ReportedDeviceIdsHash                            UInt32 1182304521
+DEVPKEY_Device_InLocalMachineContainer                         Boolean False
+DEVPKEY_Device_Stack                                        StringList {\Driver\BthHFEnum, \Driver\BthEnum}
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 26                      Boolean False
+{104EA319-6EE2-4701-BD47-8DDBF425BBE5} 2                          Byte 60
+DEVPKEY_Bluetooth_DeviceAddress                                 String CC988B56B45C
+DEVPKEY_Bluetooth_ServiceGUID                                     Guid {0000111E-0000-1000-8000-00805F9B34FB}
+DEVPKEY_Bluetooth_DeviceFlags                                   UInt32 67126175
+{2BD67D8B-8BEB-48D5-87E0-6CDA3428040A} 4                        UInt32 2360324
+DEVPKEY_Bluetooth_DeviceVIDSource                                 Byte 2
+DEVPKEY_Bluetooth_DeviceVID                                     UInt16 1356
+DEVPKEY_Bluetooth_DevicePID                                     UInt16 3283
+DEVPKEY_Bluetooth_ClassOfDevice                                 UInt32 2360324
+{3464F7A4-2444-40B1-980A-E0903CB6D912} 10                       UInt32 3
+{3B2CE006-5E61-4FDE-BAB8-9B8AAC9B26DF} 8                        String Bluetooth#Bluetooth80:b6:55:84:a3:d1-cc:98:8b:56:b4:5c
+DEVPKEY_Device_BusReportedDeviceDesc                            String Hands-Free unit
+DEVPKEY_Device_ConfigurationId                                  String microsoft_bluetooth_hfp_ag.inf:BTHENUM\{0000111e-0000-1000-8000-00805f9b34f…
+DEVPKEY_DeviceContainer_UnpairUninstall                        Boolean True
+DEVPKEY_DeviceContainer_AlwaysShowDeviceAsConnected            Boolean True
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 6                        UInt32 0
+{80497100-8C73-48B9-AAD9-CE387E19C56E} 7                        UInt64 0
+DEVPKEY_Device_PresenceNotForDevice                            Boolean True
+{83DA6326-97A6-4088-9453-A1923F573B29} 3                        String microsoft_bluetooth_hfp_ag.inf:00a2c5fccdbc4a66:BthHfEnum_Ag_Install:10.0.2…
+{83DA6326-97A6-4088-9453-A1923F573B29} 10                       String BTH\MS_BTHBRB\6&280d5bff&0&1
+DEVPKEY_Device_InstallDate                                    FileTime 12/29/2024 7:13:09 PM
+DEVPKEY_Device_FirstInstallDate                               FileTime 12/29/2024 7:13:09 PM
+DEVPKEY_Device_LastArrivalDate                                FileTime 2/15/2026 12:53:10 PM
+{840719BE-E830-4801-8EF1-1CF36548A064} 2                       Boolean True
+DEVPKEY_Device_DriverDate                                     FileTime 3/30/2024 5:00:00 PM
+DEVPKEY_Device_DriverVersion                                    String 10.0.26100.1
+DEVPKEY_Device_DriverDesc                                       String Microsoft Bluetooth Hands-Free Profile AudioGateway role
+DEVPKEY_Device_DriverInfPath                                    String microsoft_bluetooth_hfp_ag.inf
+DEVPKEY_Device_DriverInfSection                                 String BthHfEnum_Ag_Install
+DEVPKEY_Device_MatchingDeviceId                                 String BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS
+DEVPKEY_Device_DriverProvider                                   String Microsoft
+DEVPKEY_Device_DriverRank                                       UInt32 16719872
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6} 16                   StringList {microsoft_bluetooth_hfp.inf}
+
+
+
+
+> $device = Get-PnpDevice | Where-Object {$_.FriendlyName -like "*WH-1000XM3*"}
+> Get-PnpDeviceProperty -InstanceId $device.InstanceId | ForEach-Object {`
+>>     $_.KeyName -replace ' \d+$', ''`
+>> } | Select-Object -Unique
+DEVPKEY_Device_DeviceDesc
+DEVPKEY_Device_HardwareIds
+DEVPKEY_Device_CompatibleIds
+DEVPKEY_Device_Class
+DEVPKEY_Device_ClassGuid
+DEVPKEY_Device_Driver
+DEVPKEY_Device_ConfigFlags
+DEVPKEY_Device_Manufacturer
+DEVPKEY_Device_FriendlyName
+DEVPKEY_Device_PDOName
+DEVPKEY_Device_Capabilities
+DEVPKEY_Device_BusTypeGuid
+DEVPKEY_Device_LegacyBusType
+DEVPKEY_Device_BusNumber
+DEVPKEY_Device_EnumeratorName
+DEVPKEY_Device_PowerData
+DEVPKEY_Device_RemovalPolicy
+DEVPKEY_Device_RemovalPolicyDefault
+DEVPKEY_Device_InstallState
+DEVPKEY_Device_BaseContainerId
+DEVPKEY_NAME
+DEVPKEY_Device_InstanceId
+DEVPKEY_Device_DevNodeStatus
+DEVPKEY_Device_ProblemCode
+DEVPKEY_Device_Parent
+DEVPKEY_Device_Siblings
+DEVPKEY_Device_SafeRemovalRequired
+DEVPKEY_Device_ContainerId
+DEVPKEY_Device_IsPresent
+DEVPKEY_Device_HasProblem
+{83DA6326-97A6-4088-9453-A1923F573B29}
+DEVPKEY_Device_IsRebootRequired
+DEVPKEY_Device_ReportedDeviceIdsHash
+DEVPKEY_Device_InLocalMachineContainer
+DEVPKEY_Device_Stack
+{A8B865DD-2E3D-4094-AD97-E593A70C75D6}
+{1F39EC81-2EDF-49FE-BBBF-862F89E3F5B2}
+{3464F7A4-2444-40B1-980A-E0903CB6D912}
+DEVPKEY_Device_BusReportedDeviceDesc
+DEVPKEY_Device_ConfigurationId
+DEVPKEY_Device_CreatorProcessId
+DEVPKEY_DeviceContainer_Category
+{80497100-8C73-48B9-AAD9-CE387E19C56E}
+DEVPKEY_Device_FriendlyNameAttributes
+DEVPKEY_Device_SessionId
+DEVPKEY_Device_InstallDate
+DEVPKEY_Device_FirstInstallDate
+DEVPKEY_Device_LastArrivalDate
+DEVPKEY_Device_DriverDate
+DEVPKEY_Device_DriverVersion
+DEVPKEY_Device_DriverDesc
+DEVPKEY_Device_DriverInfPath
+DEVPKEY_Device_DriverInfSection
+DEVPKEY_Device_MatchingDeviceId
+DEVPKEY_Device_DriverProvider
+DEVPKEY_Device_DriverRank
+DEVPKEY_Device_NoConnectSound
+DEVPKEY_DrvPkg_Icon
+DEVPKEY_Device_Service
+DEVPKEY_Bluetooth_DeviceAddress
+DEVPKEY_Bluetooth_ServiceGUID
+DEVPKEY_Bluetooth_DeviceFlags
+{2BD67D8B-8BEB-48D5-87E0-6CDA3428040A}
+DEVPKEY_Bluetooth_DeviceVIDSource
+DEVPKEY_Bluetooth_DeviceVID
+DEVPKEY_Bluetooth_DevicePID
+DEVPKEY_Bluetooth_ClassOfDevice
+{3B2CE006-5E61-4FDE-BAB8-9B8AAC9B26DF}
+DEVPKEY_DeviceContainer_UnpairUninstall
+DEVPKEY_DeviceContainer_AlwaysShowDeviceAsConnected
+DEVPKEY_Device_PresenceNotForDevice
+{670245F9-6E25-4179-85C1-981C33B9D3B7}
+DEVPKEY_DeviceContainer_DiscoveryMethod
+{A35996AB-11CF-4935-8B61-A6761081ECDF}
+DEVPKEY_Device_BusRelations
+DEVPKEY_Device_Children
+{B3F8FA53-0004-438E-9003-51A46E139BFC}
+{D1885396-39D8-4777-BCFF-5E3241483416}
+DEVPKEY_Device_Security
+DEVPKEY_Device_Characteristics
+{104EA319-6EE2-4701-BD47-8DDBF425BBE5}
+{840719BE-E830-4801-8EF1-1CF36548A064}
+
+
+
+
+> Get-PnpDevice | Where-Object {$_.FriendlyName -like "*WH-1000XM3*"}
+
+Status     Class           FriendlyName                                                                     InstanceId
+------     -----           ------------                                                                     ----------
+OK         Bluetooth       WH-1000XM3                                                                       BTHENUM\DEV_CC…
+OK         AudioEndpoint   Headphones (WH-1000XM3)                                                          SWD\MMDEVAPI\{…
+OK         MEDIA           WH-1000XM3                                                                       BTHENUM\{00001…
+OK         AudioEndpoint   Headset (WH-1000XM3 Hands-Free)                                                  SWD\MMDEVAPI\{…
+OK         System          WH-1000XM3 Hands-Free AG                                                         BTHENUM\{00001…
+OK         Bluetooth       WH-1000XM3 Avrcp Transport                                                       BTHENUM\{00001…
+OK         AudioEndpoint   Headset (WH-1000XM3)                                                             SWD\MMDEVAPI\{…
+OK         Bluetooth       WH-1000XM3 Avrcp Transport                                                       BTHENUM\{00001…
+
+
+
+
+Print all properties:
+
+> Get-PnpDevice | Where-Object {$_.FriendlyName -like "*WH-1000XM3*"} | Format-List *
+
+
+
+
+Or add a custom divider:
+
+> Get-PnpDevice | Where-Object {$_.FriendlyName -like "*WH-1000XM3*"} | ForEach-Object {
+    $_ | Format-List *
+    Write-Host ("-" * 60) -ForegroundColor Cyan
+}
+
+Class                       : Bluetooth
+FriendlyName                : WH-1000XM3
+InstanceId                  : BTHENUM\DEV_CC988B56B45C\7&25629724&0&BLUETOOTHDEVICE_CC988B56B45C
+Problem                     : CM_PROB_NONE
+ConfigManagerErrorCode      : CM_PROB_NONE
+ProblemDescription          :
+Caption                     : WH-1000XM3
+Description                 : Bluetooth Device
+InstallDate                 :
+Name                        : WH-1000XM3
+Status                      : OK
+Availability                :
+ConfigManagerUserConfig     : False
+CreationClassName           : Win32_PnPEntity
+DeviceID                    : BTHENUM\DEV_CC988B56B45C\7&25629724&0&BLUETOOTHDEVICE_CC988B56B45C
+ErrorCleared                :
+ErrorDescription            :
+LastErrorCode               :
+PNPDeviceID                 : BTHENUM\DEV_CC988B56B45C\7&25629724&0&BLUETOOTHDEVICE_CC988B56B45C
+PowerManagementCapabilities :
+PowerManagementSupported    :
+StatusInfo                  :
+SystemCreationClassName     : Win32_ComputerSystem
+SystemName                  : SP8
+ClassGuid                   : {e0cbf06c-cd8b-4647-bb8a-263b43f0f974}
+CompatibleID                : {BTHENUM\GENERIC_DEVICE}
+HardwareID                  : {BTHENUM\Dev_CC988B56B45C}
+Manufacturer                : Microsoft
+PNPClass                    : Bluetooth
+Present                     : True
+Service                     :
+PSComputerName              :
+CimClass                    : ROOT/cimv2:Win32_PnPEntity
+CimInstanceProperties       : {Caption, Description, InstallDate, Name…}
+CimSystemProperties         : Microsoft.Management.Infrastructure.CimSystemProperties
+
+------------------------------------------------------------
+
+Class                       : AudioEndpoint
+FriendlyName                : Headphones (WH-1000XM3)
+InstanceId                  : SWD\MMDEVAPI\{0.0.0.00000000}.{3BE85070-9582-46F3-AEDD-43D25AFFEF71}
+Problem                     : CM_PROB_NONE
+ConfigManagerErrorCode      : CM_PROB_NONE
+ProblemDescription          :
+Caption                     : Headphones (WH-1000XM3)
+Description                 : Audio Endpoint
+InstallDate                 :
+Name                        : Headphones (WH-1000XM3)
+Status                      : OK
+Availability                :
+ConfigManagerUserConfig     : False
+CreationClassName           : Win32_PnPEntity
+DeviceID                    : SWD\MMDEVAPI\{0.0.0.00000000}.{3BE85070-9582-46F3-AEDD-43D25AFFEF71}
+ErrorCleared                :
+ErrorDescription            :
+LastErrorCode               :
+PNPDeviceID                 : SWD\MMDEVAPI\{0.0.0.00000000}.{3BE85070-9582-46F3-AEDD-43D25AFFEF71}
+PowerManagementCapabilities :
+PowerManagementSupported    :
+StatusInfo                  :
+SystemCreationClassName     : Win32_ComputerSystem
+SystemName                  : SP8
+ClassGuid                   : {c166523c-fe0c-4a94-a586-f1a80cfbbf3e}
+CompatibleID                : {GenericAudioEndpoint, SWD\GenericRaw, SWD\Generic}
+HardwareID                  : {MMDEVAPI\AudioEndpoints}
+Manufacturer                : Microsoft
+PNPClass                    : AudioEndpoint
+Present                     : True
+Service                     :
+PSComputerName              :
+CimClass                    : ROOT/cimv2:Win32_PnPEntity
+CimInstanceProperties       : {Caption, Description, InstallDate, Name…}
+CimSystemProperties         : Microsoft.Management.Infrastructure.CimSystemProperties
+
+------------------------------------------------------------
+
+Class                       : MEDIA
+FriendlyName                : WH-1000XM3
+InstanceId                  : BTHENUM\{0000110B-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C_C00000000
+Problem                     : CM_PROB_NONE
+ConfigManagerErrorCode      : CM_PROB_NONE
+ProblemDescription          :
+Caption                     : WH-1000XM3
+Description                 : Microsoft Bluetooth A2dp Source
+InstallDate                 :
+Name                        : WH-1000XM3
+Status                      : OK
+Availability                :
+ConfigManagerUserConfig     : False
+CreationClassName           : Win32_PnPEntity
+DeviceID                    : BTHENUM\{0000110B-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C_C00000000
+ErrorCleared                :
+ErrorDescription            :
+LastErrorCode               :
+PNPDeviceID                 : BTHENUM\{0000110B-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C_C00000000
+PowerManagementCapabilities :
+PowerManagementSupported    :
+StatusInfo                  :
+SystemCreationClassName     : Win32_ComputerSystem
+SystemName                  : SP8
+ClassGuid                   : {4d36e96c-e325-11ce-bfc1-08002be10318}
+CompatibleID                : {BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}, BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}_GENERIC}
+HardwareID                  : {BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}_VID&0002054c_PID&0cd3,
+                              BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}_LOCALMFG&0002}
+Manufacturer                : Microsoft
+PNPClass                    : MEDIA
+Present                     : True
+Service                     : BthA2dp
+PSComputerName              :
+CimClass                    : ROOT/cimv2:Win32_PnPEntity
+CimInstanceProperties       : {Caption, Description, InstallDate, Name…}
+CimSystemProperties         : Microsoft.Management.Infrastructure.CimSystemProperties
+
+------------------------------------------------------------
+
+Class                       : AudioEndpoint
+FriendlyName                : Headset (WH-1000XM3 Hands-Free)
+InstanceId                  : SWD\MMDEVAPI\{0.0.0.00000000}.{1CC6D395-4786-465D-B2F7-351A1119EFC2}
+Problem                     : CM_PROB_NONE
+ConfigManagerErrorCode      : CM_PROB_NONE
+ProblemDescription          :
+Caption                     : Headset (WH-1000XM3 Hands-Free)
+Description                 : Audio Endpoint
+InstallDate                 :
+Name                        : Headset (WH-1000XM3 Hands-Free)
+Status                      : OK
+Availability                :
+ConfigManagerUserConfig     : False
+CreationClassName           : Win32_PnPEntity
+DeviceID                    : SWD\MMDEVAPI\{0.0.0.00000000}.{1CC6D395-4786-465D-B2F7-351A1119EFC2}
+ErrorCleared                :
+ErrorDescription            :
+LastErrorCode               :
+PNPDeviceID                 : SWD\MMDEVAPI\{0.0.0.00000000}.{1CC6D395-4786-465D-B2F7-351A1119EFC2}
+PowerManagementCapabilities :
+PowerManagementSupported    :
+StatusInfo                  :
+SystemCreationClassName     : Win32_ComputerSystem
+SystemName                  : SP8
+ClassGuid                   : {c166523c-fe0c-4a94-a586-f1a80cfbbf3e}
+CompatibleID                : {GenericAudioEndpoint, SWD\GenericRaw, SWD\Generic}
+HardwareID                  : {MMDEVAPI\AudioEndpoints}
+Manufacturer                : Microsoft
+PNPClass                    : AudioEndpoint
+Present                     : True
+Service                     :
+PSComputerName              :
+CimClass                    : ROOT/cimv2:Win32_PnPEntity
+CimInstanceProperties       : {Caption, Description, InstallDate, Name…}
+CimSystemProperties         : Microsoft.Management.Infrastructure.CimSystemProperties
+
+------------------------------------------------------------
+
+Class                       : System
+FriendlyName                : WH-1000XM3 Hands-Free AG
+InstanceId                  : BTHENUM\{0000111E-0000-1000-8000-00805F9B34FB}_HCIBYPASS_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C_C00000000
+Problem                     : CM_PROB_NONE
+ConfigManagerErrorCode      : CM_PROB_NONE
+ProblemDescription          :
+Caption                     : WH-1000XM3 Hands-Free AG
+Description                 : Microsoft Bluetooth Hands-Free Profile AudioGateway role
+InstallDate                 :
+Name                        : WH-1000XM3 Hands-Free AG
+Status                      : OK
+Availability                :
+ConfigManagerUserConfig     : False
+CreationClassName           : Win32_PnPEntity
+DeviceID                    : BTHENUM\{0000111E-0000-1000-8000-00805F9B34FB}_HCIBYPASS_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C_C00000000
+ErrorCleared                :
+ErrorDescription            :
+LastErrorCode               :
+PNPDeviceID                 : BTHENUM\{0000111E-0000-1000-8000-00805F9B34FB}_HCIBYPASS_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C_C00000000
+PowerManagementCapabilities :
+PowerManagementSupported    :
+StatusInfo                  :
+SystemCreationClassName     : Win32_ComputerSystem
+SystemName                  : SP8
+ClassGuid                   : {4d36e97d-e325-11ce-bfc1-08002be10318}
+CompatibleID                : {BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS, BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_GENERIC}
+HardwareID                  : {BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS_VID&0002054c_PID&0cd3,
+                              BTHENUM\{0000111e-0000-1000-8000-00805f9b34fb}_HCIBYPASS_LOCALMFG&0002}
+Manufacturer                : Microsoft
+PNPClass                    : System
+Present                     : True
+Service                     : BthHFEnum
+PSComputerName              :
+CimClass                    : ROOT/cimv2:Win32_PnPEntity
+CimInstanceProperties       : {Caption, Description, InstallDate, Name…}
+CimSystemProperties         : Microsoft.Management.Infrastructure.CimSystemProperties
+
+------------------------------------------------------------
+
+Class                       : Bluetooth
+FriendlyName                : WH-1000XM3 Avrcp Transport
+InstanceId                  : BTHENUM\{0000110C-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C_C00000000
+Problem                     : CM_PROB_NONE
+ConfigManagerErrorCode      : CM_PROB_NONE
+ProblemDescription          :
+Caption                     : WH-1000XM3 Avrcp Transport
+Description                 : Microsoft Bluetooth Avrcp Transport Driver
+InstallDate                 :
+Name                        : WH-1000XM3 Avrcp Transport
+Status                      : OK
+Availability                :
+ConfigManagerUserConfig     : False
+CreationClassName           : Win32_PnPEntity
+DeviceID                    : BTHENUM\{0000110C-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C_C00000000
+ErrorCleared                :
+ErrorDescription            :
+LastErrorCode               :
+PNPDeviceID                 : BTHENUM\{0000110C-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C_C00000000
+PowerManagementCapabilities :
+PowerManagementSupported    :
+StatusInfo                  :
+SystemCreationClassName     : Win32_ComputerSystem
+SystemName                  : SP8
+ClassGuid                   : {e0cbf06c-cd8b-4647-bb8a-263b43f0f974}
+CompatibleID                : {BTHENUM\{0000110c-0000-1000-8000-00805f9b34fb}, BTHENUM\{0000110c-0000-1000-8000-00805f9b34fb}_GENERIC}
+HardwareID                  : {BTHENUM\{0000110c-0000-1000-8000-00805f9b34fb}_VID&0002054c_PID&0cd3,
+                              BTHENUM\{0000110c-0000-1000-8000-00805f9b34fb}_LOCALMFG&0002}
+Manufacturer                : Microsoft
+PNPClass                    : Bluetooth
+Present                     : True
+Service                     : Microsoft_Bluetooth_AvrcpTransport
+PSComputerName              :
+CimClass                    : ROOT/cimv2:Win32_PnPEntity
+CimInstanceProperties       : {Caption, Description, InstallDate, Name…}
+CimSystemProperties         : Microsoft.Management.Infrastructure.CimSystemProperties
+
+------------------------------------------------------------
+
+Class                       : AudioEndpoint
+FriendlyName                : Headset (WH-1000XM3)
+InstanceId                  : SWD\MMDEVAPI\{0.0.1.00000000}.{C51D1B46-2578-4ADE-89B6-60770A363B25}
+Problem                     : CM_PROB_NONE
+ConfigManagerErrorCode      : CM_PROB_NONE
+ProblemDescription          :
+Caption                     : Headset (WH-1000XM3)
+Description                 : Audio Endpoint
+InstallDate                 :
+Name                        : Headset (WH-1000XM3)
+Status                      : OK
+Availability                :
+ConfigManagerUserConfig     : False
+CreationClassName           : Win32_PnPEntity
+DeviceID                    : SWD\MMDEVAPI\{0.0.1.00000000}.{C51D1B46-2578-4ADE-89B6-60770A363B25}
+ErrorCleared                :
+ErrorDescription            :
+LastErrorCode               :
+PNPDeviceID                 : SWD\MMDEVAPI\{0.0.1.00000000}.{C51D1B46-2578-4ADE-89B6-60770A363B25}
+PowerManagementCapabilities :
+PowerManagementSupported    :
+StatusInfo                  :
+SystemCreationClassName     : Win32_ComputerSystem
+SystemName                  : SP8
+ClassGuid                   : {c166523c-fe0c-4a94-a586-f1a80cfbbf3e}
+CompatibleID                : {GenericAudioEndpoint, SWD\GenericRaw, SWD\Generic}
+HardwareID                  : {MMDEVAPI\AudioEndpoints}
+Manufacturer                : Microsoft
+PNPClass                    : AudioEndpoint
+Present                     : True
+Service                     :
+PSComputerName              :
+CimClass                    : ROOT/cimv2:Win32_PnPEntity
+CimInstanceProperties       : {Caption, Description, InstallDate, Name…}
+CimSystemProperties         : Microsoft.Management.Infrastructure.CimSystemProperties
+
+------------------------------------------------------------
+
+Class                       : Bluetooth
+FriendlyName                : WH-1000XM3 Avrcp Transport
+InstanceId                  : BTHENUM\{0000110E-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C_C00000000
+Problem                     : CM_PROB_NONE
+ConfigManagerErrorCode      : CM_PROB_NONE
+ProblemDescription          :
+Caption                     : WH-1000XM3 Avrcp Transport
+Description                 : Microsoft Bluetooth Avrcp Transport Driver
+InstallDate                 :
+Name                        : WH-1000XM3 Avrcp Transport
+Status                      : OK
+Availability                :
+ConfigManagerUserConfig     : False
+CreationClassName           : Win32_PnPEntity
+DeviceID                    : BTHENUM\{0000110E-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C_C00000000
+ErrorCleared                :
+ErrorDescription            :
+LastErrorCode               :
+PNPDeviceID                 : BTHENUM\{0000110E-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C_C00000000
+PowerManagementCapabilities :
+PowerManagementSupported    :
+StatusInfo                  :
+SystemCreationClassName     : Win32_ComputerSystem
+SystemName                  : SP8
+ClassGuid                   : {e0cbf06c-cd8b-4647-bb8a-263b43f0f974}
+CompatibleID                : {BTHENUM\{0000110e-0000-1000-8000-00805f9b34fb}, BTHENUM\{0000110e-0000-1000-8000-00805f9b34fb}_GENERIC}
+HardwareID                  : {BTHENUM\{0000110e-0000-1000-8000-00805f9b34fb}_VID&0002054c_PID&0cd3,
+                              BTHENUM\{0000110e-0000-1000-8000-00805f9b34fb}_LOCALMFG&0002}
+Manufacturer                : Microsoft
+PNPClass                    : Bluetooth
+Present                     : True
+Service                     : Microsoft_Bluetooth_AvrcpTransport
+PSComputerName              :
+CimClass                    : ROOT/cimv2:Win32_PnPEntity
+CimInstanceProperties       : {Caption, Description, InstallDate, Name…}
+CimSystemProperties         : Microsoft.Management.Infrastructure.CimSystemProperties
+
+------------------------------------------------------------
+
+
+
+
+
+Piping properties to Grid View GUI:
+
+> Get-PnpDevice | Where-Object {$_.FriendlyName -like "*WH-1000XM3*"} | Out-GridView
+
+
+
+
+
+
+Only display the following properties:  Class, Name, Description, InstanceId, Service, Present
+
+> Get-PnpDevice | Where-Object {$_.FriendlyName -like "*WH-1000XM3*"} | ForEach-Object {
+    $_ | Format-List Class, Name, Description, InstanceId, Service, Present
+    Write-Host ("-" * 60) -ForegroundColor Cyan
+}
+
+Class       : Bluetooth
+Name        : WH-1000XM3
+Description : Bluetooth Device
+InstanceId  : BTHENUM\DEV_CC988B56B45C\7&25629724&0&BLUETOOTHDEVICE_CC988B56B45C
+Service     :
+Present     : True
+
+------------------------------------------------------------
+
+Class       : AudioEndpoint
+Name        : Headphones (WH-1000XM3)
+Description : Audio Endpoint
+InstanceId  : SWD\MMDEVAPI\{0.0.0.00000000}.{3BE85070-9582-46F3-AEDD-43D25AFFEF71}
+Service     :
+Present     : True
+
+------------------------------------------------------------
+
+Class       : MEDIA
+Name        : WH-1000XM3
+Description : Microsoft Bluetooth A2dp Source
+InstanceId  : BTHENUM\{0000110B-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C_C00000000
+Service     : BthA2dp
+Present     : True
+
+------------------------------------------------------------
+
+Class       : AudioEndpoint
+Name        : Headset (WH-1000XM3 Hands-Free)
+Description : Audio Endpoint
+InstanceId  : SWD\MMDEVAPI\{0.0.0.00000000}.{1CC6D395-4786-465D-B2F7-351A1119EFC2}
+Service     :
+Present     : True
+
+------------------------------------------------------------
+
+Class       : System
+Name        : WH-1000XM3 Hands-Free AG
+Description : Microsoft Bluetooth Hands-Free Profile AudioGateway role
+InstanceId  : BTHENUM\{0000111E-0000-1000-8000-00805F9B34FB}_HCIBYPASS_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C_C00000000
+Service     : BthHFEnum
+Present     : True
+
+------------------------------------------------------------
+
+Class       : Bluetooth
+Name        : WH-1000XM3 Avrcp Transport
+Description : Microsoft Bluetooth Avrcp Transport Driver
+InstanceId  : BTHENUM\{0000110C-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C_C00000000
+Service     : Microsoft_Bluetooth_AvrcpTransport
+Present     : True
+
+------------------------------------------------------------
+
+Class       : AudioEndpoint
+Name        : Headset (WH-1000XM3)
+Description : Audio Endpoint
+InstanceId  : SWD\MMDEVAPI\{0.0.1.00000000}.{C51D1B46-2578-4ADE-89B6-60770A363B25}
+Service     :
+Present     : True
+
+------------------------------------------------------------
+
+Class       : Bluetooth
+Name        : WH-1000XM3 Avrcp Transport
+Description : Microsoft Bluetooth Avrcp Transport Driver
+InstanceId  : BTHENUM\{0000110E-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CD3\7&25629724&0&CC988B56B45C_C00000000
+Service     : Microsoft_Bluetooth_AvrcpTransport
+Present     : True
+
+------------------------------------------------------------
+
+
+
+
+
+Get battery level for all devices:
+
+> Get-PnpDevice | Where-Object {$_.FriendlyName -like "*WH-1000XM3*"} | ForEach-Object {
+    $battery = Get-PnpDeviceProperty -InstanceId $_.InstanceId -KeyName '{104EA319-6EE2-4701-BD47-8DDBF425BBE5} 2' -ErrorAction SilentlyContinue
+    
+    Write-Host "DEVICE: $($_.FriendlyName)" -ForegroundColor Yellow
+    Write-Host "Class:  $($_.Class)"
+    if ($null -ne $battery.Data) {
+        Write-Host "BATTERY LEVEL: $($battery.Data)%" -ForegroundColor Green -BackgroundColor Black
+    } else {
+        Write-Host "Battery Level: [Not Found]" -ForegroundColor Gray
+    }
+    Write-Host ("-" * 60) -ForegroundColor Cyan
+}
+
+When headphones are on:
+
+DEVICE: WH-1000XM3
+Class:  Bluetooth
+Battery Level: [Not Found]
+------------------------------------------------------------
+DEVICE: Headphones (WH-1000XM3)
+Class:  AudioEndpoint
+Battery Level: [Not Found]
+------------------------------------------------------------
+DEVICE: WH-1000XM3
+Class:  MEDIA
+Battery Level: [Not Found]
+------------------------------------------------------------
+DEVICE: Headset (WH-1000XM3 Hands-Free)
+Class:  AudioEndpoint
+Battery Level: [Not Found]
+------------------------------------------------------------
+DEVICE: WH-1000XM3 Hands-Free AG
+Class:  System
+BATTERY LEVEL: 50%
+------------------------------------------------------------
+DEVICE: WH-1000XM3 Avrcp Transport
+Class:  Bluetooth
+Battery Level: [Not Found]
+------------------------------------------------------------
+DEVICE: Headset (WH-1000XM3)
+Class:  AudioEndpoint
+Battery Level: [Not Found]
+------------------------------------------------------------
+DEVICE: WH-1000XM3 Avrcp Transport
+Class:  Bluetooth
+Battery Level: [Not Found]
+------------------------------------------------------------
+
+
+
+When headphones are off:
+
+DEVICE: WH-1000XM3
+Class:  Bluetooth
+Battery Level: [Not Found]
+------------------------------------------------------------
+DEVICE: Headphones (WH-1000XM3)
+Class:  AudioEndpoint
+Battery Level: [Not Found]
+------------------------------------------------------------
+DEVICE: WH-1000XM3
+Class:  MEDIA
+Battery Level: [Not Found]
+------------------------------------------------------------
+DEVICE: Headset (WH-1000XM3 Hands-Free)
+Class:  AudioEndpoint
+Battery Level: [Not Found]
+------------------------------------------------------------
+DEVICE: WH-1000XM3 Hands-Free AG
+Class:  System
+BATTERY LEVEL: 50%
+------------------------------------------------------------
+DEVICE: WH-1000XM3 Avrcp Transport
+Class:  Bluetooth
+Battery Level: [Not Found]
+------------------------------------------------------------
+DEVICE: Headset (WH-1000XM3)
+Class:  AudioEndpoint
+Battery Level: [Not Found]
+------------------------------------------------------------
+DEVICE: WH-1000XM3 Avrcp Transport
+Class:  Bluetooth
+Battery Level: [Not Found]
+------------------------------------------------------------
+
+
+
+
+Get headphones battery:
+
+function Get-HeadsetBattery {
+    $device = Get-PnpDevice | Where-Object { $_.FriendlyName -eq "WH-1000XM3 Hands-Free AG" } -ErrorAction SilentlyContinue
+    
+    if ($device) {
+        $battery = Get-PnpDeviceProperty -InstanceId $device.InstanceId -KeyName '{104EA319-6EE2-4701-BD47-8DDBF425BBE5} 2' -ErrorAction SilentlyContinue
+        if ($null -ne $battery.Data) {
+            Write-Host "Sony WH-1000XM3 Battery: " -NoNewline
+            Write-Host "$($battery.Data)%" -ForegroundColor Green
+        } else {
+            Write-Host "Battery level not reported. Is the headset connected?" -ForegroundColor Yellow
+        }
+    } else {
+        Write-Host "Headset device not found." -ForegroundColor Red
+    }
+}

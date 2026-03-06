@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="chat_history.md" />
+    <None Include="TODO_PLAN.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
