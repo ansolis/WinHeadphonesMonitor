@@ -11,6 +11,7 @@
 *.filters
 *.vcxproj.user
 *.vcxproj.filters
+*.vcxproj
 
 # Temporary/build files
 /Headphon.A1B2C3D4
