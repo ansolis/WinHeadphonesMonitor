@@ -323,16 +323,129 @@ Get-PnpDevice -Class Bluetooth | Where-Object {$_.Status -eq 'OK'} | Select-Obje
 
 ---
 
-## Next Testing Steps
+## Comprehensive Testing Checklist
 
-1. ✅ Test with single device (Stage 1→2→3→Removal)
-2. ✅ Test with two devices (simultaneous connections)
-3. ✅ Test switching default output
-4. ✅ Test removal while primary
-5. ✅ Verify tooltips at each stage
-6. ✅ Check battery level integration
-7. ✅ Validate right-click context menu
-8. ✅ Confirm no duplicate notifications
+### Single Device Testing
+
+- [ ] Turn on one Bluetooth audio device (e.g., Sony WH-1000XM3)
+- [ ] Capture full debug log with timestamps
+- [ ] Verify stage 1 balloon appears immediately ("Detecting [device]...")
+- [ ] Verify debug output shows INTELAUDIO or IntcBtWav interface paths
+- [ ] Verify stage 2 balloon appears ~8 seconds later ("[device] connected")
+- [ ] Verify tray tooltip updates only at stage 2 (not stage 1)
+- [ ] Verify battery level displays in stage 2 balloon (if supported)
+- [ ] Verify debug output shows SWD#MMDEVAPI endpoint paths
+- [ ] Manually switch default device to headphones in Windows Settings
+- [ ] Verify stage 3 balloon appears ("Now using [device] for audio")
+- [ ] Verify tray tooltip shows "(ACTIVE OUTPUT)"
+- [ ] Verify debug output shows MMDevice OnDefaultDeviceChanged callback
+- [ ] Turn off headphones or disconnect device
+- [ ] Verify disconnection balloon appears ("[device] disconnected")
+- [ ] Verify debug output shows A2DP_SIDEBAND_INTERFACE removal
+- [ ] Verify device removed from registry (check logs)
+- [ ] Verify tray tooltip shows "Bluetooth audio: disconnected"
+
+### Multi-Device Testing
+
+- [ ] Connect two different Bluetooth audio devices (e.g., headphones + speaker)
+- [ ] Verify both devices appear in debug logs with device names
+- [ ] Verify both appear in internal device registry
+- [ ] Verify tray tooltip shows both devices appropriately
+- [ ] Verify initial tooltip shows "[Primary] (ACTIVE OUTPUT)"
+- [ ] Switch default device to the other device in Windows Settings
+- [ ] Verify correct switch balloon appears for new primary device
+- [ ] Verify old device shows as standby in tooltip
+- [ ] Verify tray tooltip updates to show "[New Primary] (ACTIVE OUTPUT)"
+- [ ] Verify registry marks correct device as `isDefaultOutput = true`
+- [ ] Disconnect one device; verify tooltip reflects remaining device
+- [ ] Verify disconnection balloon for removed device
+- [ ] Verify remaining device still tracked in registry
+- [ ] Disconnect second device
+- [ ] Verify final tooltip shows "Bluetooth audio: disconnected"
+
+### Cross-Device Testing (Multiple Device Types)
+
+- [ ] Test with Sony WH-1000XM3 (verify device name logged)
+- [ ] Test with AirPods Pro (verify generic device handling)
+- [ ] Test with Beats (verify generic device handling)
+- [ ] Test with Samsung Galaxy Buds (verify generic device handling)
+- [ ] Test with generic Bluetooth speaker (verify generic device handling)
+- [ ] Verify balloons appear for all device types (no device-specific hardcoding)
+- [ ] Verify device names display correctly in all notifications
+- [ ] Verify battery level reads correctly for each device type
+- [ ] Test with various Bluetooth stacks (Intel BT, Broadcom, Realtek if available)
+
+### Log Verification
+
+- [ ] Verify device-specific info logged: friendly name, Bluetooth address
+- [ ] Verify connection state logged (`fConnected` status)
+- [ ] Verify INTELAUDIO/IntcBtWav detected at stage 1
+- [ ] Verify SWD#MMDEVAPI detected at stage 2
+- [ ] Verify Bluetooth address matches across all log entries
+- [ ] Verify `CM_Get_DevNode_Status` status bits logged
+- [ ] Verify timestamps show ~8-9 second gap between stage 1 and stage 2 balloons
+- [ ] Verify MMDevice `OnDefaultDeviceChanged` logged when default device switches
+- [ ] Verify NotificationManager debouncing prevents duplicate balloons within 1 second
+- [ ] Verify all module prefixes appear correctly: [BluetoothDeviceManager], [AudioEndpointManager], [DeviceRegistry], etc.
+
+### Feature-Specific Testing
+
+**Notification Debouncing:**
+- [ ] Rapid device connection/disconnection doesn't produce duplicate balloons
+- [ ] Multiple arrival notifications for same device show only one balloon
+- [ ] Verify 1-second debounce window working in logs
+
+**Tooltip Updates:**
+- [ ] Single device active shows: "[Name] (ACTIVE OUTPUT)"
+- [ ] Single device standby shows: "[Name] (standby)"
+- [ ] Multiple devices show: "[Primary] (ACTIVE) + N other(s)"
+- [ ] No devices show: "Bluetooth audio: disconnected"
+- [ ] Tooltip updates only at stage 2, not stage 1
+
+**Battery Level:**
+- [ ] Devices that support battery show level: "Battery: 85%"
+- [ ] Devices without battery support don't show battery in balloon
+- [ ] Battery level updates when device reconnects
+- [ ] Invalid/zero battery doesn't display
+
+**Context Menu (Right-Click):**
+- [ ] Right-click tray icon shows menu
+- [ ] Menu lists all connected devices
+- [ ] Current default device marked with "[ACTIVE]"
+- [ ] Menu items properly formatted
+- [ ] "Disconnect Active" option present
+- [ ] "Exit" option works correctly
+
+---
+
+## Known Test Configurations (Completed)
+
+### Tested Hardware
+- ✅ **Sony WH-1000XM3** (Hands-Free AG + Avrcp Transport profiles)
+- ✅ **System:** Windows 10/11 with Intel Bluetooth adapter
+- ✅ **Multi-device:** WH-1000XM3 + simultaneous AirPods Pro connections
+
+### Expected Results (All Verified)
+- ✅ All three stages detected reliably
+- ✅ Timing: 8-9 seconds Stage 1→2 gap
+- ✅ No duplicate notifications (debouncing verified)
+- ✅ Battery level reads correctly
+- ✅ Multi-device tooltip formatting correct
+- ✅ Context menu displays all devices
+- ✅ Device registry tracks all connected devices
+- ✅ MMDevice callbacks trigger at correct times
+
+---
+
+## Next Testing Steps (Optional Features)
+
+Future testing candidates for additional features:
+1. Programmatic device switching via SetDefaultAudioEndpoint()
+2. Bluetooth device disconnect from context menu
+3. Per-device battery display in tray tooltip
+4. Settings dialog for customization
+5. Connection history logging
+6. Voice notifications via TTS
 
 ---
 

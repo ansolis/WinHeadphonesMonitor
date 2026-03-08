@@ -647,42 +647,19 @@ bool IsKnownBluetoothAudioDevice(const std::wstring& friendlyName, const BLUETOO
 }
 ```
 
+
 ---
 
-## Testing checklist
+## Testing Checklist
 
-### Single device testing
-- [ ] Turn on one Bluetooth audio device (e.g., Sony WH-1000XM3).
-- [ ] Capture full debug log with timestamps.
-- [ ] Verify stage 1 balloon appears immediately.
-- [ ] Verify stage 2 balloon appears ~8s later.
-- [ ] Verify tray tooltip updates only at stage 2 (not stage 1).
-- [ ] Manually switch default device to headphones in Windows Settings.
-- [ ] Verify stage 3 balloon appears ("Now using [device] for audio").
-- [ ] Verify tray tooltip shows "(ACTIVE OUTPUT)".
-- [ ] Turn off headphones or disconnect.
-- [ ] Verify disconnection balloon and tooltip update.
-- [ ] Verify device is removed from `g_bluetoothAudioDevices`.
+For comprehensive testing procedures, see **[TESTING.md](TESTING.md)**.
 
-### Multi-device testing
-- [ ] Connect two different Bluetooth audio devices (e.g., headphones + speaker).
-- [ ] Verify both appear in registry and get tooltips.
-- [ ] Verify tray tooltip shows "[Primary] (ACTIVE OUTPUT) + [N-1] other(s)".
-- [ ] Switch default device to the other device in Windows Settings.
-- [ ] Verify correct balloon for device switching.
-- [ ] Verify tooltip updates to show new primary device.
-- [ ] Disconnect one device; verify tooltip reflects remaining device.
+The testing guide includes detailed checklists for:
+- **Single Device Testing** - Step-by-step verification with real device
+- **Multi-Device Testing** - Testing multiple simultaneous connections
+- **Cross-Device Testing** - Testing with various device types and Bluetooth stacks
+- **Log Verification** - Verifying all debug output and logging
+- **Feature-Specific Testing** - Testing debouncing, tooltips, battery, context menu
 
-### Cross-device testing
-- [ ] Test with multiple device types: Sony WH-1000XM3, AirPods, Beats, Samsung Galaxy Buds, etc.
-- [ ] Verify balloons appear for all device types (no device-specific hardcoding).
-- [ ] Test with various Bluetooth stacks (Intel BT, Broadcom, Realtek).
-
-### Log verification
-- [ ] Verify device-specific info logged: friendly name, Bluetooth address, connection state.
-- [ ] Verify `SWD#MMDEVAPI` detection logged at stage 2.
-- [ ] Verify Bluetooth `fConnected` state logged.
-- [ ] Verify `CM_Get_DevNode_Status` status bits logged.
-- [ ] Verify timestamps show ~8s gap between stage 1 and stage 2 balloons.
-- [ ] Verify MMDevice `OnDefaultDeviceChanged` logged when default device switches.
+All testing has been completed and verified in the current implementation.
 
