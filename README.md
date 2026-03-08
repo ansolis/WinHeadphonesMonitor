@@ -431,6 +431,108 @@ For issues, questions, or suggestions:
 
 ---
 
+## Technical Deep Dive: Device Arrival Analysis
+
+### Understanding Stage 1 vs Stage 2
+
+The ~8-9 second gap between Stage 1 and Stage 2 notifications reflects the Bluetooth audio profile negotiation process:
+
+**Stage 1 (Immediate):** Driver Interface Detection
+- Windows delivers `DBT_DEVICEARRIVAL` notifications for **driver-level interfaces**
+- Interface paths: `\\?\INTELAUDIO#...\IntcBtWaveRender` / `IntcBtWaveCapture`
+- At this point: Device driver loaded but **audio endpoints not yet registered**
+- Device is **not ready for audio routing** - Bluetooth profile negotiation still in progress
+- Tray should **not update** yet (deferred until Stage 2)
+
+**Why the ~8 second delay?**
+1. Driver discovers interfaces (Stage 1)
+2. Bluetooth stack negotiates A2DP/HFP profiles (4-5 seconds)
+3. Audio channels established (1-2 seconds)
+4. Windows MMDevice registers endpoints (Stage 2)
+5. Default routing updated
+
+**Stage 2 (~8-9 seconds later):** Audio Endpoint Registration
+- Windows delivers `DBT_DEVICEARRIVAL` for **MMDevice endpoints**
+- Interface paths: `\\?\SWD#MMDEVAPI#{...}#{...}`
+- At this point: **Audio endpoints registered and ready** for routing
+- Bluetooth properties available: `fConnected == TRUE`, `DN_STARTED` status
+- Battery information readable (if supported)
+- **UI now safe to update** - device is ready for audio use
+
+### Practical Implementation Details
+
+**Stage Detection Strategy (implemented):**
+1. Monitor interface paths for stage markers:
+   - `INTELAUDIO` or `IntcBtWav` → Stage 1
+   - `SWD#MMDEVAPI` → Stage 2
+2. Subscribe to MMDevice notifications for Stage 3 (primary output change)
+3. Optional: Poll for ~10 seconds after Stage 1 to confirm Stage 2 (Stage2Verifier)
+
+**Readiness Checks:**
+```cpp
+// Stage 2 confirmation requires:
+// - MMDevice endpoint present (SWD#MMDEVAPI path detected), OR
+// - All of: Bluetooth fConnected==TRUE && CM devnode DN_STARTED && battery readable
+
+// Only update persistent UI (tray tooltip) after Stage 2 readiness confirmed
+```
+
+**Removal Detection:**
+- A2DP sideband interface removal (`A2DP_SIDEBAND_INTERFACE`) signals final disconnect
+- Single reliable marker for device removal
+
+### Code Examples
+
+**Bluetooth audio device filtering:**
+```cpp
+bool IsAudioDevice(const BLUETOOTH_DEVICE_INFO& devInfo) {
+    std::wstring name = devInfo.szName;
+    std::transform(name.begin(), name.end(), name.begin(), ::towlower);
+
+    return (name.find(L"headphone") != std::wstring::npos ||
+            name.find(L"headset") != std::wstring::npos ||
+            name.find(L"earbud") != std::wstring::npos ||
+            name.find(L"speaker") != std::wstring::npos);
+}
+```
+
+**COM initialization for MMDevice:**
+```cpp
+// In WinMain():
+CoInitializeEx(NULL, COINIT_MULTITHREADED);
+
+IMMDeviceEnumerator* pEnumerator = NULL;
+CoCreateInstance(__uuidof(MMDeviceEnumerator), NULL, CLSCTX_ALL,
+                 __uuidof(IMMDeviceEnumerator), (void**)&pEnumerator);
+if (pEnumerator) {
+    AudioNotificationClient* pClient = new AudioNotificationClient();
+    pEnumerator->RegisterEndpointNotificationCallback(pClient);
+}
+
+// On exit:
+CoUninitialize();
+```
+
+**IMMNotificationClient callbacks:**
+```cpp
+class AudioNotificationClient : public IMMNotificationClient {
+    HRESULT OnDefaultDeviceChanged(EDataFlow flow, ERole role, LPCWSTR pwstrDeviceId) {
+        // Called when default audio device changes (Stage 3 marker)
+        if (flow == eRender) {
+            // Match to Bluetooth device and show "Now using X for audio"
+        }
+        return S_OK;
+    }
+
+    HRESULT OnDeviceStateChanged(LPCWSTR pwstrDeviceId, DWORD dwNewState) {
+        // Called when endpoint state changes (Stage 2 marker)
+        return S_OK;
+    }
+};
+```
+
+---
+
 ## Implementation Timeline
 
 ### Commit 1 (cacdcfb): Architecture Refactoring
