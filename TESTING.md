@@ -1,5 +1,30 @@
 # Testing & Validation Guide
 
+**Complete testing reference with real device logs, validation procedures, and debugging tips.**
+
+---
+
+## Quick Reference
+
+### ✅ Validation Summary
+- Single device connection/disconnection
+- Multiple simultaneous device connections
+- Stage 1 → 2 → 3 progression verified
+- Default output device changes working
+- Device registry add/remove/update functional
+- Tooltip single-device formatting correct
+- Tooltip multi-device formatting correct
+- Tooltip empty state working
+- Notification debouncing verified (1-second window)
+- All modules build cleanly with zero errors/warnings
+
+### ✅ Tested Devices
+- **Sony WH-1000XM3** (Hands-Free AG + Avrcp Transport profiles)
+- **Multiple simultaneous Bluetooth audio endpoints**
+- **Connection/disconnection cycles**
+
+---
+
 ## Real-World Device Logs
 
 This document contains actual debug output from HeadphonesBattery Monitor running with real Bluetooth audio devices.

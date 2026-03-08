@@ -254,48 +254,18 @@ Removal: A2DP_SIDEBAND_INTERFACE notification
 
 ## Testing & Validation
 
-### Real-World Device Logs
+For comprehensive testing documentation, real device logs, validation procedures, and debugging tips, see **[TESTING.md](TESTING.md)**.
 
-**Stage 1 Arrival (Immediate):**
-```
-14:23:37:781  WindowProc: WM_DEVICECHANGE - DBT_DEVICEARRIVAL
-14:23:37:781  HandleDeviceInterfaceArrival: interface path=\\?\INTELAUDIO#...IntcBtWaveRender
-14:23:37:781  [Stage 1 Marker] Driver interface detected
-```
+The testing guide includes:
+- **Real-World Device Logs** - Actual debug output from device connection/removal
+- **Timing Analysis** - Stage 1→2 gap measurements (~8-9 seconds)
+- **Validation Checklist** - Step-by-step verification procedures
+- **Multi-Device Scenarios** - Tooltip states and device switching
+- **Debugging Tips** - How to capture and analyze logs
+- **Log Message Filtering** - Module-prefixed filtering guide
+- **Troubleshooting Reference** - Common issues and solutions
 
-**Stage 2 Arrival (~8-9 seconds later):**
-```
-14:23:46:023  WindowProc: WM_DEVICECHANGE - DBT_DEVICEARRIVAL
-14:23:46:023  HandleDeviceInterfaceArrival: interface path=\\?\SWD#MMDEVAPI#...
-14:23:46:023  [Stage 2 Marker] MMDevice endpoint detected
-14:23:46:023  ShowStage2Connected: Battery: 85%
-14:23:46:023  [MMDevice] OnDefaultDeviceChanged callback
-```
-
-**Device Removal:**
-```
-14:24:58:322  HandleDeviceInterfaceArrival: interface path=\\?\BTHENUM#...A2DP_SIDEBAND_INTERFACE
-14:24:58:322  [Removal Marker] Final disconnect detected
-14:24:58:322  ShowDisconnected: Device removed from registry
-```
-
-### Validation Checklist
-
-- ✅ Single device connection/disconnection
-- ✅ Multiple simultaneous device connections
-- ✅ Stage 1 → 2 → 3 progression
-- ✅ Default output device changes
-- ✅ Device registry add/remove/update
-- ✅ Tooltip single-device formatting
-- ✅ Tooltip multi-device formatting
-- ✅ Tooltip empty state
-- ✅ Notification debouncing
-- ✅ All modules build cleanly with zero errors/warnings
-
-### Tested Devices
-- Sony WH-1000XM3 (Hands-Free AG + Avrcp Transport profiles)
-- Multiple simultaneous Bluetooth audio endpoints
-- Connection/disconnection cycles
+All features have been validated with real devices (Sony WH-1000XM3, simultaneous connections, etc.).
 
 ---
 
