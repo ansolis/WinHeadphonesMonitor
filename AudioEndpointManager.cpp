@@ -1,3 +1,52 @@
+/*
+ * AudioEndpointManager.cpp
+ * 
+ * MODULE: Audio Endpoint Manager (MMDevice Integration)
+ * PURPOSE: Implements Windows MMDevice API notifications for audio endpoint detection
+ * 
+ * DESCRIPTION:
+ *   Provides the implementation for IMMNotificationClient to receive Windows audio subsystem
+ *   notifications. Detects when Bluetooth device endpoints are registered (Stage 2) and when
+ *   a device becomes the primary audio output (Stage 3).
+ * 
+ *   Key callbacks:
+ *   - OnDefaultDeviceChanged() - Triggered when primary output device changes (Stage 3 marker)
+ *   - OnDeviceStateChanged() - Triggered when endpoint state changes (Stage 2 marker)
+ *   - OnDeviceAdded() - Triggered when new endpoint is added to system
+ *   - OnDeviceRemoved() - Triggered when endpoint is removed from system
+ * 
+ * KEY OPERATIONS:
+ *   - Initialize() - Register this object as notification client with MMDevice
+ *   - OnDefaultDeviceChanged() - Handle primary device change, trigger Stage 3 notification
+ *   - OnDeviceStateChanged() - Handle endpoint state transitions, detect Stage 2 readiness
+ *   - HandleEndpointFriendlyName() - Extract device name from endpoint properties
+ * 
+ * LOGGING:
+ *   All output prefixed with "[AudioEndpointManager]" for easy filtering
+ *   Examples:
+ *     [AudioEndpointManager] DefaultDeviceChanged: 'WH-1000XM3' (eRender, ACTIVE)
+ *     [AudioEndpointManager] DeviceStateChanged: 'Sony Device' state=DEVICE_STATE_ACTIVE
+ *     [AudioEndpointManager] OnDeviceAdded: 'Headphones' (COM object initialized)
+ * 
+ * IMPLEMENTATION NOTES:
+ *   - COM reference counting: AddRef/Release on IMMNotificationClient methods
+ *   - ComPtr for automatic COM object lifetime management
+ *   - Callbacks invoked from Windows audio subsystem threads
+ *   - GetDefaultAudioEndpoint() used to identify primary device
+ *   - Device property access via IPropertyStore (PKEY_Device_FriendlyName)
+ * 
+ * COM INTERFACES:
+ *   - IMMNotificationClient: Provides notification callbacks
+ *   - IMMDeviceEnumerator: Enumerates audio endpoints
+ *   - IMMDevice: Represents individual audio endpoint
+ *   - IPropertyStore: Accesses device properties
+ * 
+ * ERROR HANDLING:
+ *   - HRESULT checked on all COM operations
+ *   - Debug output on failed property queries
+ *   - Graceful degradation if device name retrieval fails
+ */
+
 #include "AudioEndpointManager.h"
 #include <endpointvolume.h>
 #include <mmdeviceapi.h>

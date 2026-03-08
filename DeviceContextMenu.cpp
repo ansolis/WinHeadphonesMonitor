@@ -1,3 +1,65 @@
+/*
+ * DeviceContextMenu.cpp
+ * 
+ * MODULE: Device Context Menu (Tray Icon Controls)
+ * PURPOSE: Implements right-click context menu functionality for device control
+ * 
+ * DESCRIPTION:
+ *   Provides implementation for right-click context menu shown on tray icon.
+ *   Queries DeviceRegistry to build dynamic menu items for all connected devices.
+ *   Handles menu display, user selection, and command processing.
+ * 
+ * KEY OPERATIONS:
+ *   - ShowMenu() - Create and display menu at cursor position
+ *   - PopulateDeviceMenus() - Build menu items from DeviceRegistry
+ *   - HandleCommand() - Process menu selection (ID-based routing)
+ *   - UpdateMenuItems() - Refresh menu when device state changes
+ * 
+ * MENU CONSTRUCTION:
+ *   1. Get current device list from DeviceRegistry
+ *   2. Assign sequential menu IDs to each device
+ *   3. Add device names with status indicators
+ *   4. Add separator
+ *   5. Add Exit option
+ *   6. Display menu with TrackPopupMenu()
+ * 
+ * STATUS INDICATORS:
+ *   - "(ACTIVE OUTPUT)" - Device is primary audio output (Stage 3)
+ *   - "(connected)" - Device connected but not default (Stage 2)
+ *   - "(disconnected)" - Device no longer available
+ *   - No indicator - Unknown state
+ * 
+ * COMMAND HANDLING:
+ *   Currently handles:
+ *   - IDM_EXIT: Application exit command
+ *   
+ *   Future expansion for:
+ *   - Device selection (set as default output)
+ *   - Device disconnect
+ *   - Properties dialog
+ *   - Battery level display
+ * 
+ * LOGGING:
+ *   [DeviceContextMenu] prefix on all debug output
+ *   Examples:
+ *     [DeviceContextMenu] Initialized
+ *     [DeviceContextMenu] ShowMenu invoked at 640, 480
+ *     [DeviceContextMenu] PopulateDeviceMenus: Found 2 devices
+ *     [DeviceContextMenu] HandleCommand: ID=40002 (device select)
+ * 
+ * INTEGRATION:
+ *   - Called by: WindowManager on tray icon right-click
+ *   - Uses: DeviceRegistry for device list and status
+ *   - Reads: Device names, connection state, default output flag
+ *   - Outputs: Menu display via OS and command results
+ * 
+ * IMPLEMENTATION NOTES:
+ *   - TrackPopupMenu() blocks until user selection
+ *   - Menu IDs: Custom range starting from IDM_DEVICE_BASE
+ *   - Global instance: g_deviceContextMenu (created in WinMain)
+ *   - Device count determined dynamically at menu display time
+ */
+
 #include "DeviceContextMenu.h"
 #include "DeviceRegistry.h"
 #include <mmdeviceapi.h>

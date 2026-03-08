@@ -1,3 +1,103 @@
+/*
+ * WindowManager.cpp
+ * 
+ * MODULE: Window Manager (Message Handling & Device Notifications)
+ * PURPOSE: Implements message-only window for device and tray notification handling
+ * 
+ * DESCRIPTION:
+ *   Implements the core message-only window infrastructure that receives all device
+ *   and user interface notifications. Registers window class, creates invisible window,
+ *   and dispatches messages to appropriate handlers.
+ * 
+ * WINDOW CLASS REGISTRATION:
+ *   1. Create WNDCLASSEXW structure
+ *   2. Set WindowProc callback
+ *   3. Set window class name
+ *   4. Register with RegisterClassExW()
+ *   5. Save class name for CreateWindowEx()
+ * 
+ * WINDOW CREATION:
+ *   1. Create message-only window with CreateWindowExW()
+ *   2. Parent: HWND_MESSAGE (special constant for message-only windows)
+ *   3. No coordinates (message-only windows are invisible)
+ *   4. Store window handle for device notification registration
+ *   5. Return HWND to caller
+ * 
+ * DEVICE NOTIFICATION SETUP:
+ *   1. After window creation, call RegisterDeviceNotification()
+ *   2. Register for DBT_DEVTYP_DEVICEINTERFACE
+ *   3. Subscribe to GUID_DEVINTERFACE_BLUETOOTH_RADIO
+ *   4. Window receives WM_DEVICECHANGE for all Bluetooth events
+ * 
+ * WINDOW PROCEDURE (WindowProc):
+ *   Main message dispatch handler:
+ *   - WM_DEVICECHANGE: Route to HandleDeviceInterfaceArrival()
+ *   - WM_TRAYICON: Route to DeviceContextMenu->ShowMenu() or handle
+ *   - WM_DESTROY: Clean up and signal exit
+ *   - Default: DefWindowProcW() for unhandled messages
+ * 
+ * MESSAGE DISPATCH:
+ *   WM_DEVICECHANGE handling:
+ *   1. Extract DEV_BROADCAST_DEVICEINTERFACE_W from lParam
+ *   2. Check event type (DBT_DEVICEARRIVAL, DBT_DEVICEREMOVE*)
+ *   3. Extract device interface GUID
+ *   4. Call HandleDeviceInterfaceArrival() for new devices
+ *   5. Update DeviceRegistry for removals
+ * 
+ *   WM_TRAYICON handling:
+ *   1. Determine event type (left-click, right-click, balloon click)
+ *   2. Get current mouse position if needed
+ *   3. Call appropriate handler (ShowMenu, etc.)
+ * 
+ * DEVICE INTERFACE EXTRACTION:
+ *   DEV_BROADCAST_DEVICEINTERFACE_W contains:
+ *   - dbch_size: Structure size
+ *   - dbch_devicetype: Must be DBT_DEVTYP_DEVICEINTERFACE
+ *   - dbch_reserved: Reserved field
+ *   - dbcl_classगuid: Device class GUID (e.g., BLUETOOTH_RADIO)
+ *   - dbcc_name: Device name/path
+ * 
+ * LOGGING:
+ *   [WindowManager] prefix on all debug output
+ *   Examples:
+ *     [WindowManager] RegisterWindowClass: Class registered
+ *     [WindowManager] CreateDeviceMonitorWindow: HWND=0x00020456
+ *     [WindowManager] WindowProc: WM_DEVICECHANGE (DBT_DEVICEARRIVAL)
+ *     [WindowManager] Device interface arrival detected
+ *     [WindowManager] WM_TRAYICON: Right-click at 640,480
+ * 
+ * FUNCTION CALLS:
+ *   - RegisterClassExW() - Register window class
+ *   - CreateWindowExW() - Create message-only window
+ *   - RegisterDeviceNotificationW() - Subscribe to device events
+ *   - UnregisterDeviceNotification() - Cleanup (on exit)
+ *   - DefWindowProcW() - Default message handling
+ * 
+ * FORWARD DECLARATIONS:
+ *   - HandleDeviceInterfaceArrival() - Defined in HeadphonesBattery.cpp (main)
+ *   - GetHeadphonesBatteryLevel() - Defined in HeadphonesBattery.cpp (main)
+ * 
+ * INTEGRATION:
+ *   - Called by: WinMain for window creation
+ *   - Calls: HandleDeviceInterfaceArrival() on device arrival
+ *   - Calls: DeviceContextMenu->ShowMenu() on tray right-click
+ *   - Receives: OS device notifications (WM_DEVICECHANGE)
+ *   - Receives: User tray notifications (WM_TRAYICON)
+ * 
+ * THREAD SAFETY:
+ *   - Message-only window processes on main thread
+ *   - All handlers run on main thread context
+ *   - Device notifications are OS-managed (thread-safe)
+ *   - Window handle safe for cross-thread access (read-only)
+ * 
+ * CLEANUP:
+ *   On WM_DESTROY or application exit:
+ *   1. Call UnregisterDeviceNotificationW() to stop notifications
+ *   2. Call DestroyWindow() to remove window
+ *   3. Call UnregisterClassW() to unregister class
+ *   4. PostQuitMessage() to exit message loop
+ */
+
 #include "WindowManager.h"
 #include "TrayNotification.h"
 #include "BluetoothDeviceManager.h"

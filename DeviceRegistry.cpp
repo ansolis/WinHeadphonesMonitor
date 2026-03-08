@@ -1,3 +1,38 @@
+/*
+ * DeviceRegistry.cpp
+ * 
+ * MODULE: Device Registry (Multi-Device Support)
+ * PURPOSE: Implements central device state management and tracking
+ * 
+ * DESCRIPTION:
+ *   Provides the implementation for maintaining a registry of all connected Bluetooth
+ *   audio devices. Handles adding, updating, removing, and querying device state
+ *   including connection status, battery level, device stage, and default output flag.
+ * 
+ *   Thread-safe access via shared pointer management and clear ownership semantics.
+ * 
+ * KEY OPERATIONS:
+ *   - Add/Update: AddOrUpdateDevice() - registers new or updates existing device
+ *   - Remove: RemoveDevice() - removes device by Bluetooth address
+ *   - Query: GetDevice(), GetDefaultOutputDevice(), GetConnectedDeviceCount()
+ *   - Update: SetDefaultOutputDevice(), UpdateDeviceStage()
+ *   - Debug: LogAllDevices() - outputs all devices to debug log
+ * 
+ * LOGGING:
+ *   All operations prefixed with "[DeviceRegistry]" for easy filtering
+ *   Examples:
+ *     [DeviceRegistry] AddOrUpdateDevice: 'WH-1000XM3' (addr=CC:98:8B:56:B4:5C)
+ *     [DeviceRegistry] SetDefaultOutputDevice: (none) -> 'WH-1000XM3'
+ *     [DeviceRegistry] Registered devices (2):
+ *       - 'WH-1000XM3 Hands-Free AG' connected=1 default=1 battery=85%
+ * 
+ * IMPLEMENTATION NOTES:
+ *   - Uses std::map for device storage, keyed by Bluetooth address
+ *   - Global instance: g_deviceRegistry (created in main)
+ *   - Device state persisted across updates
+ *   - Automatic cleanup on device removal
+ */
+
 #include "DeviceRegistry.h"
 #include <sstream>
 

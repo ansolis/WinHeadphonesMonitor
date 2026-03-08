@@ -1,3 +1,53 @@
+/*
+ * NotificationManager.cpp
+ * 
+ * MODULE: Notification Manager (Three-Stage Notifications)
+ * PURPOSE: Implements three-stage device lifecycle notifications and smart tray tooltips
+ * 
+ * DESCRIPTION:
+ *   Implements the three-stage notification system for Bluetooth device lifecycle.
+ *   Shows distinct balloon notifications for each stage and synchronizes tray tooltip
+ *   to reflect current device state.
+ * 
+ *   Debouncing prevents duplicate notifications from rapid interface arrivals.
+ *   Smart tooltip formatting handles single-device, multi-device, and disconnected states.
+ * 
+ * KEY OPERATIONS:
+ *   - Stage 1: Informational balloon only, no tooltip update yet
+ *   - Stage 2: Connected balloon + battery, update tooltip to device name
+ *   - Stage 3: "Now using for audio" balloon, add "(ACTIVE OUTPUT)" to tooltip
+ *   - Disconnect: "Disconnected" balloon, update tooltip to remaining device or "disconnected"
+ * 
+ * TOOLTIP FORMATTING:
+ *   Single device scenarios:
+ *     - Active: "WH-1000XM3 (ACTIVE OUTPUT)"
+ *     - Standby: "WH-1000XM3 (standby)"
+ *   Multi-device scenarios:
+ *     - "WH-1000XM3 (ACTIVE) + 1 other"
+ *     - "Sony Device (ACTIVE) + 2 others"
+ *   Disconnected:
+ *     - "Bluetooth audio: disconnected"
+ * 
+ * DEBOUNCING:
+ *   Tracks last notification message and timestamp
+ *   Suppresses duplicate messages within 1 second
+ *   Prevents notification spam from multiple simultaneous interface events
+ * 
+ * LOGGING:
+ *   All operations prefixed with "[NotificationManager]"
+ *   Examples:
+ *     [NotificationManager] STAGE 1: Detecting 'WH-1000XM3'
+ *     [NotificationManager] STAGE 2: Connected 'WH-1000XM3' battery=85%
+ *     [NotificationManager] STAGE 3: Default Output 'WH-1000XM3'
+ *     [NotificationManager] UpdateTrayTooltip: 'WH-1000XM3 (ACTIVE OUTPUT)'
+ * 
+ * IMPLEMENTATION NOTES:
+ *   - Global instance: g_notificationManager (created in main)
+ *   - Uses TrayNotification for actual balloon display
+ *   - Uses DeviceRegistry for device information
+ *   - GetTickCount64() for debounce timing
+ */
+
 #include "NotificationManager.h"
 #include "TrayNotification.h"
 #include <sstream>

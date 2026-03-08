@@ -1,3 +1,132 @@
+/*
+ * HeadphonesBattery.cpp
+ * 
+ * MODULE: Main Application (Orchestration & Entry Point)
+ * PURPOSE: Application orchestration, module initialization, and main message loop
+ * 
+ * DESCRIPTION:
+ *   Main application file serving as the orchestrator for all 10 supporting modules.
+ *   Responsible for:
+ *   - Initializing Windows API (COM, device notifications)
+ *   - Creating and initializing all modules (registry, notifications, managers)
+ *   - Creating the main message-only window for device notifications
+ *   - Running the main message loop
+ *   - Cleaning up all resources on exit
+ * 
+ *   Implements key global functions that are called from other modules:
+ *   - HandleDeviceInterfaceArrival() - Process device arrival notifications
+ *   - GetHeadphonesBatteryLevel() - Query battery from current device
+ *   - WinMain() - Application entry point
+ * 
+ * APPLICATION STARTUP SEQUENCE:
+ *   1. WinMain() entry point
+ *   2. CoInitializeEx(COINIT_MULTITHREADED) - Initialize COM for MMDevice
+ *   3. Create module instances:
+ *      - g_deviceRegistry = new DeviceRegistry()
+ *      - g_notificationManager = new NotificationManager()
+ *      - g_stage2Verifier = new Stage2Verifier()
+ *      - g_audioEndpointManager = new AudioEndpointManager()
+ *      - g_deviceContextMenu = new DeviceContextMenu()
+ *      - g_trayNotification = new TrayNotification()
+ *   4. Initialize window infrastructure:
+ *      - RegisterWindowClass(hInstance)
+ *      - CreateDeviceMonitorWindow(hInstance)
+ *   5. Initialize audio endpoint monitoring
+ *   6. Enumerate initial Bluetooth devices
+ *      - EnumerateBluetoothAudioDevices()
+ *      - AddOrUpdateDevice() for each
+ *   7. Enter main message loop:
+ *      - GetMessage/TranslateMessage/DispatchMessage
+ *   8. Cleanup on exit:
+ *      - Delete all module instances
+ *      - CoUninitialize() - Cleanup COM
+ * 
+ * GLOBAL INSTANCES:
+ *   Created in main, accessible throughout application:
+ *   - extern DeviceRegistry* g_deviceRegistry
+ *   - extern NotificationManager* g_notificationManager
+ *   - extern Stage2Verifier* g_stage2Verifier
+ *   - extern AudioEndpointManager* g_audioEndpointManager
+ *   - extern DeviceContextMenu* g_deviceContextMenu
+ *   - extern TrayNotification* g_trayNotification
+ * 
+ * DEVICE ARRIVAL HANDLING:
+ *   HandleDeviceInterfaceArrival() called when device arrives:
+ *   1. Get device address and name via Bluetooth APIs
+ *   2. Call g_deviceRegistry->AddOrUpdateDevice()
+ *   3. Show Stage 1 notification ("Detecting...")
+ *   4. Call g_stage2Verifier->StartPolling() for Stage 2 verification
+ *   5. Log device arrival details
+ * 
+ * BATTERY LEVEL QUERY:
+ *   GetHeadphonesBatteryLevel() called from Stage 2 notifications:
+ *   1. Get default output device from AudioEndpointManager
+ *   2. Get device node from DeviceRegistry
+ *   3. Call ReadBatteryFromDevInst() to get percentage
+ *   4. Format battery string ("85%" or "UNKNOWN")
+ *   5. Return to caller
+ * 
+ * MODULE DEPENDENCIES:
+ *   Modules initialized in order of dependency:
+ *   1. DeviceRegistry - Foundational state management
+ *   2. NotificationManager - Uses registry for device info
+ *   3. Stage2Verifier - Uses registry for readiness checks
+ *   4. AudioEndpointManager - MMDevice callback support
+ *   5. DeviceContextMenu - Uses registry for device list
+ *   6. TrayNotification - UI component
+ *   7. WindowManager - Central message dispatcher
+ * 
+ * INTEGRATION WITH MODULES:
+ *   WinMain orchestrates initialization and cleanup
+ *   HandleDeviceInterfaceArrival() bridges WindowManager and application logic
+ *   GetHeadphonesBatteryLevel() queries across multiple modules
+ * 
+ * LOGGING:
+ *   [HeadphonesBattery] prefix on all debug output
+ *   Examples:
+ *     [HeadphonesBattery] WinMain: Starting application
+ *     [HeadphonesBattery] COM Initialization: Success
+ *     [HeadphonesBattery] HandleDeviceInterfaceArrival: 'WH-1000XM3'
+ *     [HeadphonesBattery] GetHeadphonesBatteryLevel: 85%
+ * 
+ * WINDOWS APIS USED:
+ *   - CoInitializeEx/CoUninitialize: COM initialization
+ *   - GetMessage/DispatchMessage: Message loop
+ *   - OutputDebugStringW: Debug logging
+ *   - GetTickCount64: Timing operations
+ *   - BluetoothAPIs: Device enumeration
+ *   - SetupAPI: Device property access
+ *   - Configuration Manager: Device node operations
+ * 
+ * RESOURCE MANAGEMENT:
+ *   - Dynamic module allocation in WinMain
+ *   - Proper cleanup in reverse initialization order
+ *   - COM initialization/uninitialization pairing
+ *   - Window cleanup and class deregistration
+ *   - All memory freed before exit
+ * 
+ * THREAD SAFETY:
+ *   - Main thread runs WinMain() and message loop
+ *   - Background threads spawned by:
+ *     - Stage2Verifier polling thread
+ *     - AudioEndpointManager callbacks (from Windows audio thread)
+ *   - All UI updates on main thread
+ *   - Registry access synchronized via flags
+ * 
+ * ERROR HANDLING:
+ *   - Graceful degradation if modules fail to initialize
+ *   - Non-blocking notification failures
+ *   - Continued operation if individual device operations fail
+ *   - Debug output on all errors
+ * 
+ * FUTURE ENHANCEMENTS:
+ *   - Configuration file loading (battery threshold warnings)
+ *   - Advanced device filtering (by model, vendor, etc.)
+ *   - Device-specific property reading (signal strength, connection time)
+ *   - Multi-output device switching UI
+ *   - System event logging for troubleshooting
+ */
+
 #include <windows.h>
 #include <setupapi.h>
 #include <devpkey.h>

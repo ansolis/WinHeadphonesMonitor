@@ -1,3 +1,49 @@
+/*
+ * AudioEndpointManager.h
+ * 
+ * MODULE: Audio Endpoint Manager (MMDevice Integration)
+ * PURPOSE: Integrates with Windows MMDevice API to detect audio endpoint changes
+ * 
+ * DESCRIPTION:
+ *   Implements IMMNotificationClient to receive Windows audio subsystem notifications.
+ *   Detects when Bluetooth device endpoints are registered (Stage 2) and when a device
+ *   becomes the primary audio output (Stage 3).
+ * 
+ *   Provides authoritative information about audio routing and device status from the
+ *   Windows audio subsystem, complementing Bluetooth API and device notifications.
+ * 
+ * USAGE:
+ *   1. Global instance: extern AudioEndpointManager* g_audioEndpointManager (created in main)
+ *   2. Initialize in WinMain(): g_audioEndpointManager->Initialize()
+ *   3. Receives callbacks automatically:
+ *      - OnDefaultDeviceChanged() - Device becomes primary (Stage 3)
+ *      - OnDeviceStateChanged() - Endpoint status changes (Stage 2 marker)
+ *      - OnDeviceAdded() - New endpoint added (logging)
+ *      - OnDeviceRemoved() - Endpoint removed (logging)
+ * 
+ * KEY METHODS:
+ *   - Initialize() - Register notification client with MMDevice
+ *   - OnDefaultDeviceChanged() - Callback for primary device change
+ *   - OnDeviceStateChanged() - Callback for endpoint state change
+ *   - OnDeviceAdded/OnDeviceRemoved() - Callbacks for endpoint add/remove
+ * 
+ * WINDOWS AUDIO CONCEPTS:
+ *   - MMDevice: Windows multimedia device enumeration and management API
+ *   - Endpoint: Audio input/output point (e.g., headphones speakers)
+ *   - Default Device: The device Windows audio subsystem uses for app audio
+ *   - Device State: DEVICE_STATE_ACTIVE/DISABLED/NOTPRESENT/UNPLUGGED
+ * 
+ * INTEGRATION:
+ *   - Called by: Windows audio subsystem (callbacks are automatic)
+ *   - Uses: COM (IUnknown, IMMNotificationClient, IMMDeviceEnumerator)
+ *   - Triggers: Notifications through NotificationManager on state changes
+ *   - Outputs: Debug logging of all endpoint changes
+ * 
+ * THREAD SAFETY:
+ *   - Callbacks may be invoked from Windows audio subsystem threads
+ *   - Should minimize work in callbacks, possibly queue for main thread
+ */
+
 #pragma once
 
 #include <windows.h>

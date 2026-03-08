@@ -1,3 +1,65 @@
+/*
+ * BluetoothDeviceManager.cpp
+ * 
+ * MODULE: Bluetooth Device Manager (Generic Device Enumeration)
+ * PURPOSE: Implements generic Bluetooth audio device enumeration and filtering
+ * 
+ * DESCRIPTION:
+ *   Implements the core Bluetooth device enumeration logic that works with any audio device.
+ *   Uses Windows Bluetooth APIs to discover all paired/connected audio devices and maintain
+ *   a registry of active devices.
+ * 
+ *   Key functions:
+ *   - EnumerateBluetoothAudioDevices() - Search for all Bluetooth audio devices
+ *   - ParseBluetoothAddress() - Convert device ID string to MAC address
+ *   - IsAudioDeviceType() - Determine if device is audio-capable
+ *   - LookupDevice() - Query registry by Bluetooth address
+ * 
+ * ENUMERATION STRATEGY:
+ *   1. Call BluetoothFindFirstDevice() with search criteria
+ *   2. Iterate through all devices with BluetoothFindNextDevice()
+ *   3. For each device, get properties (name, address, class)
+ *   4. Check if class matches audio device criteria
+ *   5. Extract MAC address from device ID string
+ *   6. Store in global g_bluetoothAudioDevices map
+ *   7. Return populated map to caller
+ * 
+ * ADDRESS PARSING:
+ *   Bluetooth address format in device ID: "aa:bb:cc:dd:ee:ff" (12 hex chars)
+ *   Extraction: Read last 12 characters of device ID string
+ *   Conversion: Parse as hex pairs into BLUETOOTH_ADDRESS structure
+ *   Validation: Verify all 6 bytes were successfully parsed
+ * 
+ * DEVICE CLASS FILTERING:
+ *   Checks COD (Class of Device) bits for:
+ *   - COD_MAJOR_AUDIO flag (indicates audio rendering/capture)
+ *   - Audio device types: Headphones, Speakers, Car audio, Hearing aids
+ *   - Wireless headsets and generic audio devices
+ * 
+ * GLOBAL STATE:
+ *   - g_bluetoothAudioDevices: Map of discovered devices (address -> properties)
+ *   - Updated at startup in EnumerateBluetoothAudioDevices()
+ *   - Persists across polling cycles
+ *   - Cleaned up on application exit
+ * 
+ * LOGGING:
+ *   [BluetoothDeviceManager] prefix on all debug output
+ *   Logs: Device enumeration, filtering, address parsing results
+ *   Debug format: Device name, MAC address, class, connection status
+ * 
+ * WINDOWS API CALLS:
+ *   - BluetoothFindFirstDevice() - Start enumeration search
+ *   - BluetoothFindNextDevice() - Get next device in search
+ *   - BluetoothFindDeviceClose() - Clean up search handle
+ *   - BluetoothGetDeviceInfo() - Get device properties
+ * 
+ * ERROR HANDLING:
+ *   - NULL handle checks on search operations
+ *   - BLUETOOTH_ADDRESS parsing validation
+ *   - Device class verification before adding to registry
+ *   - Debug output on enumeration failures
+ */
+
 #include "BluetoothDeviceManager.h"
 #include <cwctype>
 #include <algorithm>

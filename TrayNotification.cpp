@@ -1,3 +1,99 @@
+/*
+ * TrayNotification.cpp
+ * 
+ * MODULE: Tray Notification (System Tray UI)
+ * PURPOSE: Implements system tray icon management and notification display
+ * 
+ * DESCRIPTION:
+ *   Implements tray icon integration via Windows Shell API (Shell_NotifyIcon).
+ *   Manages the small icon that appears in the system tray, balloon notifications,
+ *   and tooltip text that displays current Bluetooth device status.
+ * 
+ * KEY OPERATIONS:
+ *   - InitializeTrayIcon() - Add icon to tray with initial tooltip
+ *   - ShowBalloonNotification() - Display popup balloon with message
+ *   - UpdateTrayTooltip() - Refresh tooltip text (device status)
+ *   - RemoveTrayIcon() - Remove icon from tray on exit
+ *   - ProcessTrayMessage() - Handle tray icon callbacks
+ * 
+ * TRAY ICON LIFECYCLE:
+ *   1. WinMain creates window and icon
+ *   2. InitializeTrayIcon() adds icon to tray via Shell_NotifyIcon(NIM_ADD)
+ *   3. Icon visible in tray, displays tooltips on hover
+ *   4. Balloon notifications show via Shell_NotifyIcon(NIM_MODIFY) with NIIF flags
+ *   5. RemoveTrayIcon() removes icon via Shell_NotifyIcon(NIM_DELETE) on exit
+ * 
+ * NOTIFYICONDATAW STRUCTURE:
+ *   Contains:
+ *   - hWnd: Window handle for callbacks
+ *   - uID: Icon ID (unique identifier)
+ *   - uFlags: What fields are valid (szTip, hIcon, uCallbackMessage, etc.)
+ *   - uCallbackMessage: Custom message ID (WM_TRAYICON)
+ *   - hIcon: Icon to display
+ *   - szTip: Tooltip text (max 128 chars)
+ *   - dwState: Icon state (NIS_HIDDEN, etc.)
+ *   - szInfo: Balloon text
+ *   - uTimeout: Balloon timeout (ms)
+ *   - szInfoTitle: Balloon title
+ *   - dwInfoFlags: Balloon type (NIIF_INFO, NIIF_WARNING, NIIF_ERROR)
+ * 
+ * MESSAGE CONSTANTS:
+ *   - WM_TRAYICON: Custom message ID sent by OS on user interaction
+ *   - IDM_EXIT: Menu command ID for application exit
+ * 
+ * BALLOON NOTIFICATIONS:
+ *   Triggered via NotificationManager:
+ *   - ShowBalloonNotification(title, text, timeout)
+ *   - Updates tooltip simultaneously
+ *   - Balloon displays for specified timeout (ms)
+ *   - User can click balloon to activate window
+ * 
+ * TOOLTIP UPDATES:
+ *   Called by NotificationManager on device status change:
+ *   - UpdateTrayTooltip(status)
+ *   - Text shown on mouse hover over tray icon
+ *   - Max 128 characters (Windows limitation)
+ *   - Examples:
+ *     "WH-1000XM3 (ACTIVE OUTPUT)"
+ *     "Sony Device (ACTIVE) + 1 other"
+ *     "Bluetooth audio: disconnected"
+ * 
+ * EVENT ROUTING:
+ *   Windows sends WM_TRAYICON when:
+ *   - User left-clicks tray icon
+ *   - User right-clicks tray icon
+ *   - Balloon notification clicked
+ *   - Mouse hovers over icon (for tooltip)
+ *   
+ *   ProcessTrayMessage() determines event type and routes appropriately
+ * 
+ * LOGGING:
+ *   [TrayNotification] prefix on all debug output
+ *   Examples:
+ *     [TrayNotification] InitializeTrayIcon: hicon=0x12345678
+ *     [TrayNotification] ShowBalloon: 'Connected WH-1000XM3' (2500ms)
+ *     [TrayNotification] UpdateTooltip: 'WH-1000XM3 (ACTIVE OUTPUT)'
+ *     [TrayNotification] RemoveTrayIcon: Complete
+ * 
+ * SHELL API CALLS:
+ *   - Shell_NotifyIcon(NIM_ADD) - Add icon to tray
+ *   - Shell_NotifyIcon(NIM_MODIFY) - Update icon properties
+ *   - Shell_NotifyIcon(NIM_MODIFY + balloon) - Show notification
+ *   - Shell_NotifyIcon(NIM_DELETE) - Remove icon from tray
+ * 
+ * ERROR HANDLING:
+ *   - Shell_NotifyIcon returns BOOL (success/failure)
+ *   - Failures logged but non-fatal (tray is optional feature)
+ *   - Graceful degradation if tray unavailable
+ * 
+ * GLOBAL STATE:
+ *   - NOTIFYICONDATAW structure initialized once
+ *   - Icon handle stored for property updates
+ *   - Window handle stored for callbacks
+ *   - Tooltip text updated on each status change
+ *   - Thread-safe for read-only access from main thread only
+ */
+
 #include "TrayNotification.h"
 #include <shellapi.h>
 

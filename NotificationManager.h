@@ -1,3 +1,52 @@
+/*
+ * NotificationManager.h
+ * 
+ * MODULE: Notification Manager (Three-Stage Notifications)
+ * PURPOSE: Manages three-stage device lifecycle notifications and tray tooltip updates
+ * 
+ * DESCRIPTION:
+ *   Handles user-facing notifications for Bluetooth audio device events across three
+ *   distinct stages of device lifecycle, plus disconnect notifications.
+ * 
+ *   Stage 1: "Detecting [device]..." - Driver interfaces detected, device not yet ready
+ *   Stage 2: "[device] connected [Battery: XX%]" - Audio endpoints ready, tray updates
+ *   Stage 3: "Now using [device] for audio" - Device becomes primary output
+ *   Disconnect: "[device] disconnected" - Device removed
+ * 
+ *   Also manages smart tray tooltip formatting:
+ *   - Single device: "[Name] (ACTIVE OUTPUT)" or "[Name] (standby)"
+ *   - Multiple devices: "[Primary] (ACTIVE) + N other(s)"
+ *   - No devices: "Bluetooth audio: disconnected"
+ * 
+ * USAGE:
+ *   1. Global instance: extern NotificationManager* g_notificationManager (created in main)
+ *   2. Call stage-specific methods:
+ *      - g_notificationManager->ShowStage1Detecting(name)
+ *      - g_notificationManager->ShowStage2Connected(name, battery)
+ *      - g_notificationManager->ShowStage3DefaultOutput(name)
+ *      - g_notificationManager->ShowDisconnected(name)
+ *   3. Tooltip automatically updated at stage 2 and 3
+ * 
+ * KEY METHODS:
+ *   - ShowStage1Detecting() - Show "Detecting..." balloon (silent, no tooltip update)
+ *   - ShowStage2Connected() - Show "connected" balloon, update tooltip
+ *   - ShowStage3DefaultOutput() - Show "now using" balloon, add active indicator
+ *   - ShowDisconnected() - Show "disconnected" balloon, update tooltip
+ *   - UpdateTrayTooltip() - Synchronize tooltip with current device state
+ *   - GetCurrentTooltip() - Get formatted tooltip string
+ * 
+ * FEATURES:
+ *   - Debouncing: Prevents duplicate notifications within 1-second window
+ *   - Smart Formatting: Tooltip adapts to single/multi-device scenarios
+ *   - Battery Integration: Displays battery level when available
+ *   - Stage-Aware: Different messages for each stage
+ * 
+ * INTEGRATION:
+ *   - Called by: HandleDeviceInterfaceArrival(), AudioEndpointManager callbacks
+ *   - Uses: DeviceRegistry for device information, TrayNotification for UI updates
+ *   - Outputs: Debug logging and user-facing notifications
+ */
+
 #pragma once
 
 #include <windows.h>
