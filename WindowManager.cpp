@@ -49,6 +49,15 @@ static ULONGLONG g_lastDevnodesNotify = 0;
 static std::wstring g_lastNotifyMessage;
 static ULONGLONG g_lastNotifyTime = 0;
 
+// Helper to format device arrival message with device name
+static std::wstring FormatDeviceArrivalMessage(const std::wstring& deviceName)
+{
+    std::wstring msg = L"[WindowProc] Device arrival detected for: '";
+    msg += deviceName.empty() ? L"(unknown)" : deviceName;
+    msg += L"'\n";
+    return msg;
+}
+
 // Window procedure for handling device notifications and tray events
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {

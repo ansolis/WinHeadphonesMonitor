@@ -2,6 +2,9 @@
 #include <cwctype>
 #include <algorithm>
 
+// Global registry of all detected Bluetooth audio devices
+std::map<std::wstring, BluetoothAudioDevice> g_bluetoothAudioDevices;
+
 // Parse Bluetooth address from device ID string (12 hex chars)
 bool ParseBluetoothAddress(const std::wstring& deviceId, BLUETOOTH_ADDRESS& outAddr)
 {
@@ -53,6 +56,17 @@ bool IsBluetoothDeviceConnected(const BLUETOOTH_ADDRESS& btAddr)
             if (memcmp(devInfo.Address.rgBytes, btAddr.rgBytes, 6) == 0) {
                 isConnected = devInfo.fConnected ? true : false;
                 found = true;
+
+                wchar_t addrBuf[64];
+                _snwprintf_s(addrBuf, _countof(addrBuf), _TRUNCATE, L"%02X:%02X:%02X:%02X:%02X:%02X",
+                    btAddr.rgBytes[5], btAddr.rgBytes[4], btAddr.rgBytes[3], 
+                    btAddr.rgBytes[2], btAddr.rgBytes[1], btAddr.rgBytes[0]);
+
+                wchar_t msg[512];
+                _snwprintf_s(msg, _countof(msg), _TRUNCATE, 
+                    L"[BluetoothDeviceManager] IsBluetoothDeviceConnected: address=%s name='%s' fConnected=%d\n",
+                    addrBuf, devInfo.szName, devInfo.fConnected);
+                OutputDebugStringW(msg);
                 break;
             }
             devInfo.dwSize = sizeof(devInfo);
@@ -60,10 +74,119 @@ bool IsBluetoothDeviceConnected(const BLUETOOTH_ADDRESS& btAddr)
         BluetoothFindDeviceClose(h);
     }
 
+    if (!found) {
+        wchar_t addrBuf[64];
+        _snwprintf_s(addrBuf, _countof(addrBuf), _TRUNCATE, L"%02X:%02X:%02X:%02X:%02X:%02X",
+            btAddr.rgBytes[5], btAddr.rgBytes[4], btAddr.rgBytes[3], 
+            btAddr.rgBytes[2], btAddr.rgBytes[1], btAddr.rgBytes[0]);
+
+        wchar_t msg[256];
+        _snwprintf_s(msg, _countof(msg), _TRUNCATE, 
+            L"[BluetoothDeviceManager] IsBluetoothDeviceConnected: address=%s NOT FOUND in Bluetooth enumeration\n",
+            addrBuf);
+        OutputDebugStringW(msg);
+    }
+
     return found && isConnected;
 }
 
-// Scan all Bluetooth devices and check if any WH-1000XM3 is connected
+// Check if a device name matches a known audio device pattern
+bool IsAudioDeviceType(const std::wstring& deviceName)
+{
+    std::wstring name = deviceName;
+    std::transform(name.begin(), name.end(), name.begin(), ::towlower);
+
+    return (name.find(L"headphone") != std::wstring::npos ||
+            name.find(L"headset") != std::wstring::npos ||
+            name.find(L"earbud") != std::wstring::npos ||
+            name.find(L"speaker") != std::wstring::npos ||
+            name.find(L"airpod") != std::wstring::npos ||
+            name.find(L"buds") != std::wstring::npos ||
+            name.find(L"beats") != std::wstring::npos ||
+            name.find(L"hands-free") != std::wstring::npos ||
+            name.find(L"avrcp") != std::wstring::npos);
+}
+
+// Enumerate all Bluetooth audio devices and populate the registry
+int EnumerateBluetoothAudioDevices()
+{
+    OutputDebugStringW(L"[BluetoothDeviceManager] EnumerateBluetoothAudioDevices: starting enumeration\n");
+
+    BLUETOOTH_DEVICE_SEARCH_PARAMS search = {};
+    search.dwSize = sizeof(search);
+    search.fReturnAuthenticated = TRUE;
+    search.fReturnRemembered = TRUE;
+    search.fReturnUnknown = TRUE;
+    search.fReturnConnected = TRUE;
+
+    BLUETOOTH_DEVICE_INFO devInfo = {};
+    devInfo.dwSize = sizeof(devInfo);
+    HANDLE h = BluetoothFindFirstDevice(&search, &devInfo);
+
+    int foundCount = 0;
+
+    if (h) {
+        do {
+            // Log all devices found
+            wchar_t logMsg[512];
+            _snwprintf_s(logMsg, _countof(logMsg), _TRUNCATE,
+                L"[BluetoothDeviceManager] Found BT device: name='%s' fConnected=%d\n",
+                devInfo.szName, devInfo.fConnected);
+            OutputDebugStringW(logMsg);
+
+            // Filter for audio devices that are connected
+            if (devInfo.fConnected && IsAudioDeviceType(devInfo.szName)) {
+                foundCount++;
+
+                // Format the Bluetooth address
+                wchar_t addrBuf[64];
+                _snwprintf_s(addrBuf, _countof(addrBuf), _TRUNCATE, L"%02X:%02X:%02X:%02X:%02X:%02X",
+                    devInfo.Address.rgBytes[5], devInfo.Address.rgBytes[4], devInfo.Address.rgBytes[3],
+                    devInfo.Address.rgBytes[2], devInfo.Address.rgBytes[1], devInfo.Address.rgBytes[0]);
+
+                // Create address string for map key
+                wchar_t addrKey[64];
+                _snwprintf_s(addrKey, _countof(addrKey), _TRUNCATE, L"%02X%02X%02X%02X%02X%02X",
+                    devInfo.Address.rgBytes[5], devInfo.Address.rgBytes[4], devInfo.Address.rgBytes[3],
+                    devInfo.Address.rgBytes[2], devInfo.Address.rgBytes[1], devInfo.Address.rgBytes[0]);
+
+                std::wstring key = addrKey;
+
+                // Add to registry
+                BluetoothAudioDevice device;
+                device.bluetoothAddress = addrBuf;
+                device.friendlyName = devInfo.szName;
+                device.isConnected = devInfo.fConnected != 0;
+                device.isDefaultOutput = false;
+                device.batteryLevel = 0;
+                device.lastStateChangeTime = GetTickCount64();
+                memcpy(&device.btAddr, &devInfo.Address, sizeof(BLUETOOTH_ADDRESS));
+
+                g_bluetoothAudioDevices[key] = device;
+
+                wchar_t msg[512];
+                _snwprintf_s(msg, _countof(msg), _TRUNCATE,
+                    L"[BluetoothDeviceManager] REGISTERED connected audio device: '%s' (addr=%s)\n",
+                    devInfo.szName, addrBuf);
+                OutputDebugStringW(msg);
+            }
+
+            devInfo.dwSize = sizeof(devInfo);
+        } while (BluetoothFindNextDevice(h, &devInfo));
+        BluetoothFindDeviceClose(h);
+    } else {
+        OutputDebugStringW(L"[BluetoothDeviceManager] BluetoothFindFirstDevice returned NULL\n");
+    }
+
+    wchar_t summaryMsg[256];
+    _snwprintf_s(summaryMsg, _countof(summaryMsg), _TRUNCATE,
+        L"[BluetoothDeviceManager] EnumerateBluetoothAudioDevices: found %d connected audio devices\n", foundCount);
+    OutputDebugStringW(summaryMsg);
+
+    return foundCount;
+}
+
+// Scan all Bluetooth devices and check if any WH-1000XM3 is connected (legacy)
 bool IsAnyHeadsetConnected()
 {
     BLUETOOTH_DEVICE_SEARCH_PARAMS search = {};
@@ -81,9 +204,9 @@ bool IsAnyHeadsetConnected()
     if (h) {
         do {
             if (wcsstr(devInfo.szName, L"WH-1000XM3") != NULL) {
-                wchar_t buf[256];
+                wchar_t buf[512];
                 _snwprintf_s(buf, _countof(buf), _TRUNCATE, 
-                    L"IsAnyHeadsetConnected: found BT device '%s' connected=%d\n", 
+                    L"[BluetoothDeviceManager] IsAnyHeadsetConnected: found BT device '%s' fConnected=%d\n", 
                     devInfo.szName, devInfo.fConnected);
                 OutputDebugStringW(buf);
                 if (devInfo.fConnected) {

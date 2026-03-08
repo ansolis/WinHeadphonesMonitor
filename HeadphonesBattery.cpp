@@ -3,6 +3,8 @@
 #include <devpkey.h>
 #include <cfgmgr32.h>
 #include <dbt.h>
+#include <mmdeviceapi.h>
+#include <endpointvolume.h>
 #include <string>
 #include <sstream>
 #include <shellapi.h>
@@ -18,12 +20,14 @@
 #include "DevicePropertyReader.h"
 #include "TrayNotification.h"
 #include "WindowManager.h"
+#include "AudioEndpointManager.h"
 
 #pragma comment(lib, "Bthprops.lib")
 #pragma comment(lib, "setupapi.lib")
 #pragma comment(lib, "cfgmgr32.lib")
 #pragma comment(lib, "shell32.lib")
 #pragma comment(lib, "ole32.lib")
+#pragma comment(lib, "mmdevapi.lib")
 
 // Forward declarations
 void CheckAndNotifyNow();
@@ -212,13 +216,20 @@ void HandleDeviceInterfaceArrival(PDEV_BROADCAST_DEVICEINTERFACE_W pDev) {
     // This avoids relying on the notification's class GUID (which can be GUID_NULL).
     if (!pDev || !pDev->dbcc_name) return;
 
-    OutputDebugStringW(L"HandleDeviceInterfaceArrival: received interface notification\n");
+    OutputDebugStringW(L"[HandleDeviceInterfaceArrival] Received interface notification\n");
     // Debug: show the incoming device interface path (may help identify which interface fired)
     if (pDev->dbcc_name) {
-        std::wstring dbgPath = L"HandleDeviceInterfaceArrival: interface path=";
+        std::wstring dbgPath = L"[HandleDeviceInterfaceArrival] Interface path=";
         dbgPath += pDev->dbcc_name;
         dbgPath += L"\n";
         OutputDebugStringW(dbgPath.c_str());
+
+        // Check if it's a stage 2 (MMDevice) arrival
+        if (wcsstr(pDev->dbcc_name, L"SWD#MMDEVAPI")) {
+            OutputDebugStringW(L"[HandleDeviceInterfaceArrival] STAGE 2 MARKER DETECTED: MMDevice endpoint arrival\n");
+        } else if (wcsstr(pDev->dbcc_name, L"INTELAUDIO") || wcsstr(pDev->dbcc_name, L"IntcBtWav")) {
+            OutputDebugStringW(L"[HandleDeviceInterfaceArrival] STAGE 1 MARKER: Driver interface arrival\n");
+        }
     }
     ULONGLONG now = GetTickCount64();
 
@@ -238,8 +249,14 @@ void HandleDeviceInterfaceArrival(PDEV_BROADCAST_DEVICEINTERFACE_W pDev) {
     if (g_connectedDevices.size() > oldConnectedCount) {
         // New device(s) connected
         std::wstring batteryInfo = GetHeadphonesBatteryLevel();
-        OutputDebugStringW(L"HandleDeviceInterfaceArrival: new device(s) detected\n");
+
+        wchar_t logMsg[256];
+        _snwprintf_s(logMsg, _countof(logMsg), _TRUNCATE, 
+            L"[HandleDeviceInterfaceArrival] New device(s) detected. Old count=%zu, New count=%zu\n",
+            oldConnectedCount, g_connectedDevices.size());
+        OutputDebugStringW(logMsg);
         OutputDebugStringW(batteryInfo.c_str());
+
         if (batteryInfo.find(L"WH-1000XM3") != std::wstring::npos) {
             ShowBalloonNotification(L"Headphones Connected", batteryInfo);
             g_lastNotifyTime = now;
@@ -259,7 +276,12 @@ void HandleDeviceInterfaceArrival(PDEV_BROADCAST_DEVICEINTERFACE_W pDev) {
     for (auto it = g_connectedDevices.begin(); it != g_connectedDevices.end(); ++it) {
         if (current.find(it->first) == current.end()) {
             // Device was removed
-            OutputDebugStringW(L"HandleDeviceInterfaceArrival: device removal detected\n");
+            wchar_t logMsg[512];
+            _snwprintf_s(logMsg, _countof(logMsg), _TRUNCATE,
+                L"[HandleDeviceInterfaceArrival] Device removal detected: '%s'\n",
+                it->second.c_str());
+            OutputDebugStringW(logMsg);
+
             ShowBalloonNotification(L"Headphones Disconnected", L"Headphones disconnected");
             g_connectedDevices.erase(it);
             if (g_connectedDevices.empty()) {
@@ -279,17 +301,31 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     UNREFERENCED_PARAMETER(lpCmdLine);
     UNREFERENCED_PARAMETER(nCmdShow);
 
+    OutputDebugStringW(L"[WinMain] HeadphonesBattery starting...\n");
+
+    // Initialize COM for MMDevice and Windows multimedia APIs
+    HRESULT hrCOM = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+    if (FAILED(hrCOM)) {
+        OutputDebugStringW(L"[WinMain] CoInitializeEx failed\n");
+        return 1;
+    }
+    OutputDebugStringW(L"[WinMain] COM initialized successfully\n");
+
     // Enable notifications after initialization
     g_showNotifications = true;
 
     // Register window class for device monitoring
     if (!RegisterWindowClass(hInstance)) {
+        OutputDebugStringW(L"[WinMain] Failed to register window class\n");
+        CoUninitialize();
         return 1;
     }
 
     // Create hidden window to receive device notifications
     HWND hwnd = CreateDeviceMonitorWindow(hInstance);
     if (!hwnd) {
+        OutputDebugStringW(L"[WinMain] Failed to create device monitor window\n");
+        CoUninitialize();
         return 1;
     }
 
@@ -298,6 +334,19 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
     // Initialize tray icon at startup
     InitializeTrayIcon();
+
+    // Initialize AudioEndpointManager for MMDevice notifications
+    g_audioEndpointManager = new AudioEndpointManager();
+    if (!g_audioEndpointManager->Initialize()) {
+        OutputDebugStringW(L"[WinMain] Failed to initialize AudioEndpointManager\n");
+    }
+
+    // Enumerate Bluetooth audio devices (populates g_bluetoothAudioDevices registry)
+    OutputDebugStringW(L"[WinMain] Enumerating Bluetooth audio devices...\n");
+    int audioDeviceCount = EnumerateBluetoothAudioDevices();
+    wchar_t msg[256];
+    _snwprintf_s(msg, _countof(msg), _TRUNCATE, L"[WinMain] Found %d connected audio devices\n", audioDeviceCount);
+    OutputDebugStringW(msg);
 
     // Initialize connected devices map from current system state
     InitializeConnectedDevices();
@@ -326,24 +375,42 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     );
 
     if (!hDevNotify) {
-        OutputDebugStringW(L"Failed to register device notification\n");
+        OutputDebugStringW(L"[WinMain] Failed to register device notification\n");
         RemoveTrayIcon();
+        if (g_audioEndpointManager) {
+            g_audioEndpointManager->Shutdown();
+            delete g_audioEndpointManager;
+            g_audioEndpointManager = nullptr;
+        }
         DestroyWindow(hwnd);
+        CoUninitialize();
         return 1;
     }
 
+    OutputDebugStringW(L"[WinMain] Initialization complete, entering message loop\n");
+
     // Message loop - keeps the application running
-    MSG msg = {};
-    while (GetMessage(&msg, NULL, 0, 0)) {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
+    MSG msg_data = {};
+    while (GetMessage(&msg_data, NULL, 0, 0)) {
+        TranslateMessage(&msg_data);
+        DispatchMessage(&msg_data);
     }
 
     // Cleanup
-    OutputDebugStringW(L"Cleaning up: unregistering and removing tray icon\n");
+    OutputDebugStringW(L"[WinMain] Cleaning up: unregistering and removing tray icon\n");
     UnregisterDeviceNotification(hDevNotify);
     RemoveTrayIcon();
+
+    if (g_audioEndpointManager) {
+        g_audioEndpointManager->Shutdown();
+        delete g_audioEndpointManager;
+        g_audioEndpointManager = nullptr;
+    }
+
     DestroyWindow(hwnd);
+
+    CoUninitialize();
+    OutputDebugStringW(L"[WinMain] HeadphonesBattery exiting\n");
 
     return 0;
 }

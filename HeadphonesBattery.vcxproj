@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AudioEndpointManager.cpp" />
     <ClCompile Include="BluetoothDeviceManager.cpp" />
     <ClCompile Include="DevicePropertyReader.cpp" />
     <ClCompile Include="HeadphonesBattery.cpp" />
@@ -151,6 +152,7 @@
     <None Include="TODO_PLAN.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioEndpointManager.h" />
     <ClInclude Include="BluetoothDeviceManager.h" />
     <ClInclude Include="DevicePropertyReader.h" />
     <ClInclude Include="TrayNotification.h" />
