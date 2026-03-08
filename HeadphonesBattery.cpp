@@ -21,6 +21,10 @@
 #include "TrayNotification.h"
 #include "WindowManager.h"
 #include "AudioEndpointManager.h"
+#include "DeviceRegistry.h"
+#include "NotificationManager.h"
+#include "Stage2Verifier.h"
+#include "DeviceContextMenu.h"
 
 #pragma comment(lib, "Bthprops.lib")
 #pragma comment(lib, "setupapi.lib")
@@ -311,6 +315,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     }
     OutputDebugStringW(L"[WinMain] COM initialized successfully\n");
 
+    // Initialize registry managers
+    g_deviceRegistry = new DeviceRegistry();
+    g_notificationManager = new NotificationManager();
+    g_stage2Verifier = new Stage2Verifier();
+    g_deviceContextMenu = new DeviceContextMenu();
+
     // Enable notifications after initialization
     g_showNotifications = true;
 
@@ -351,17 +361,25 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     // Initialize connected devices map from current system state
     InitializeConnectedDevices();
 
+    // Populate device registry from Bluetooth enumeration
+    for (const auto& pair : g_bluetoothAudioDevices) {
+        BluetoothAudioDevice device;
+        device.bluetoothAddress = pair.second.bluetoothAddress;
+        device.friendlyName = pair.second.friendlyName;
+        device.btAddr = pair.second.btAddr;
+        device.isConnected = pair.second.isConnected;
+        device.isDefaultOutput = false;
+        device.batteryLevel = 0;
+        device.lastStateChangeTime = GetTickCount64();
+
+        g_deviceRegistry->AddOrUpdateDevice(device);
+    }
+
     // Check and notify if headphones are already connected
     CheckAndNotifyNow();
 
-    // Update tooltip based on Bluetooth state
-    if (IsAnyHeadsetConnected()) {
-        UpdateTrayTooltip(L"Headphones connected");
-    } else if (g_connectedDevices.empty()) {
-        UpdateTrayTooltip(L"Headphones disconnected");
-    } else {
-        UpdateTrayTooltip(L"Headphones connected");
-    }
+    // Update tooltip based on registry state
+    g_notificationManager->UpdateTrayTooltip();
 
     // Register for all device interface notifications
     DEV_BROADCAST_DEVICEINTERFACE_W notificationFilter = {};
@@ -382,6 +400,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
             delete g_audioEndpointManager;
             g_audioEndpointManager = nullptr;
         }
+        if (g_deviceRegistry) delete g_deviceRegistry;
+        if (g_notificationManager) delete g_notificationManager;
+        if (g_stage2Verifier) delete g_stage2Verifier;
+        if (g_deviceContextMenu) delete g_deviceContextMenu;
         DestroyWindow(hwnd);
         CoUninitialize();
         return 1;
@@ -406,6 +428,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         delete g_audioEndpointManager;
         g_audioEndpointManager = nullptr;
     }
+
+    if (g_deviceRegistry) delete g_deviceRegistry;
+    if (g_notificationManager) delete g_notificationManager;
+    if (g_stage2Verifier) delete g_stage2Verifier;
+    if (g_deviceContextMenu) delete g_deviceContextMenu;
 
     DestroyWindow(hwnd);
 

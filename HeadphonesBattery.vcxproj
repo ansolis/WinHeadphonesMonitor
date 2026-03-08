@@ -141,22 +141,34 @@
   <ItemGroup>
     <ClCompile Include="AudioEndpointManager.cpp" />
     <ClCompile Include="BluetoothDeviceManager.cpp" />
+    <ClCompile Include="DeviceContextMenu.cpp" />
     <ClCompile Include="DevicePropertyReader.cpp" />
+    <ClCompile Include="DeviceRegistry.cpp" />
     <ClCompile Include="HeadphonesBattery.cpp" />
+    <ClCompile Include="NotificationManager.cpp" />
+    <ClCompile Include="Stage2Verifier.cpp" />
     <ClCompile Include="TrayNotification.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="chat_history.md" />
+    <None Include="PHASE1_IMPLEMENTATION.md" />
     <None Include="REFACTORING_SUMMARY.md" />
     <None Include="TODO_PLAN.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioEndpointManager.h" />
     <ClInclude Include="BluetoothDeviceManager.h" />
+    <ClInclude Include="DeviceContextMenu.h" />
     <ClInclude Include="DevicePropertyReader.h" />
+    <ClInclude Include="DeviceRegistry.h" />
+    <ClInclude Include="NotificationManager.h" />
+    <ClInclude Include="Stage2Verifier.h" />
     <ClInclude Include="TrayNotification.h" />
     <ClInclude Include="WindowManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include=".git_phase1_msg.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
