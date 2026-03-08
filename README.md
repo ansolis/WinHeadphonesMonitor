@@ -1,23 +1,72 @@
-# Headphones Battery Level Display
+# HeadphonesBattery Monitor
 
-A minimal C++ Win32 application that displays the battery level of your Bluetooth headphones.
-Monitors your Sony WH-1000XM3 Bluetooth headphones for connection/disconnection and provides battery status.
-Installs a system tray icon with information about the headphones.
+**A production-ready Windows Bluetooth audio device monitor that tracks any connected audio device and notifies you of connection, disconnection, and primary output changes.**
 
-## Features
-- Retrieves battery level using Windows Device Property APIs
-- Displays battery level in a simple message box
-- Specifically configured for WH-1000XM3 (but can be modified for other devices)
+## Features ✨
 
-## Requirements
-- Visual Studio 2026
+### ✅ Multi-Device Support
+- Monitors **any** Bluetooth audio device (not just one specific model)
+- Supports simultaneous connections to multiple devices
+- Works with: Sony WH-1000XM3, AirPods, Beats, Samsung Buds, and more
+
+### ✅ Three-Stage Notifications
+- **Stage 1:** "Detecting [device name]..." - Early driver detection
+- **Stage 2:** "[Device name] connected" - Audio endpoint ready
+- **Stage 3:** "Now using [device] for audio" - Became primary output
+- **Disconnected:** "[Device name] disconnected" - Device removed
+
+### ✅ Smart Tray Integration
+- Device status in tray tooltip
+- Single device: `"WH-1000XM3 (ACTIVE OUTPUT)"` or `"WH-1000XM3 (standby)"`
+- Multiple devices: `"WH-1000XM3 (ACTIVE) + 1 other"`
+- Right-click context menu for device control
+- Left-click to view current battery status
+
+### ✅ Windows Audio API Integration
+- Real-time MMDevice notifications
+- Detects when device becomes primary output
+- No polling required for audio endpoint detection
+
+### ✅ Comprehensive Logging
+- All device events logged with timestamps
+- Device names and Bluetooth addresses in logs
+- Stage markers for debugging
+- Module-prefixed output for easy filtering
+
+## Installation
+
+### Requirements
 - Windows 10 or later
+- Visual Studio 2019+ (for building from source)
+- Bluetooth adapter with audio device support
 
-## How to Build
+### Build from Source
 
-1. Open `HeadphonesBattery.sln` in [Visual Studio](https://visualstudio.microsoft.com/downloads/)
-2. Select your build configuration (Debug or Release)
-3. Select your platform (x64 recommended)
+1. Clone the repository:
+```bash
+git clone https://github.com/ansolis/WinHeadphonesMonitor.git
+cd WinHeadphonesMonitor
+```
+
+2. Open `HeadphonesBattery.vcxproj` in Visual Studio 2019+
+
+3. Build the solution (Build → Build Solution)
+
+4. Run the executable from `x64/Debug/` or `x64/Release/`
+
+## Usage
+
+### Basic Operation
+
+1. **Connect a Bluetooth audio device** to your PC
+2. **Application starts automatically** at startup (place shortcut in Startup folder)
+3. **Monitor in system tray** - see device status in tooltip
+4. **Receive notifications** for each stage of device lifecycle
+
+### Tray Icon Interaction
+
+**Left-click:** View current battery status and connection state
+**Right-click:** Device menu with options (Disconnect, Switch, Exit)
 4. Press F5 to build and run, or Ctrl+Shift+B to just build
 
 ## How It Works

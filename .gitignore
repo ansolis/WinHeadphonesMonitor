@@ -2,7 +2,34 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
+# Visual Studio
 /.vs
-/Headphon.A1B2C3D4
 /x64
+/Debug
+/Release
 *.user
+*.filters
+*.vcxproj.user
+*.vcxproj.filters
+
+# Temporary/build files
+/Headphon.A1B2C3D4
+*.log
+*.obj
+*.exe
+*.pdb
+
+# Temp files
+.git_*_msg.txt
+**/AppData/Local/Temp/**
+TFSTemp/
+
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
